@@ -1,43 +1,69 @@
-<svg width="1600" height="420" viewBox="0 0 1600 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+﻿<svg width="1600" height="420" viewBox="0 0 1600 420" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="420" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#0B1420"/>
-      <stop offset="1" stop-color="#182C45"/>
+    <linearGradient id="page" x1="0" y1="0" x2="1600" y2="420" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#101418"/>
+      <stop offset="1" stop-color="#161C22"/>
     </linearGradient>
-    <linearGradient id="accent" x1="280" y1="80" x2="1320" y2="340" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#8ED3FF"/>
-      <stop offset="1" stop-color="#B7F2D8"/>
+    <linearGradient id="surfaceContainer" x1="120" y1="34" x2="1480" y2="386" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1B2023"/>
+      <stop offset="1" stop-color="#232A2E"/>
     </linearGradient>
-    <filter id="blur">
-      <feGaussianBlur stdDeviation="32"/>
+    <radialGradient id="primaryTonal" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(370 120) rotate(29) scale(470 230)">
+      <stop stop-color="#8BD0EF" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#8BD0EF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="tertiaryTonal" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1250 310) rotate(-20) scale(420 210)">
+      <stop stop-color="#C6C2EA" stop-opacity="0.23"/>
+      <stop offset="1" stop-color="#C6C2EA" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softBlur" x="-120" y="-120" width="1840" height="660" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="30"/>
+    </filter>
+    <filter id="cardShadow" x="0" y="0" width="1600" height="420" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="#000000" flood-opacity="0.35"/>
     </filter>
   </defs>
 
-  <rect width="1600" height="420" rx="28" fill="url(#bg)"/>
-  <circle cx="1260" cy="120" r="180" fill="#6EC4FF" fill-opacity="0.2" filter="url(#blur)"/>
-  <circle cx="350" cy="320" r="160" fill="#85F1B7" fill-opacity="0.18" filter="url(#blur)"/>
-
-  <g opacity="0.28">
-    <path d="M120 88H1480" stroke="white" stroke-opacity="0.24"/>
-    <path d="M120 148H1480" stroke="white" stroke-opacity="0.2"/>
-    <path d="M120 208H1480" stroke="white" stroke-opacity="0.16"/>
-    <path d="M120 268H1480" stroke="white" stroke-opacity="0.13"/>
-    <path d="M120 328H1480" stroke="white" stroke-opacity="0.1"/>
+  <rect width="1600" height="420" rx="28" fill="url(#page)"/>
+  <g filter="url(#cardShadow)">
+    <rect x="84" y="24" width="1432" height="372" rx="36" fill="url(#surfaceContainer)"/>
   </g>
 
-  <text x="128" y="170" fill="url(#accent)" font-family="Segoe UI, Arial, sans-serif" font-size="74" font-weight="800" letter-spacing="1.5">
+  <g filter="url(#softBlur)">
+    <ellipse cx="360" cy="112" rx="330" ry="170" fill="url(#primaryTonal)"/>
+    <ellipse cx="1240" cy="304" rx="300" ry="150" fill="url(#tertiaryTonal)"/>
+  </g>
+
+  <rect x="138" y="72" width="226" height="42" rx="21" fill="#004D64"/>
+  <text x="162" y="99" fill="#BDE9FF" font-family="Roboto, Segoe UI, Arial, sans-serif" font-size="18" font-weight="600">
+    Android Material 3
+  </text>
+
+  <text x="136" y="178" fill="#DFE3E7" font-family="Roboto, Segoe UI, Arial, sans-serif" font-size="74" font-weight="700" letter-spacing="0.8">
     ChatWeave
   </text>
-  <text x="132" y="232" fill="#DDE7F3" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="600">
+  <text x="140" y="234" fill="#C0C8CD" font-family="Roboto, Segoe UI, Arial, sans-serif" font-size="31" font-weight="500">
     Unified Conversation Workspace
   </text>
-  <text x="132" y="282" fill="#9FB4CC" font-family="Segoe UI, Arial, sans-serif" font-size="24">
+  <text x="140" y="282" fill="#9DA7AE" font-family="Roboto, Segoe UI, Arial, sans-serif" font-size="23">
     Local-first migration and merge tool for RikkaHub backups
   </text>
 
-  <rect x="128" y="314" width="330" height="42" rx="21" fill="white" fill-opacity="0.08" stroke="white" stroke-opacity="0.18"/>
-  <text x="154" y="341" fill="#D8E6F8" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="600">
-    ChatGPT · DeepSeek · YourAIScroll
+  <rect x="138" y="312" width="454" height="44" rx="22" fill="#303538"/>
+  <text x="164" y="340" fill="#C8D0D6" font-family="Roboto, Segoe UI, Arial, sans-serif" font-size="18" font-weight="500">
+    ChatGPT  |  DeepSeek  |  YourAIScroll
+  </text>
+
+  <rect x="1086" y="96" width="320" height="228" rx="28" fill="#2B3136" stroke="#40484C"/>
+  <rect x="1120" y="130" width="170" height="26" rx="13" fill="#004D64"/>
+  <text x="1140" y="148" fill="#BDE9FF" font-family="Roboto, Segoe UI, Arial, sans-serif" font-size="14" font-weight="600">
+    Merge Preview
+  </text>
+  <rect x="1120" y="174" width="252" height="14" rx="7" fill="#40484C"/>
+  <rect x="1120" y="198" width="236" height="14" rx="7" fill="#40484C"/>
+  <rect x="1120" y="222" width="196" height="14" rx="7" fill="#40484C"/>
+  <rect x="1120" y="256" width="128" height="34" rx="17" fill="#8BD0EF"/>
+  <text x="1154" y="278" fill="#003546" font-family="Roboto, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">
+    Export ZIP
   </text>
 </svg>
-
