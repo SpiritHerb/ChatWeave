@@ -1,69 +1,86 @@
 ﻿<svg width="1600" height="420" viewBox="0 0 1600 420" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="page" x1="0" y1="0" x2="1600" y2="420" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#101418"/>
-      <stop offset="1" stop-color="#161C22"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="420" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F1417"/>
+      <stop offset="1" stop-color="#12191D"/>
     </linearGradient>
-    <linearGradient id="surfaceContainer" x1="120" y1="34" x2="1480" y2="386" gradientUnits="userSpaceOnUse">
+    <linearGradient id="surface" x1="72" y1="24" x2="1528" y2="396" gradientUnits="userSpaceOnUse">
       <stop stop-color="#1B2023"/>
-      <stop offset="1" stop-color="#232A2E"/>
+      <stop offset="1" stop-color="#22282C"/>
     </linearGradient>
-    <radialGradient id="primaryTonal" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(370 120) rotate(29) scale(470 230)">
-      <stop stop-color="#8BD0EF" stop-opacity="0.28"/>
+    <radialGradient id="primaryGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(350 120) rotate(20) scale(440 210)">
+      <stop stop-color="#8BD0EF" stop-opacity="0.30"/>
       <stop offset="1" stop-color="#8BD0EF" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="tertiaryTonal" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1250 310) rotate(-20) scale(420 210)">
-      <stop stop-color="#C6C2EA" stop-opacity="0.23"/>
+    <radialGradient id="tertiaryGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1250 300) rotate(-14) scale(380 190)">
+      <stop stop-color="#C6C2EA" stop-opacity="0.22"/>
       <stop offset="1" stop-color="#C6C2EA" stop-opacity="0"/>
     </radialGradient>
-    <filter id="softBlur" x="-120" y="-120" width="1840" height="660" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-      <feGaussianBlur stdDeviation="30"/>
-    </filter>
-    <filter id="cardShadow" x="0" y="0" width="1600" height="420" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-      <feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="#000000" flood-opacity="0.35"/>
+    <filter id="blur" x="-120" y="-120" width="1840" height="660" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="34"/>
     </filter>
   </defs>
 
-  <rect width="1600" height="420" rx="28" fill="url(#page)"/>
-  <g filter="url(#cardShadow)">
-    <rect x="84" y="24" width="1432" height="372" rx="36" fill="url(#surfaceContainer)"/>
+  <rect width="1600" height="420" rx="28" fill="url(#bg)"/>
+  <rect x="72" y="24" width="1456" height="372" rx="34" fill="url(#surface)" stroke="#40484C"/>
+
+  <g filter="url(#blur)">
+    <ellipse cx="360" cy="128" rx="300" ry="155" fill="url(#primaryGlow)"/>
+    <ellipse cx="1246" cy="304" rx="280" ry="140" fill="url(#tertiaryGlow)"/>
   </g>
 
-  <g filter="url(#softBlur)">
-    <ellipse cx="360" cy="112" rx="330" ry="170" fill="url(#primaryTonal)"/>
-    <ellipse cx="1240" cy="304" rx="300" ry="150" fill="url(#tertiaryTonal)"/>
-  </g>
-
-  <rect x="138" y="72" width="226" height="42" rx="21" fill="#004D64"/>
-  <text x="162" y="99" fill="#BDE9FF" font-family="Roboto, Segoe UI, Arial, sans-serif" font-size="18" font-weight="600">
-    Android Material 3
-  </text>
-
-  <text x="136" y="178" fill="#DFE3E7" font-family="Roboto, Segoe UI, Arial, sans-serif" font-size="74" font-weight="700" letter-spacing="0.8">
+  <text x="134" y="168" fill="#DFE3E7" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="72" font-weight="700" letter-spacing="0.6">
     ChatWeave
   </text>
-  <text x="140" y="234" fill="#C0C8CD" font-family="Roboto, Segoe UI, Arial, sans-serif" font-size="31" font-weight="500">
+  <text x="138" y="224" fill="#C0C8CD" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="30" font-weight="500">
     Unified Conversation Workspace
   </text>
-  <text x="140" y="282" fill="#9DA7AE" font-family="Roboto, Segoe UI, Arial, sans-serif" font-size="23">
+  <text x="138" y="272" fill="#9CA8AE" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="23">
     Local-first migration and merge tool for RikkaHub backups
   </text>
 
-  <rect x="138" y="312" width="454" height="44" rx="22" fill="#303538"/>
-  <text x="164" y="340" fill="#C8D0D6" font-family="Roboto, Segoe UI, Arial, sans-serif" font-size="18" font-weight="500">
-    ChatGPT  |  DeepSeek  |  YourAIScroll
+  <rect x="136" y="306" width="146" height="42" rx="21" fill="#004D64"/>
+  <text x="168" y="333" fill="#BDE9FF" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="17" font-weight="600">
+    ChatGPT
   </text>
 
-  <rect x="1086" y="96" width="320" height="228" rx="28" fill="#2B3136" stroke="#40484C"/>
-  <rect x="1120" y="130" width="170" height="26" rx="13" fill="#004D64"/>
-  <text x="1140" y="148" fill="#BDE9FF" font-family="Roboto, Segoe UI, Arial, sans-serif" font-size="14" font-weight="600">
+  <rect x="294" y="306" width="152" height="42" rx="21" fill="#354A53"/>
+  <text x="326" y="333" fill="#D0E6F2" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="17" font-weight="600">
+    DeepSeek
+  </text>
+
+  <rect x="458" y="306" width="196" height="42" rx="21" fill="#454364"/>
+  <text x="490" y="333" fill="#E3DFFF" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="17" font-weight="600">
+    YourAIScroll
+  </text>
+
+  <rect x="1020" y="84" width="398" height="248" rx="26" fill="#262B2D" stroke="#40484C"/>
+  <rect x="1048" y="112" width="170" height="26" rx="13" fill="#303538"/>
+  <text x="1080" y="129" fill="#C0C8CD" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="13" font-weight="600">
     Merge Preview
   </text>
-  <rect x="1120" y="174" width="252" height="14" rx="7" fill="#40484C"/>
-  <rect x="1120" y="198" width="236" height="14" rx="7" fill="#40484C"/>
-  <rect x="1120" y="222" width="196" height="14" rx="7" fill="#40484C"/>
-  <rect x="1120" y="256" width="128" height="34" rx="17" fill="#8BD0EF"/>
-  <text x="1154" y="278" fill="#003546" font-family="Roboto, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">
-    Export ZIP
+
+  <rect x="1048" y="156" width="244" height="13" rx="6.5" fill="#40484C"/>
+  <rect x="1048" y="178" width="324" height="13" rx="6.5" fill="#40484C"/>
+  <rect x="1048" y="200" width="292" height="13" rx="6.5" fill="#40484C"/>
+
+  <rect x="1048" y="226" width="118" height="34" rx="17" fill="#004D64"/>
+  <text x="1078" y="248" fill="#BDE9FF" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="14" font-weight="600">
+    Dry Run
+  </text>
+
+  <rect x="1178" y="226" width="128" height="34" rx="17" fill="#8BD0EF"/>
+  <text x="1212" y="248" fill="#003546" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="14" font-weight="700">
+    Export
+  </text>
+
+  <rect x="1318" y="226" width="72" height="34" rx="17" fill="#303538" stroke="#8A9297"/>
+  <text x="1340" y="248" fill="#DFE3E7" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="14" font-weight="600">
+    ZIP
+  </text>
+
+  <rect x="1048" y="276" width="342" height="30" rx="15" fill="#1F333C"/>
+  <text x="1074" y="296" fill="#B4CAD6" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="13" font-weight="500">
+    Preview | Merge | Download | Import
   </text>
 </svg>
