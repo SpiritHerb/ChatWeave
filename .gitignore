@@ -1,0 +1,9 @@
+# Default: ignore everything to prevent accidental data leaks.
+*
+
+# Allowlist: publish code/docs only.
+!.gitignore
+!README.md
+!LICENSE
+!index.html
+
