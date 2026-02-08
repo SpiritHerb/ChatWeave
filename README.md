@@ -7,6 +7,10 @@
 本项目是一个 `local-first` 的浏览器工具，用于把多来源聊天记录整理、预检并合并为可导入 RikkaHub 的备份包。  
 ChatWeave is a local-first browser tool for preparing and merging multi-source chat exports into RikkaHub-compatible backup packages.
 
+## 在线体验 | Live Demo
+
+- 体验地址 / Demo URL: **https://cw.spiritherb.top/**
+
 ## 引言 | Preface
 
 > 当对话数据分散在不同平台，迁移的难点不是“导出”，而是“可控地合并并可回滚”。  
