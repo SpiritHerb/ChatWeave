@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatWeave - 统一会话工作台</title>
+    <title>ChatWeave v1.6.2 - 统一会话工作台</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
     <style>
@@ -7660,15 +7660,54 @@
                         await initSQL();
                         const testDb = new db.Database(rikkahubData);
 
-                        // 验证数据库
-                        const result = testDb.exec("SELECT COUNT(*) FROM ConversationEntity");
+                        // 验证数据库 - 先检查表是否存在
+                        let result;
+                        let conversationCount = 0;
+                        try {
+                            // 检查 ConversationEntity 表是否存在
+                            const tables = testDb.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='ConversationEntity'");
+                            if (tables.length > 0 && tables[0].values.length > 0) {
+                                result = testDb.exec("SELECT COUNT(*) FROM ConversationEntity");
+                                conversationCount = result[0].values[0][0];
+                            } else {
+                                // 检查是否有任何表
+                                const allTables = testDb.exec("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name");
+                                const tableCount = allTables.length > 0 ? allTables[0].values.length : 0;
+                                
+                                if (tableCount === 0) {
+                                    // 数据库为空，检查是否有 WAL 文件
+                                    const hasWalFile = files.some(f => f.includes('rikka_hub-wal'));
+                                    if (hasWalFile) {
+                                        // 检测到 WAL 文件，这是一个正常的 RikkaHub 备份
+                                        // sql.js 无法直接读取 WAL 文件，但数据库结构是正确的
+                                        // 我们跳过表检查，允许加载
+                                        console.log('检测到 WAL 文件，跳过表检查');
+                                        conversationCount = 0; // 无法在浏览器中读取 WAL 文件获取准确数量
+                                    } else {
+                                        throw new Error('数据库文件为空，未找到任何表。请确保上传的是从 RikkaHub 导出的完整备份文件。');
+                                    }
+                                } else {
+                                    const tableNames = allTables[0].values.map(row => row[0]).join(', ');
+                                    throw new Error(`数据库中未找到 ConversationEntity 表。现有表: ${tableNames}`);
+                                }
+                            }
+                        } catch (error) {
+                            testDb.close();
+                            uploadBox.classList.remove('loading', 'has-wave');
+                            fileInfo.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
+                            showError('RikkaHub 数据库验证失败: ' + error.message + '\n请确保上传的是从 RikkaHub 导出的正确备份文件');
+                            uploadBox.classList.add('error');
+                            return;
+                        }
                         
                         // 移除加载状态
                         uploadBox.classList.remove('loading', 'has-wave');
                         uploadBox.classList.add('has-file');
                         fileInfo.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
                         
-                        showInfo(`已加载 RikkaHub 数据库，包含 ${result[0].values[0][0]} 个对话`);
+                        if (conversationCount > 0) {
+                            showInfo(`已加载 RikkaHub 数据库，包含 ${conversationCount} 个对话`);
+                        }
 
                         testDb.close();
 
