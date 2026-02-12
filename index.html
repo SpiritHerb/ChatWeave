@@ -8424,6 +8424,40 @@
 
                 updateProgress(50);
                 showInfo('正在写入数据库...');
+                
+                // 检查并创建表（WAL 模式需要）
+                try {
+                    const tables = mergedDb.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='ConversationEntity'");
+                    if (tables.length === 0 || tables[0].values.length === 0) {
+                        // 表不存在，创建表结构
+                        console.log('表不存在，创建 ConversationEntity 和 message_node 表');
+                        mergedDb.run(`
+                            CREATE TABLE IF NOT EXISTS ConversationEntity (
+                                id TEXT PRIMARY KEY,
+                                assistant_id TEXT,
+                                title TEXT,
+                                nodes TEXT,
+                                create_at INTEGER,
+                                update_at INTEGER,
+                                truncate_index INTEGER,
+                                suggestions TEXT,
+                                is_pinned INTEGER
+                            )
+                        `);
+                        mergedDb.run(`
+                            CREATE TABLE IF NOT EXISTS message_node (
+                                id TEXT PRIMARY KEY,
+                                conversation_id TEXT,
+                                node_index INTEGER,
+                                messages TEXT,
+                                select_index INTEGER
+                            )
+                        `);
+                    }
+                } catch (e) {
+                    console.warn('检查或创建表时出错:', e);
+                }
+                
                 mergedDb.run('BEGIN TRANSACTION');
                 transactionStarted = true;
 
