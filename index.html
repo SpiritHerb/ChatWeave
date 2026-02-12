@@ -2962,48 +2962,87 @@
                 <button class="modal-close" onclick="closeModalDirect('usage')">×</button>
             </div>
             <div class="modal-body">
-                <p><strong>推荐流程（统一会话工作台）</strong></p>
-                <ol style="margin-left: 20px; line-height: 1.8;">
-                    <li>准备至少一种源数据：ChatGPT ZIP / DeepSeek ZIP / YourAIScroll Markdown</li>
-                    <li>导入到会话工作台，逐条预览并编辑</li>
-                    <li>点击“合并聊天记录”，按提示选择 RikkaHub 原始备份 ZIP</li>
-                    <li>下载合并包并导入 RikkaHub（建议先小批量验证）</li>
-                </ol>
-
-                <p style="margin-top: 16px;"><strong>一、准备源数据（可多选）</strong></p>
-                <ol style="margin-left: 20px; line-height: 1.8;">
-                    <li><strong>ChatGPT</strong>：在 <a href="https://chatgpt.com/#settings/DataControls" target="_blank">Data Controls</a> 导出全部数据，上传完整 ZIP（不要只取 conversations.json）</li>
-                    <li><strong>DeepSeek</strong>：导出新版 ZIP（conversations.json），如有历史旧数据可再导出旧版 ZIP（chat.csv / coder.csv）</li>
-                    <li><strong>YourAIScroll</strong>：在对话页复制 Markdown，每次粘贴一个会话（应包含 Original URL 与 [USER]/[ASSISTANT] 标记）</li>
-                </ol>
-
-                <p style="margin-top: 16px;"><strong>二、导入并整理会话</strong></p>
-                <ol style="margin-left: 20px; line-height: 1.8;">
-                    <li>按来源上传或粘贴后，会自动进入“会话工作台”</li>
-                    <li>可在“预览和编辑会话”中修改标题、时间和消息内容，取消勾选即不参与合并</li>
-                    <li>可混合导入多个来源，统一勾选后一次合并</li>
-                </ol>
-
-                <p style="margin-top: 16px;"><strong>三、执行合并</strong></p>
-                <ol style="margin-left: 20px; line-height: 1.8;">
-                    <li>按需选择冲突处理策略与助手合并策略</li>
-                    <li>若未提前上传 RikkaHub 备份，点击“合并聊天记录”后会弹窗要求选择备份 ZIP</li>
-                    <li>合并完成后会弹出确认窗口，阅读提示后再下载</li>
-                </ol>
-
-                <p style="margin-top: 16px;"><strong>四、导入回 RikkaHub</strong></p>
-                <ol style="margin-left: 20px; line-height: 1.8;">
-                    <li>RikkaHub → 设置 → 数据备份 → 备份文件导入</li>
-                    <li>选择本工具下载的 ZIP，完成后重启应用并检查会话显示</li>
-                </ol>
-
-                <p style="margin-top: 24px; padding: 16px; background: var(--md-sys-color-primary-container); border-radius: var(--md-sys-shape-corner-medium); color: var(--md-sys-color-on-primary-container);">
-                    <strong>📸 图片与链接说明</strong><br>
-                    ChatGPT 导出包中的图片会迁移为 RikkaHub 本地文件；YourAIScroll Markdown 中的图片保留为原链接（不会自动下载入包）。
+                <p style="margin-bottom: 10px;"><strong>先看最常用流程：DeepSeek 合并到 RikkaHub</strong></p>
+                <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.7; margin-bottom: 14px;">
+                    按下面 4 步走就行，基本不会踩坑。
                 </p>
-                <p style="margin-top: 16px; padding: 16px; background: var(--md-sys-color-secondary-container); border-radius: var(--md-sys-shape-corner-medium); color: var(--md-sys-color-on-secondary-container);">
-                    <strong>🕒 时间戳说明</strong><br>
-                    YourAIScroll Markdown 通常不包含原始精确时间戳，导入时会使用粘贴时刻作为默认时间。
+                <ol style="margin-left: 20px; line-height: 1.85;">
+                    <li>
+                        先导出 DeepSeek 聊天记录：打开
+                        <a href="https://chat.deepseek.com/" target="_blank">chat.deepseek.com</a>
+                        登录，右下角“三个点” → <strong>系统设置</strong> → <strong>数据管理</strong>，
+                        在“导出所有历史对话”右侧点<strong>导出</strong>。正常会拿到新版备份；
+                        如果你是 2024 年早期用户，可能还会额外收到一份旧版备份。
+                    </li>
+                    <li>
+                        准备 RikkaHub 原始备份：从
+                        <a href="https://rikka-ai.com/" target="_blank">rikka-ai.com</a>
+                        下载 RikkaHub，打开后左上角菜单 → 设置 → <strong>数据备份</strong> → <strong>导入和导出</strong> → <strong>导出为文件</strong>。
+                    </li>
+                    <li>
+                        回到本工具：来源选 <strong>DeepSeek 数据</strong>，上传刚导出的 DeepSeek 文件；
+                        在“会话工作台”里勾选/编辑要合并的会话；
+                        再上传第 2 步导出的 RikkaHub 备份，点<strong>合并聊天记录</strong>，
+                        最后在下载确认弹窗点下载，得到合并后的 ZIP。
+                    </li>
+                    <li>
+                        把合并后的 ZIP 导回 RikkaHub：右上角菜单 → 设置 → <strong>数据备份</strong> → <strong>导入和导出</strong> → <strong>备份文件导入</strong>。
+                        导入后重启 App，左上角菜单切到新导入助手，就能看到 DeepSeek 历史会话。
+                    </li>
+                </ol>
+
+                <p style="margin-top: 16px; padding: 14px; background: var(--md-sys-color-secondary-container); border-radius: var(--md-sys-shape-corner-medium); color: var(--md-sys-color-on-secondary-container); line-height: 1.75;">
+                    <strong>补充：</strong>如果你还想继续用 DeepSeek v3.2 聊天，可以在 RikkaHub 的“提供商”页面添加或选择相应提供商。
+                    还没选好提供商？推荐先用这个入口快速开通（流程简单，适合先小额测试）：
+                    <a href="https://yunwu.ai/register?aff=PMO3" target="_blank" style="color: inherit; text-decoration: underline;">https://yunwu.ai/register?aff=PMO3</a>
+                    说明：这是推广链接；通过该链接注册后，用户前 3 次充值可为本工具作者带来 10% 返现，用于持续维护与更新本工具。
+                </p>
+
+                <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
+                    <button
+                        class="btn-text"
+                        type="button"
+                        onclick="closeModalDirect('usage'); openModal('usageMore');"
+                        style="padding: 10px 16px; border: 1px solid var(--md-sys-color-outline);"
+                    >
+                        更多方法
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 使用说明（更多方法） -->
+    <div class="modal-overlay" id="modalUsageMore">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">📚 更多方法</h3>
+                <button class="modal-close" onclick="closeModalDirect('usageMore')">×</button>
+            </div>
+            <div class="modal-body">
+                <p><strong>ChatGPT 官方导出 → RikkaHub</strong></p>
+                <ol style="margin-left: 20px; line-height: 1.8;">
+                    <li>在 ChatGPT 的 Data Controls 导出完整数据 ZIP（不要只拿 <code>conversations.json</code>）。</li>
+                    <li>本工具来源选“ChatGPT 数据”，上传 ZIP，进会话工作台勾选并检查消息。</li>
+                    <li>上传 RikkaHub 原始备份 ZIP，点击合并并下载，最后导回 RikkaHub。</li>
+                </ol>
+
+                <p style="margin-top: 16px;"><strong>YourAIScroll Markdown → RikkaHub</strong></p>
+                <ol style="margin-left: 20px; line-height: 1.8;">
+                    <li>来源切到 “YourAIScroll 数据”，点击“粘贴 Markdown 文本”。</li>
+                    <li>每次粘贴一个会话，建议包含 <code>Original URL</code>、<code>[USER]</code>、<code>[ASSISTANT]</code> 标记。</li>
+                    <li>保存后会进入会话工作台，可继续追加粘贴多个会话，再统一合并。</li>
+                </ol>
+
+                <p style="margin-top: 16px;"><strong>多来源混合合并（推荐）</strong></p>
+                <ol style="margin-left: 20px; line-height: 1.8;">
+                    <li>分别导入 ChatGPT / DeepSeek / YourAIScroll 数据到同一个会话工作台。</li>
+                    <li>按标题搜索、筛选、编辑后，一次勾选你要的会话。</li>
+                    <li>一次合并到同一个 RikkaHub 备份，便于统一归档。</li>
+                </ol>
+
+                <p style="margin-top: 16px; padding: 14px; background: var(--md-sys-color-primary-container); border-radius: var(--md-sys-shape-corner-medium); color: var(--md-sys-color-on-primary-container); line-height: 1.7;">
+                    <strong>小提醒：</strong>先拿 1-3 个会话做小样导入，确认格式没问题，再做全量合并，最稳。
                 </p>
             </div>
         </div>
@@ -3067,9 +3106,32 @@
                     <p>ChatWeave 是一个统一聊天记录工作台：支持多来源导入、会话预览、消息编辑、勾选过滤和目标备份合并。</p>
                     <p>当前版本重点输出可导入 RikkaHub 的备份包，同时保留统一数据层，便于后续扩展更多目标平台。</p>
                 </div>
-                <p style="margin-top: 16px;">
-                    <a href="https://rikka-ai.com/" target="_blank" class="about-link">RikkaHub 官网</a>
-                </p>
+                <div style="margin-top: 16px;">
+                    <p style="margin: 0 0 8px 0; font-size: 13px; color: var(--md-sys-color-on-surface-variant);">项目链接</p>
+                    <p style="margin: 0; display: flex; gap: 12px; flex-wrap: wrap;">
+                        <a href="https://github.com/SpiritHerb/ChatWeave" target="_blank" class="about-link">GitHub 项目</a>
+                    </p>
+                    <p style="margin: 12px 0 8px 0; font-size: 13px; color: var(--md-sys-color-on-surface-variant);">友链</p>
+                    <p style="margin: 0; display: flex; gap: 12px; flex-wrap: wrap;">
+                        <a href="https://rikka-ai.com/" target="_blank" class="about-link">RikkaHub 官网</a>
+                    </p>
+                </div>
+
+                <div style="margin-top: 18px; padding: 16px; background: var(--md-sys-color-surface-container-low); border-radius: var(--md-sys-shape-corner-medium);">
+                    <h3 style="margin: 0 0 10px 0; font-size: 16px;">☕ 赞赏支持</h3>
+                    <p style="margin: 0 0 10px 0; font-size: 13px; color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
+                        如果这个工具帮你省了时间，可以扫码支持一下后续维护。
+                    </p>
+                    <img
+                        src="https://rewardreiso.h3189458857.workers.dev/"
+                        alt="赞赏码"
+                        style="display: block; width: 180px; max-width: 100%; border-radius: 12px; border: 1px solid var(--md-sys-color-outline-variant); background: var(--md-sys-color-surface);"
+                        onerror="if(!this.dataset.fallback){this.dataset.fallback='1'; this.src='donation_qr.png';} else {this.style.display='none'; this.nextElementSibling.style.display='block';}"
+                    >
+                    <p style="display: none; margin: 8px 0 0 0; font-size: 12px; color: var(--md-sys-color-on-surface-variant);">
+                        暂未找到赞赏码图片。可在本文件同目录放置 <code>donation_qr.png</code>。
+                    </p>
+                </div>
                 
                 <h3 style="margin-top: 32px; margin-bottom: 12px; font-size: 16px;">🎨 主题选择</h3>
                 
@@ -5333,6 +5395,7 @@
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 closeModalDirect('usage');
+                closeModalDirect('usageMore');
                 closeModalDirect('support');
                 closeModalDirect('about');
                 closeRikkaHubRequiredModal();
