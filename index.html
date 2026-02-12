@@ -8436,24 +8436,33 @@
                     const convId = prepared.convId;
                     const messages = prepared.messages;
 
-                    mergedDb.run(`
-                        INSERT OR REPLACE INTO ConversationEntity
-                        (id, assistant_id, title, nodes, create_at, update_at, truncate_index, suggestions, is_pinned)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    `, [convId, prepared.assistantId, prepared.title, '[]', prepared.createTime, prepared.updateTime, -1, '[]', 0]);
-
-                    for (let i = 0; i < messages.length; i++) {
-                        const nodeId = generateUUID();
-                        const messageJson = JSON.stringify([messages[i]]);
+                    try {
                         mergedDb.run(`
-                            INSERT INTO message_node
-                            (id, conversation_id, node_index, messages, select_index)
-                            VALUES (?, ?, ?, ?, ?)
-                        `, [nodeId, convId, i, messageJson, 0]);
-                    }
+                            INSERT OR REPLACE INTO ConversationEntity
+                            (id, assistant_id, title, nodes, create_at, update_at, truncate_index, suggestions, is_pinned)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        `, [convId, prepared.assistantId, prepared.title, '[]', prepared.createTime, prepared.updateTime, -1, '[]', 0]);
 
-                    existingConversationIds.add(convId);
-                    convertedCount++;
+                        for (let i = 0; i < messages.length; i++) {
+                            const nodeId = generateUUID();
+                            const messageJson = JSON.stringify([messages[i]]);
+                            mergedDb.run(`
+                                INSERT INTO message_node
+                                (id, conversation_id, node_index, messages, select_index)
+                                VALUES (?, ?, ?, ?, ?)
+                            `, [nodeId, convId, i, messageJson, 0]);
+                        }
+
+                        existingConversationIds.add(convId);
+                        convertedCount++;
+                    } catch (e) {
+                        // WAL 模式下表不存在，跳过
+                        if (e.message && e.message.includes('no such table')) {
+                            console.log('WAL 模式：跳过写入');
+                        } else {
+                            throw e;
+                        }
+                    }
 
                     if (idx % 10 === 0) {
                         updateProgress(50 + ((idx + 1) / insertTotal) * 30);
