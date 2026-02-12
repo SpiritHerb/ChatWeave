@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatWeave v1.6.2 - 统一会话工作台</title>
+    <title>ChatWeave - 统一会话工作台</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
     <style>
@@ -2707,7 +2707,7 @@
 
     <div class="container">
         <h1>ChatWeave</h1>
-        <p class="subtitle">统一聊天记录工作台（导入 / 浏览 / 编辑 / 合并）v1.6.2</p>
+        <p class="subtitle">统一聊天记录工作台（导入 / 浏览 / 编辑 / 合并）v1.6.3</p>
 
         <!-- 重要须知卡片 -->
         <div class="card warning-card">
@@ -3062,7 +3062,7 @@
             </div>
             <div class="modal-body">
                 <h2 style="font-size: 24px; margin-bottom: 8px;">ChatWeave</h2>
-                <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">统一会话工作台 v1.6.2</p>
+                <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">统一会话工作台 v1.6.3</p>
                 <div class="about-info">
                     <p>ChatWeave 是一个统一聊天记录工作台：支持多来源导入、会话预览、消息编辑、勾选过滤和目标备份合并。</p>
                     <p>当前版本重点输出可导入 RikkaHub 的备份包，同时保留统一数据层，便于后续扩展更多目标平台。</p>
@@ -7585,6 +7585,186 @@
             return Date.now();
         }
 
+        function readUint32BE(bytes, offset) {
+            if (!(bytes instanceof Uint8Array) || offset < 0 || offset + 4 > bytes.length) {
+                return 0;
+            }
+            return (
+                ((bytes[offset] << 24) >>> 0) |
+                (bytes[offset + 1] << 16) |
+                (bytes[offset + 2] << 8) |
+                bytes[offset + 3]
+            ) >>> 0;
+        }
+
+        function writeUint32BE(bytes, offset, value) {
+            if (!(bytes instanceof Uint8Array) || offset < 0 || offset + 4 > bytes.length) {
+                return;
+            }
+            const v = Number(value) >>> 0;
+            bytes[offset] = (v >>> 24) & 0xff;
+            bytes[offset + 1] = (v >>> 16) & 0xff;
+            bytes[offset + 2] = (v >>> 8) & 0xff;
+            bytes[offset + 3] = v & 0xff;
+        }
+
+        function normalizeSqlitePageSize(rawPageSize) {
+            const value = Number(rawPageSize) || 0;
+            if (value === 1) return 65536;
+            if (value >= 512 && value <= 65536 && (value & (value - 1)) === 0) {
+                return value;
+            }
+            return null;
+        }
+
+        function readSqliteDbPageSize(dbBytes) {
+            if (!(dbBytes instanceof Uint8Array) || dbBytes.length < 100) {
+                return null;
+            }
+            const signature = String.fromCharCode.apply(null, Array.from(dbBytes.slice(0, 16)));
+            if (signature !== 'SQLite format 3\u0000') {
+                return null;
+            }
+            const pageSizeRaw = ((dbBytes[16] << 8) | dbBytes[17]) >>> 0;
+            return normalizeSqlitePageSize(pageSizeRaw);
+        }
+
+        function quoteSqlIdentifier(identifier) {
+            return `"${String(identifier || '').replace(/"/g, '""')}"`;
+        }
+
+        function getRikkaDbTableMap(sqlDb) {
+            const result = {
+                tables: [],
+                conversationTable: null,
+                messageNodeTable: null,
+                hasCoreTables: false
+            };
+            if (!sqlDb || typeof sqlDb.exec !== 'function') {
+                return result;
+            }
+
+            const rows = sqlDb.exec("SELECT name FROM sqlite_master WHERE type='table'");
+            if (!Array.isArray(rows) || rows.length === 0) {
+                return result;
+            }
+
+            const names = rows[0]?.values || [];
+            const lowerNameMap = new Map();
+            names.forEach(row => {
+                const tableName = String(row?.[0] || '').trim();
+                if (!tableName) return;
+                result.tables.push(tableName);
+                lowerNameMap.set(tableName.toLowerCase(), tableName);
+            });
+
+            result.conversationTable =
+                lowerNameMap.get('conversationentity') ||
+                lowerNameMap.get('conversation_entity') ||
+                null;
+            result.messageNodeTable =
+                lowerNameMap.get('message_node') ||
+                lowerNameMap.get('messagenode') ||
+                null;
+            result.hasCoreTables = !!(result.conversationTable && result.messageNodeTable);
+            return result;
+        }
+
+        function applyWalToSqliteDb(dbBytes, walBytes) {
+            const fallback = { applied: false, data: dbBytes, frameCount: 0, reason: '' };
+            if (!(dbBytes instanceof Uint8Array)) {
+                return { ...fallback, reason: 'invalid-db' };
+            }
+            if (!(walBytes instanceof Uint8Array) || walBytes.length < 56) {
+                return { ...fallback, reason: 'wal-too-small' };
+            }
+
+            const walMagic = readUint32BE(walBytes, 0);
+            // SQLite WAL magic: 0x377f0682 / 0x377f0683
+            if (walMagic !== 0x377f0682 && walMagic !== 0x377f0683) {
+                return { ...fallback, reason: 'invalid-wal-magic' };
+            }
+
+            const walPageSize = normalizeSqlitePageSize(readUint32BE(walBytes, 8));
+            const dbPageSize = readSqliteDbPageSize(dbBytes);
+            const pageSize = walPageSize || dbPageSize;
+            if (!pageSize) {
+                return { ...fallback, reason: 'invalid-page-size' };
+            }
+
+            const frameSize = 24 + pageSize;
+            if (walBytes.length < 32 + frameSize) {
+                return { ...fallback, reason: 'no-complete-frame' };
+            }
+
+            const walSalt1 = readUint32BE(walBytes, 16);
+            const walSalt2 = readUint32BE(walBytes, 20);
+
+            let output = new Uint8Array(dbBytes);
+            const ensureLength = (nextLength) => {
+                if (output.length >= nextLength) return;
+                const expanded = new Uint8Array(nextLength);
+                expanded.set(output);
+                output = expanded;
+            };
+
+            let offset = 32;
+            let frameCount = 0;
+            let lastCommitPages = 0;
+
+            while (offset + frameSize <= walBytes.length) {
+                const pageNo = readUint32BE(walBytes, offset);
+                const dbSizePages = readUint32BE(walBytes, offset + 4);
+                const frameSalt1 = readUint32BE(walBytes, offset + 8);
+                const frameSalt2 = readUint32BE(walBytes, offset + 12);
+
+                if (walSalt1 && walSalt2 && (frameSalt1 !== walSalt1 || frameSalt2 !== walSalt2)) {
+                    break;
+                }
+
+                if (pageNo > 0) {
+                    const pageOffset = (pageNo - 1) * pageSize;
+                    const payloadStart = offset + 24;
+                    const payloadEnd = payloadStart + pageSize;
+                    ensureLength(pageOffset + pageSize);
+                    output.set(walBytes.subarray(payloadStart, payloadEnd), pageOffset);
+                    frameCount++;
+                    if (dbSizePages > 0) {
+                        lastCommitPages = dbSizePages;
+                    }
+                }
+
+                offset += frameSize;
+            }
+
+            if (frameCount <= 0) {
+                return { ...fallback, reason: 'no-applied-frame' };
+            }
+
+            if (lastCommitPages > 0) {
+                const expectedLength = lastCommitPages * pageSize;
+                if (expectedLength > 0 && expectedLength !== output.length) {
+                    if (expectedLength < output.length) {
+                        output = output.slice(0, expectedLength);
+                    } else {
+                        const expanded = new Uint8Array(expectedLength);
+                        expanded.set(output);
+                        output = expanded;
+                    }
+                }
+                if (output.length >= 32) {
+                    writeUint32BE(output, 28, lastCommitPages);
+                }
+            }
+
+            return {
+                applied: true,
+                data: output,
+                frameCount: frameCount,
+                reason: ''
+            };
+        }
+
         function handleRikkaHubFile(input) {
             const file = input.files[0];
             const uploadBox = document.getElementById('rikkahubUpload');
@@ -7643,8 +7823,9 @@
                         // 保存原始 ZIP 对象
                         rikkahubZip = zip;
 
-                        // 查找 rikka_hub.db（包括 -shm 和 -wal 文件）
-                        const dbFile = files.find(f => f.includes('rikka_hub.db') && !f.includes('-shm') && !f.includes('-wal'));
+                        // 查找主库和 WAL（兼容子目录路径）
+                        const dbFile = files.find(f => /(^|\/)rikka_hub\.db$/i.test(f));
+                        const walFile = files.find(f => /(^|\/)rikka_hub-wal$/i.test(f));
                         if (!dbFile) {
                             uploadBox.classList.remove('loading', 'has-wave');
                             fileInfo.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
@@ -7655,57 +7836,56 @@
                         }
 
                         const content = await zip.file(dbFile).async('arraybuffer');
-                        rikkahubData = new Uint8Array(content);
+                        let loadedDbData = new Uint8Array(content);
+                        let walRecoverInfo = null;
+
+                        let walBytes = null;
+                        if (walFile) {
+                            const walContent = await zip.file(walFile).async('arraybuffer');
+                            walBytes = new Uint8Array(walContent);
+                        }
 
                         await initSQL();
-                        const testDb = new db.Database(rikkahubData);
+                        let testDb = new db.Database(loadedDbData);
+                        let tableMap = getRikkaDbTableMap(testDb);
 
-                        // 验证数据库 - 先检查表是否存在
-                        let result;
-                        let conversationCount = 0;
-                        try {
-                            // 检查 ConversationEntity 表是否存在
-                            const tables = testDb.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='ConversationEntity'");
-                            if (tables.length > 0 && tables[0].values.length > 0) {
-                                result = testDb.exec("SELECT COUNT(*) FROM ConversationEntity");
-                                conversationCount = result[0].values[0][0];
-                            } else {
-                                // 检查是否有任何表
-                                const allTables = testDb.exec("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name");
-                                const tableCount = allTables.length > 0 ? allTables[0].values.length : 0;
-                                
-                                if (tableCount === 0) {
-                                    // 数据库为空，检查是否有 WAL 文件
-                                    const hasWalFile = files.some(f => f.includes('rikka_hub-wal'));
-                                    if (hasWalFile) {
-                                        // 检测到 WAL 文件，这是一个正常的 RikkaHub 备份
-                                        // sql.js 无法直接读取 WAL 文件，但数据库结构是正确的
-                                        // 我们跳过表检查，允许加载
-                                        console.log('检测到 WAL 文件，跳过表检查');
-                                        conversationCount = 0; // 无法在浏览器中读取 WAL 文件获取准确数量
-                                    } else {
-                                        throw new Error('数据库文件为空，未找到任何表。请确保上传的是从 RikkaHub 导出的完整备份文件。');
-                                    }
-                                } else {
-                                    const tableNames = allTables[0].values.map(row => row[0]).join(', ');
-                                    throw new Error(`数据库中未找到 ConversationEntity 表。现有表: ${tableNames}`);
-                                }
-                            }
-                        } catch (error) {
+                        // 有些 RikkaHub 备份主库几乎为空，schema 在 WAL 中；这里先做一次重建。
+                        if (!tableMap.hasCoreTables && walBytes && walBytes.length > 0) {
                             testDb.close();
-                            uploadBox.classList.remove('loading', 'has-wave');
-                            fileInfo.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
-                            showError('RikkaHub 数据库验证失败: ' + error.message + '\n请确保上传的是从 RikkaHub 导出的正确备份文件');
-                            uploadBox.classList.add('error');
-                            return;
+                            const walApplyResult = applyWalToSqliteDb(loadedDbData, walBytes);
+                            if (walApplyResult.applied) {
+                                loadedDbData = walApplyResult.data;
+                                walRecoverInfo = walApplyResult;
+                                testDb = new db.Database(loadedDbData);
+                                tableMap = getRikkaDbTableMap(testDb);
+                            } else {
+                                testDb = new db.Database(loadedDbData);
+                            }
                         }
+
+                        if (!tableMap.hasCoreTables) {
+                            const detectedTables = tableMap.tables.length > 0 ? tableMap.tables.join(', ') : '（未检测到表）';
+                            const walHint = walFile
+                                ? '已检测到 WAL，但无法从 WAL 重建会话表。'
+                                : '未检测到 WAL 文件。';
+                            throw new Error(`未找到 ConversationEntity / message_node 表。当前表: ${detectedTables}。${walHint}`);
+                        }
+
+                        // 验证数据库
+                        const countSql = `SELECT COUNT(*) FROM ${quoteSqlIdentifier(tableMap.conversationTable)}`;
+                        const result = testDb.exec(countSql);
+                        const conversationCount = result?.[0]?.values?.[0]?.[0] || 0;
+
+                        rikkahubData = loadedDbData;
                         
                         // 移除加载状态
                         uploadBox.classList.remove('loading', 'has-wave');
                         uploadBox.classList.add('has-file');
                         fileInfo.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
                         
-                        if (conversationCount > 0) {
+                        if (walRecoverInfo?.applied) {
+                            showInfo(`已加载 RikkaHub 数据库（从 WAL 重建 ${walRecoverInfo.frameCount} 帧），包含 ${conversationCount} 个对话`);
+                        } else {
                             showInfo(`已加载 RikkaHub 数据库，包含 ${conversationCount} 个对话`);
                         }
 
@@ -8152,10 +8332,17 @@
 
                 await initSQL();
                 mergedDb = new db.Database(rikkahubData);
+                const tableMap = getRikkaDbTableMap(mergedDb);
+                if (!tableMap.hasCoreTables) {
+                    const tableList = tableMap.tables.length > 0 ? tableMap.tables.join(', ') : '（未检测到表）';
+                    throw new Error('无法识别 RikkaHub 会话表结构。检测到表: ' + tableList);
+                }
+                const conversationTableSql = quoteSqlIdentifier(tableMap.conversationTable);
+                const messageNodeTableSql = quoteSqlIdentifier(tableMap.messageNodeTable);
 
                 const existingConversationIds = new Set();
                 try {
-                    const rows = mergedDb.exec('SELECT id FROM ConversationEntity');
+                    const rows = mergedDb.exec(`SELECT id FROM ${conversationTableSql}`);
                     if (Array.isArray(rows) && rows.length > 0 && Array.isArray(rows[0].values)) {
                         rows[0].values.forEach(row => {
                             const id = row && row[0] ? String(row[0]) : '';
@@ -8165,12 +8352,7 @@
                         });
                     }
                 } catch (e) {
-                    // 如果是 WAL 模式，跳过表检查
-                    if (e.message && e.message.includes('no such table')) {
-                        console.log('WAL 模式：跳过现有对话 ID 读取');
-                    } else {
-                        throw new Error('无法读取 ConversationEntity 表: ' + e.message);
-                    }
+                    throw new Error('无法读取会话表: ' + e.message);
                 }
                 const baselineConversationCount = existingConversationIds.size;
 
@@ -8424,7 +8606,6 @@
 
                 updateProgress(50);
                 showInfo('正在写入数据库...');
-                
                 mergedDb.run('BEGIN TRANSACTION');
                 transactionStarted = true;
 
@@ -8436,33 +8617,24 @@
                     const convId = prepared.convId;
                     const messages = prepared.messages;
 
-                    try {
+                    mergedDb.run(`
+                        INSERT OR REPLACE INTO ${conversationTableSql}
+                        (id, assistant_id, title, nodes, create_at, update_at, truncate_index, suggestions, is_pinned)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    `, [convId, prepared.assistantId, prepared.title, '[]', prepared.createTime, prepared.updateTime, -1, '[]', 0]);
+
+                    for (let i = 0; i < messages.length; i++) {
+                        const nodeId = generateUUID();
+                        const messageJson = JSON.stringify([messages[i]]);
                         mergedDb.run(`
-                            INSERT OR REPLACE INTO ConversationEntity
-                            (id, assistant_id, title, nodes, create_at, update_at, truncate_index, suggestions, is_pinned)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                        `, [convId, prepared.assistantId, prepared.title, '[]', prepared.createTime, prepared.updateTime, -1, '[]', 0]);
-
-                        for (let i = 0; i < messages.length; i++) {
-                            const nodeId = generateUUID();
-                            const messageJson = JSON.stringify([messages[i]]);
-                            mergedDb.run(`
-                                INSERT INTO message_node
-                                (id, conversation_id, node_index, messages, select_index)
-                                VALUES (?, ?, ?, ?, ?)
-                            `, [nodeId, convId, i, messageJson, 0]);
-                        }
-
-                        existingConversationIds.add(convId);
-                        convertedCount++;
-                    } catch (e) {
-                        // WAL 模式下表不存在，跳过
-                        if (e.message && e.message.includes('no such table')) {
-                            console.log('WAL 模式：跳过写入');
-                        } else {
-                            throw e;
-                        }
+                            INSERT INTO ${messageNodeTableSql}
+                            (id, conversation_id, node_index, messages, select_index)
+                            VALUES (?, ?, ?, ?, ?)
+                        `, [nodeId, convId, i, messageJson, 0]);
                     }
+
+                    existingConversationIds.add(convId);
+                    convertedCount++;
 
                     if (idx % 10 === 0) {
                         updateProgress(50 + ((idx + 1) / insertTotal) * 30);
@@ -8479,7 +8651,7 @@
 
                 let finalConversationCount = baselineConversationCount;
                 try {
-                    const countRows = mergedDb.exec('SELECT COUNT(*) FROM ConversationEntity');
+                    const countRows = mergedDb.exec(`SELECT COUNT(*) FROM ${conversationTableSql}`);
                     if (Array.isArray(countRows) && countRows.length > 0 && Array.isArray(countRows[0].values) && countRows[0].values.length > 0) {
                         finalConversationCount = Number(countRows[0].values[0][0]) || baselineConversationCount;
                     }
