@@ -8167,7 +8167,7 @@
                 } catch (e) {
                     // 如果是 WAL 模式，跳过表检查
                     if (e.message && e.message.includes('no such table')) {
-                        console.log('('WAL 模式：跳过现有对话 ID 读取');
+                        console.log('WAL 模式：跳过现有对话 ID 读取');
                     } else {
                         throw new Error('无法读取 ConversationEntity 表: ' + e.message);
                     }
