@@ -2707,25 +2707,26 @@
 
     <div class="container">
         <h1>ChatWeave</h1>
-        <p class="subtitle">统一聊天记录工作台（导入 / 浏览 / 编辑 / 合并）v1.6.3</p>
+        <p class="subtitle" id="appSubtitle">统一聊天记录工作台（导入 / 浏览 / 编辑 / 合并）v1.6.4</p>
 
         <!-- 重要须知卡片 -->
         <div class="card warning-card">
-            <p><strong>⚠️ 风险与备份须知</strong></p>
-            <p>本工具为第三方本地转换工具，不代表 ChatGPT、DeepSeek、YourAIScroll 或 RikkaHub 官方立场。</p>
+            <p><strong id="warningCardTitle">⚠️ 风险与备份须知</strong></p>
+            <p id="warningCardDesc">本工具为第三方本地转换工具，不代表 ChatGPT、DeepSeek、YourAIScroll 或 RikkaHub 官方立场。</p>
             <ul style="margin: 8px 0 0 20px; line-height: 1.8;">
-                <li>务必保留：源导出文件 + RikkaHub 原始备份 ZIP（回滚基线）</li>
-                <li>建议先导入 1-3 个会话做小样验证，再进行全量合并</li>
-                <li>如导入后闪退或异常，可清空应用数据并回滚原始备份</li>
-                <li>详细兼容范围与恢复建议见“关于”页面</li>
+                <li id="warningItem1">务必保留：源导出文件 + RikkaHub 原始备份 ZIP（回滚基线）</li>
+                <li id="warningItem2">建议先导入 1-3 个会话做小样验证，再进行全量合并</li>
+                <li id="warningItem3">如导入后闪退或异常，可清空应用数据并回滚原始备份</li>
+                <li id="warningItem4">详细兼容范围与恢复建议见“关于”页面</li>
             </ul>
         </div>
 
         <!-- 按钮组 -->
         <div class="button-group">
-            <button class="btn-text" onclick="openModal('usage')">📖 使用说明</button>
-            <button class="btn-text" onclick="openModal('support')">📋 支持列表明细</button>
-            <button class="btn-text" onclick="openModal('about')">ℹ️ 关于</button>
+            <button class="btn-text" id="usageBtn" onclick="openModal('usage')">📖 使用说明</button>
+            <button class="btn-text" id="supportBtn" onclick="openModal('support')">📋 支持列表明细</button>
+            <button class="btn-text" id="aboutBtn" onclick="openModal('about')">ℹ️ 关于</button>
+            <button class="btn-text" id="languageToggleBtn" onclick="toggleLanguage()">🌐 EN</button>
         </div>
 
         <!-- 自定义下拉框 -->
@@ -2735,9 +2736,9 @@
                     <span id="selectedValue">ChatGPT 数据</span>
                 </div>
                 <div class="select-dropdown" id="selectDropdown">
-                    <div class="select-option selected" data-value="chatgpt" onclick="selectOption('chatgpt', 'ChatGPT 数据')">ChatGPT 数据</div>
-                    <div class="select-option" data-value="deepseek" onclick="selectOption('deepseek', 'DeepSeek 数据（新旧两个版本）')">DeepSeek 数据（新旧两个版本）</div>
-                    <div class="select-option" data-value="youraiscroll" onclick="selectOption('youraiscroll', 'YourAIScroll 数据（支持 12 个平台）')">YourAIScroll 数据（支持 12 个平台）</div>
+                    <div class="select-option selected" id="sourceOptionChatgpt" data-value="chatgpt" onclick="selectOption('chatgpt')">ChatGPT 数据</div>
+                    <div class="select-option" id="sourceOptionDeepseek" data-value="deepseek" onclick="selectOption('deepseek')">DeepSeek 数据（新旧两个版本）</div>
+                    <div class="select-option" id="sourceOptionYouraiscroll" data-value="youraiscroll" onclick="selectOption('youraiscroll')">YourAIScroll 数据（支持 12 个平台）</div>
                                 </div>            </div>
         </div>
 
@@ -2745,7 +2746,7 @@
         <div class="upload-grid">
             <div class="upload-card">
                 <div class="step-badge">1</div>
-                <h3>上传源数据</h3>
+                <h3 id="sourceUploadCardTitle">上传源数据</h3>
                 <div class="upload-box" id="sourceUpload" onclick="document.getElementById('sourceFile').click()">
                     <div class="upload-icon">📁</div>
                     <div class="upload-text" id="sourceUploadText">点击或拖拽上传 ChatGPT 压缩包</div>
@@ -2753,13 +2754,13 @@
                     <input type="file" id="sourceFile" accept=".zip,.csv" onchange="handleSourceFile(this)">
                 </div>
                                 <div class="paste-buttons" id="pasteButtons" style="display: none;">
-                                    <button class="paste-btn" onclick="openPasteModal()">📝 粘贴 Markdown 文本</button>
+                                    <button class="paste-btn" id="pasteMarkdownBtn" onclick="openPasteModal()">📝 粘贴 Markdown 文本</button>
                                 </div>
             </div>
 
             <div class="upload-card" id="deepseekSecondCard" style="display: none;">
                 <div class="step-badge">2</div>
-                <h3>上传 DeepSeek 旧版数据</h3>
+                <h3 id="deepseekOldUploadCardTitle">上传 DeepSeek 旧版数据</h3>
                 <div class="upload-box" id="deepseekSecondUpload" onclick="document.getElementById('deepseekSecondFile').click()">
                     <div class="upload-icon">📁</div>
                     <div class="upload-text" id="deepseekSecondUploadText">点击或拖拽上传 DeepSeek 旧版压缩包（如果有的话）</div>
@@ -2772,7 +2773,7 @@
         <!-- 会话工作台 -->
         <div class="card workspace-card" id="workspaceCard" style="display: none;">
             <div class="workspace-header">
-                <h3>会话工作台</h3>
+                <h3 id="workspaceCardTitle">会话工作台</h3>
                 <span class="workspace-meta" id="workspaceMeta">已选 0 / 0</span>
             </div>
             <div class="workspace-toolbar">
@@ -2783,24 +2784,24 @@
                     placeholder="搜索会话标题或来源..."
                     oninput="renderWorkspaceList()"
                 >
-                <button class="btn-text" type="button" onclick="setWorkspaceSelectionState(true)">全选</button>
-                <button class="btn-text" type="button" onclick="setWorkspaceSelectionState(false)">全不选</button>
-                <button class="btn-text" type="button" onclick="invertWorkspaceSelection()">反选</button>
+                <button class="btn-text" id="workspaceSelectAllBtn" type="button" onclick="setWorkspaceSelectionState(true)">全选</button>
+                <button class="btn-text" id="workspaceSelectNoneBtn" type="button" onclick="setWorkspaceSelectionState(false)">全不选</button>
+                <button class="btn-text" id="workspaceInvertSelectBtn" type="button" onclick="invertWorkspaceSelection()">反选</button>
             </div>
             <div class="workspace-list" id="workspaceList"></div>
         </div>
 
         <div class="card target-backup-card" id="rikkahubCard">
             <div class="target-backup-head">
-                <h3>目标备份（RikkaHub）</h3>
-                <button class="btn-text" type="button" onclick="triggerRikkaHubFilePicker(false)">选择备份 ZIP</button>
+                <h3 id="targetBackupTitle">目标备份（RikkaHub）</h3>
+                <button class="btn-text" id="targetBackupSelectBtn" type="button" onclick="triggerRikkaHubFilePicker(false)">选择备份 ZIP</button>
             </div>
-            <p class="merge-options-hint" style="margin-top: 0;">
+            <p class="merge-options-hint" id="targetBackupHint" style="margin-top: 0;">
                 可以先导入并整理会话，再点击“合并聊天记录”时选择 RikkaHub 原始备份。你也可以现在先上传，后续会直接合并。
             </p>
             <div class="upload-box" id="rikkahubUpload" onclick="triggerRikkaHubFilePicker(false)">
                 <div class="upload-icon">📁</div>
-                <div class="upload-text">点击选择 RikkaHub 原始备份 ZIP</div>
+                <div class="upload-text" id="rikkahubUploadText">点击选择 RikkaHub 原始备份 ZIP</div>
                 <div class="file-info" id="rikkahubFileInfo"></div>
                 <input type="file" id="rikkahubFile" accept=".zip" onchange="handleRikkaHubFile(this)">
             </div>
@@ -2808,26 +2809,26 @@
 
         <div class="card merge-options-card">
             <div class="merge-options-row">
-                <label class="merge-options-label">冲突处理策略</label>
+                <label class="merge-options-label" id="duplicateStrategyLabel">冲突处理策略</label>
                 <div class="merge-option-tags" id="duplicateStrategyTags">
-                    <button type="button" class="merge-option-tag selected" data-value="skip" onclick="setDuplicateStrategy('skip')">跳过已存在会话（默认）</button>
-                    <button type="button" class="merge-option-tag" data-value="keep_both" onclick="setDuplicateStrategy('keep_both')">保留并另存（自动生成新会话 ID）</button>
+                    <button type="button" class="merge-option-tag selected" id="duplicateStrategySkipBtn" data-value="skip" onclick="setDuplicateStrategy('skip')">跳过已存在会话（默认）</button>
+                    <button type="button" class="merge-option-tag" id="duplicateStrategyKeepBothBtn" data-value="keep_both" onclick="setDuplicateStrategy('keep_both')">保留并另存（自动生成新会话 ID）</button>
                 </div>
                 <input type="hidden" id="duplicateStrategyValue" value="skip">
             </div>
             <div class="merge-options-row" style="margin-top: 12px;">
-                <label class="merge-options-label">助手合并策略</label>
+                <label class="merge-options-label" id="assistantMergeStrategyLabel">助手合并策略</label>
                 <div class="merge-option-tags" id="assistantMergeStrategyTags">
-                    <button type="button" class="merge-option-tag selected" data-value="by_source" onclick="setAssistantMergeStrategy('by_source')">按来源分配助手（默认）</button>
-                    <button type="button" class="merge-option-tag" data-value="single_assistant" onclick="setAssistantMergeStrategy('single_assistant')">统一到单一助手</button>
+                    <button type="button" class="merge-option-tag selected" id="assistantMergeBySourceBtn" data-value="by_source" onclick="setAssistantMergeStrategy('by_source')">按来源分配助手（默认）</button>
+                    <button type="button" class="merge-option-tag" id="assistantMergeSingleBtn" data-value="single_assistant" onclick="setAssistantMergeStrategy('single_assistant')">统一到单一助手</button>
                 </div>
                 <input type="hidden" id="assistantMergeStrategyValue" value="by_source">
             </div>
             <div class="merge-options-row" id="unifiedAssistantNameRow" style="margin-top: 12px; display: none;">
-                <label for="unifiedAssistantNameInput" class="merge-options-label">统一助手名称</label>
+                <label for="unifiedAssistantNameInput" id="unifiedAssistantNameLabel" class="merge-options-label">统一助手名称</label>
                 <input type="text" id="unifiedAssistantNameInput" class="form-input" placeholder="留空使用默认名称 Unified Import">
             </div>
-            <p class="merge-options-hint">当待导入会话与目标备份中的会话 ID 相同，会按此策略处理。建议默认使用“跳过”，更稳妥。</p>
+            <p class="merge-options-hint" id="duplicateStrategyHint">当待导入会话与目标备份中的会话 ID 相同，会按此策略处理。建议默认使用“跳过”，更稳妥。</p>
             <p class="merge-options-hint" id="assistantMergeStrategyHint">默认按来源创建/复用导入助手，便于区分来源。</p>
         </div>
 
@@ -2958,7 +2959,7 @@
     <div class="modal-overlay" id="modalUsage">
         <div class="modal">
             <div class="modal-header">
-                <h3 class="modal-title">📖 使用说明</h3>
+                <h3 class="modal-title" id="usageModalTitle">📖 使用说明</h3>
                 <button class="modal-close" onclick="closeModalDirect('usage')">×</button>
             </div>
             <div class="modal-body">
@@ -3016,7 +3017,7 @@
     <div class="modal-overlay" id="modalUsageMore">
         <div class="modal">
             <div class="modal-header">
-                <h3 class="modal-title">📚 更多方法</h3>
+                <h3 class="modal-title" id="usageMoreModalTitle">📚 更多方法</h3>
                 <button class="modal-close" onclick="closeModalDirect('usageMore')">×</button>
             </div>
             <div class="modal-body">
@@ -3052,7 +3053,7 @@
     <div class="modal-overlay" id="modalSupport">
         <div class="modal">
             <div class="modal-header">
-                <h3 class="modal-title">📋 支持列表明细</h3>
+                <h3 class="modal-title" id="supportModalTitle">📋 支持列表明细</h3>
                 <button class="modal-close" onclick="closeModalDirect('support')">×</button>
             </div>
             <div class="modal-body">
@@ -3096,12 +3097,12 @@
     <div class="modal-overlay" id="modalAbout">
         <div class="modal">
             <div class="modal-header">
-                <h3 class="modal-title">ℹ️ 关于</h3>
+                <h3 class="modal-title" id="aboutModalTitle">ℹ️ 关于</h3>
                 <button class="modal-close" onclick="closeModalDirect('about')">×</button>
             </div>
             <div class="modal-body">
                 <h2 style="font-size: 24px; margin-bottom: 8px;">ChatWeave</h2>
-                <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">统一会话工作台 v1.6.3</p>
+                <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">统一会话工作台 v1.6.4</p>
                 <div class="about-info">
                     <p>ChatWeave 是一个统一聊天记录工作台：支持多来源导入、会话预览、消息编辑、勾选过滤和目标备份合并。</p>
                     <p>当前版本重点输出可导入 RikkaHub 的备份包，同时保留统一数据层，便于后续扩展更多目标平台。</p>
@@ -3123,7 +3124,7 @@
                         如果这个工具帮你省了时间，可以扫码支持一下后续维护。
                     </p>
                     <img
-                        src="https://rewardreiso.h3189458857.workers.dev/"
+                        src="https://rewardreiso.spiritherb.top"
                         alt="赞赏码"
                         style="display: block; width: 180px; max-width: 100%; border-radius: 12px; border: 1px solid var(--md-sys-color-outline-variant); background: var(--md-sys-color-surface);"
                         onerror="if(!this.dataset.fallback){this.dataset.fallback='1'; this.src='donation_qr.png';} else {this.style.display='none'; this.nextElementSibling.style.display='block';}"
@@ -3391,6 +3392,867 @@
         let pendingMergeDryRunResolver = null;
         let db = null;
         let currentDataSource = 'chatgpt';
+        let currentLanguage = 'zh-CN';
+
+        const I18N_STRINGS = {
+            'zh-CN': {
+                'app.titleSuffix': '统一会话工作台',
+                'app.subtitle': '统一聊天记录工作台（导入 / 浏览 / 编辑 / 合并）v1.6.4',
+                'warning.title': '⚠️ 风险与备份须知',
+                'warning.desc': '本工具为第三方本地转换工具，不代表 ChatGPT、DeepSeek、YourAIScroll 或 RikkaHub 官方立场。',
+                'warning.item1': '务必保留：源导出文件 + RikkaHub 原始备份 ZIP（回滚基线）',
+                'warning.item2': '建议先导入 1-3 个会话做小样验证，再进行全量合并',
+                'warning.item3': '如导入后闪退或异常，可清空应用数据并回滚原始备份',
+                'warning.item4': '详细兼容范围与恢复建议见“关于”页面',
+                'btn.usage': '📖 使用说明',
+                'btn.support': '📋 支持列表明细',
+                'btn.about': 'ℹ️ 关于',
+                'btn.lang': '🌐 EN',
+                'modal.usage.title': '📖 使用说明',
+                'modal.usageMore.title': '📚 更多方法',
+                'modal.support.title': '📋 支持列表明细',
+                'modal.about.title': 'ℹ️ 关于',
+                'source.option.chatgpt': 'ChatGPT 数据',
+                'source.option.deepseek': 'DeepSeek 数据（新旧两个版本）',
+                'source.option.youraiscroll': 'YourAIScroll 数据（支持 12 个平台）',
+                'source.upload.title': '上传源数据',
+                'source.upload.chatgpt': '点击或拖拽上传 ChatGPT 压缩包',
+                'source.upload.deepseek': '点击或拖拽上传 DeepSeek 新版压缩包（包含 conversations.json）',
+                'source.upload.youraiscroll': '粘贴 YourAIScroll 复制的 Markdown 内容',
+                'source.upload.deepseekOld.title': '上传 DeepSeek 旧版数据',
+                'source.upload.deepseekOld': '点击或拖拽上传 DeepSeek 旧版压缩包（如果有的话）',
+                'source.upload.paste': '📝 粘贴 Markdown 文本',
+                'source.status.loadedPrimary': '当前来源已加载 {count} 个会话',
+                'source.status.loadedDeepseekOld': '已加载旧版 {count} 个会话',
+                'workspace.title': '会话工作台',
+                'workspace.meta': '已选 {selected} / {total}',
+                'workspace.searchPlaceholder': '搜索会话标题或来源...',
+                'workspace.selectAll': '全选',
+                'workspace.selectNone': '全不选',
+                'workspace.invert': '反选',
+                'workspace.noMatch': '没有匹配的会话',
+                'workspace.messageCount': '{count} 条消息',
+                'workspace.preview': '预览',
+                'workspace.edit': '编辑',
+                'workspace.timeUnknown': '未知时间',
+                'targetBackup.title': '目标备份（RikkaHub）',
+                'targetBackup.select': '选择备份 ZIP',
+                'targetBackup.hint': '可以先导入并整理会话，再点击“合并聊天记录”时选择 RikkaHub 原始备份。你也可以现在先上传，后续会直接合并。',
+                'targetBackup.upload': '点击选择 RikkaHub 原始备份 ZIP',
+                'merge.duplicate.label': '冲突处理策略',
+                'merge.duplicate.skip': '跳过已存在会话（默认）',
+                'merge.duplicate.keepBoth': '保留并另存（自动生成新会话 ID）',
+                'merge.duplicate.hint': '当待导入会话与目标备份中的会话 ID 相同，会按此策略处理。建议默认使用“跳过”，更稳妥。',
+                'merge.assistant.label': '助手合并策略',
+                'merge.assistant.bySource': '按来源分配助手（默认）',
+                'merge.assistant.single': '统一到单一助手',
+                'merge.assistant.nameLabel': '统一助手名称',
+                'merge.assistant.namePlaceholder': '留空使用默认名称 Unified Import',
+                'merge.assistant.hint.bySource': '按来源创建/复用导入助手，便于区分 ChatGPT / DeepSeek / YourAIScroll。',
+                'merge.assistant.hint.single': '所有导入会话会写入同一个助手，适合统一归档；可自定义助手名称。',
+                'merge.button.ready': '合并聊天记录',
+                'merge.button.needUpload': '合并聊天记录（请先上传文件）',
+                'merge.button.noSelection': '合并聊天记录（未选择会话）',
+                'merge.button.needBackup': '合并聊天记录（下一步选择 RikkaHub 备份）',
+                'merge.button.processing': '合并中...',
+                'merge.button.title.needSource': '请先上传源数据文件',
+                'merge.button.title.needSelection': '请先在会话工作台中勾选至少一个会话',
+                'merge.button.title.needBackup': '点击后选择 RikkaHub 原始备份 ZIP',
+                'theme.dark.toLight': '☀️ 切换到浅色模式',
+                'theme.dark.toDark': '🌙 切换到深色模式',
+                'toast.success': '操作成功',
+                'toast.error': '错误',
+                'toast.info': '提示',
+                'error.conversationNotFound': '未找到会话，可能已被刷新。',
+                'info.conversationUpdated': '会话已更新',
+                'error.rikkaPickerMissing': '未找到 RikkaHub 文件选择控件',
+                'error.downloadNotReady': '下载包未准备好，请重新执行合并。',
+                'info.downloadStarted': '已开始下载合并包。',
+                'error.downloadFailed': '下载启动失败，请改用桌面浏览器或分批合并后重试。',
+                'error.fileMustJson': '文件必须是 .json 格式',
+                'error.yasNoFileUpload': 'YourAIScroll 数据源不支持文件上传，请使用粘贴 Markdown 功能',
+                'error.fileMustZipCsv': '文件必须是 .zip 或 .csv 格式',
+                'error.yasRemoved': 'YourAIScroll 数据源已移除，请使用粘贴 Markdown 功能',
+                'error.readFileFailed': '读取文件失败: {message}',
+                'error.readFileGeneral': '读取文件时发生错误',
+                'error.zipTooSmall': '文件太小，不是有效的 ZIP 文件',
+                'error.zipInvalid': '文件不是有效的 ZIP 文件',
+                'error.chatgptNoConversationsJson': '压缩包中未找到 conversations.json 文件。请确保上传的是正确的 ChatGPT 导出文件。',
+                'info.chatgptLoaded': '已加载 {count} 个 ChatGPT 对话{imageMsg}',
+                'info.chatgptImageMsg': '，检测到 {count} 个图片引用（将在合并时按需索引）',
+                'error.pasteEmpty': '请输入内容',
+                'info.pasteAppended': '已追加 {platform} 对话，包含 {msgCount} 条消息。当前会话池共 {total} 个{dedupeHint}',
+                'info.pasteDedupeHint': '（检测到重复，已覆盖旧会话）',
+                'error.pasteParseFailed': '解析粘贴内容失败: {message}',
+                'error.previewNoMessages': '暂无可预览消息，请至少保留 1 条已勾选消息。',
+                'error.previewKeepOne': '至少保留 1 条消息后再保存。',
+                'error.previewSessionExpired': '会话已失效，请关闭后重新打开编辑。',
+                'info.previewMessagesSaved': '会话消息已保存',
+                'info.previewConversationSaved': '会话已保存',
+                'info.previewMessageUpdated': '消息已更新',
+                'error.deepseekNoConversationsJson': '压缩包中未找到 conversations.json 文件。请确保上传的是正确的 DeepSeek 导出文件。',
+                'info.deepseekLoaded': '已加载 {count} 个 DeepSeek 对话',
+                'error.csvEmpty': 'CSV 文件为空或格式不正确',
+                'error.csvMissingColumns': 'CSV 文件格式不正确，缺少必要的列（id, time, role, content）',
+                'info.deepseekLoadedFromMessages': '已加载 {count} 个 DeepSeek 对话（从 {msgCount} 条消息）',
+                'error.deepseekOldMustZip': 'DeepSeek 旧版文件必须是 .zip 格式',
+                'error.deepseekOldMissingCsv': '压缩包中未找到 chat.csv 或 coder.csv 文件。请确保上传的是正确的 DeepSeek 旧版导出文件。',
+                'error.deepseekOldReadFailed': '读取 DeepSeek 旧版文件时发生错误',
+                'error.deepseekOldReadFailedWithMsg': '读取 DeepSeek 旧版文件失败: {message}',
+                'error.deepseekOldInvalidZip': '文件不是有效的 ZIP 文件或文件已损坏。',
+                'error.deepseekOldInvalidJson': '文件中的 JSON 格式错误。',
+                'info.deepseekOldLoaded': '已加载 DeepSeek 旧版数据，包含 {count} 个对话（从 {msgCount} 条消息）',
+                'error.rikkaMustZip': 'RikkaHub 文件必须是 .zip 格式',
+                'error.rikkaTooSmall': 'RikkaHub 文件太小，不是有效的 ZIP 文件',
+                'error.rikkaInvalidZipPrefix': 'RikkaHub 文件不是有效的 ZIP 文件。文件前4字节: {prefix}',
+                'error.rikkaDbMissing': 'RikkaHub 压缩包中未找到 rikka_hub.db 文件。ZIP 文件中包含: {files}',
+                'info.rikkaDbLoadedWal': '已加载 RikkaHub 数据库（从 WAL 重建 {frameCount} 帧），包含 {count} 个对话',
+                'info.rikkaDbLoaded': '已加载 RikkaHub 数据库，包含 {count} 个对话',
+                'info.rikkaSettingsLoaded': '已加载 RikkaHub 设置文件，包含 {count} 个助手',
+                'error.rikkaCoreTablesMissing': '未找到 ConversationEntity / message_node 表。当前表: {tables}。{walHint}',
+                'error.rikkaWalHintDetected': '已检测到 WAL，但无法从 WAL 重建会话表。',
+                'error.rikkaWalHintMissing': '未检测到 WAL 文件。',
+                'error.rikkaCorrupt': 'RikkaHub 文件不是有效的 ZIP 文件或文件已损坏。请确保：\\n1. 文件名以 .zip 结尾\\n2. 文件是从 RikkaHub 导出的完整备份\\n3. 尝试重新导出 RikkaHub 备份',
+                'error.rikkaDbFormat': 'RikkaHub 数据库文件格式错误。请确保文件完整。',
+                'error.rikkaReadFailed': '读取 RikkaHub 文件失败: {message}\\n提示：请上传从 RikkaHub 导出的 .zip 备份文件',
+                'error.rikkaReadGeneral': '读取 RikkaHub 文件时发生错误',
+                'error.mergeNeedSource': '请先上传源数据文件',
+                'error.mergeNeedSelection': '请先在会话工作台中勾选至少一个会话',
+                'info.mergeNeedRikka': '请先选择 RikkaHub 原始备份 ZIP，选择后会自动继续合并。',
+                'info.mergeInit': '正在初始化...',
+                'info.mergeInitDb': '正在初始化数据库...',
+                'info.mergeCreateAssistant': '正在创建助手...',
+                'info.mergePrepareImages': '正在准备 ChatGPT 图片索引...',
+                'info.mergeProcessSources': '正在处理多来源数据...',
+                'info.mergeDryRunReady': '预检完成，等待确认...',
+                'info.mergeCancelled': '已取消合并：未写入任何数据。',
+                'info.mergeWritingDb': '正在写入数据库...',
+                'info.mergePrepareDb': '正在准备数据库...',
+                'info.mergeGeneratingZip': '正在生成压缩包...',
+                'info.mergeGeneratingDownload': '正在生成下载包...',
+                'error.mergeUnknownSchema': '无法识别 RikkaHub 会话表结构。检测到表: {tableList}',
+                'error.mergeReadConversationTable': '无法读取会话表: {message}',
+                'summary.mergeDryRun': '本次已选 {selected} 个会话，预计写入 {added} 个会话 / {messages} 条消息，跳过 {skipped} 个会话。',
+                'success.mergeCompleted': '合并完成！已写入 {convCount} 个会话 / {msgCount} 条消息。{duplicateText}{keepBothText}{emptySkipText}{warningText}\\n{assistantStrategyText}\\n{titleHint}\\n已生成下载包，请在弹窗中确认下载。\\n不会影响原有的 RikkaHub 对话。',
+                'success.mergeDuplicate': '\\n跳过 {count} 个重复会话（已存在）',
+                'success.mergeKeepBoth': '\\n发现 {count} 个 ID 冲突，已按“保留并另存”生成新会话 ID。',
+                'success.mergeEmptySkip': '\\n跳过 {count} 个空会话（转换后无有效消息）。',
+                'success.mergeWarning': '\\n预检警告 {count} 条，请在下载弹窗查看详情。',
+                'success.titleHint.default': '会话标题保持导入来源的默认策略。',
+                'success.titleHint.chatgpt': 'ChatGPT 会话标题会自动添加 [ChatGPT] 前缀，方便识别。',
+                'success.titleHint.deepseek': 'DeepSeek 新版会话标题会自动添加 [DeepSeek] 前缀，旧版会话保留原标题。',
+                'success.titleHint.youraiscroll': 'YourAIScroll 会话保留原标题。',
+                'success.titleHint.multi': '多来源合并完成：{summary}。',
+                'success.assistant.single': '助手策略：统一到单一助手。',
+                'success.assistant.bySource': '助手策略：按来源分配助手。',
+                'summary.mergeModal': '本次已选 {selected} 个会话，成功写入 {added} 个会话，写入 {messages} 条消息，跳过 {skipped} 个会话。',
+                'summary.unknownMore': '...其余 {count} 条未展示',
+                'summary.sourceItem': '{source} {count} 个',
+                'summary.noTablesDetected': '（未检测到表）',
+                'report.sourceDiffLine': '{source}：新增 {added}，跳过 {skipped}，警告 {warnings}',
+                'report.warning.imageMissing': 'ChatGPT 有 {count} 个图片引用未在导出包中找到：已保留文本消息并跳过缺失图片。',
+                'report.warning.unknownBlocks': '检测到 {count} 个无法识别块标记：将按普通文本保留。',
+                'report.warning.emptyConversations': '有 {count} 个会话在转换后无有效消息：已自动跳过。',
+                'report.warning.duplicatesSkipped': '检测到 {count} 个重复会话 ID：按策略“跳过已存在会话”。',
+                'report.warning.keepBoth': '检测到 {count} 个会话 ID 冲突：已按策略“保留并另存”。',
+                'report.warning.none': '未发现结构风险。',
+                'fallback.youraiscrollConversationTitle': 'YourAIScroll 对话',
+                'error.mergeFailed': '合并失败: {message}\\n\\n详细信息: {detail}'
+            },
+            'en-US': {
+                'app.titleSuffix': 'Unified Conversation Workspace',
+                'app.subtitle': 'Unified Chat Workspace (Import / Browse / Edit / Merge) v1.6.4',
+                'warning.title': '⚠️ Risk & Backup Notes',
+                'warning.desc': 'This is a third-party local conversion tool and is not affiliated with ChatGPT, DeepSeek, YourAIScroll, or RikkaHub.',
+                'warning.item1': 'Keep both files: source export + original RikkaHub backup ZIP (rollback baseline).',
+                'warning.item2': 'Start with 1-3 conversations as a small validation batch before full merge.',
+                'warning.item3': 'If app crashes or behaves abnormally after import, clear app data and restore the original backup.',
+                'warning.item4': 'See the About page for compatibility scope and recovery guidance.',
+                'btn.usage': '📖 Guide',
+                'btn.support': '📋 Support Matrix',
+                'btn.about': 'ℹ️ About',
+                'btn.lang': '🌐 中文',
+                'modal.usage.title': '📖 Guide',
+                'modal.usageMore.title': '📚 More Methods',
+                'modal.support.title': '📋 Support Matrix',
+                'modal.about.title': 'ℹ️ About',
+                'source.option.chatgpt': 'ChatGPT Data',
+                'source.option.deepseek': 'DeepSeek Data (new + legacy)',
+                'source.option.youraiscroll': 'YourAIScroll Data (12 platforms)',
+                'source.upload.title': 'Upload Source Data',
+                'source.upload.chatgpt': 'Click or drag to upload a ChatGPT ZIP export',
+                'source.upload.deepseek': 'Click or drag to upload DeepSeek new ZIP (with conversations.json)',
+                'source.upload.youraiscroll': 'Paste YourAIScroll copied Markdown content',
+                'source.upload.deepseekOld.title': 'Upload DeepSeek Legacy Data',
+                'source.upload.deepseekOld': 'Click or drag to upload DeepSeek legacy ZIP (if available)',
+                'source.upload.paste': '📝 Paste Markdown',
+                'source.status.loadedPrimary': '{count} conversations loaded for current source',
+                'source.status.loadedDeepseekOld': 'Legacy loaded: {count} conversations',
+                'workspace.title': 'Conversation Workspace',
+                'workspace.meta': 'Selected {selected} / {total}',
+                'workspace.searchPlaceholder': 'Search by title or source...',
+                'workspace.selectAll': 'Select All',
+                'workspace.selectNone': 'Clear',
+                'workspace.invert': 'Invert',
+                'workspace.noMatch': 'No matched conversations',
+                'workspace.messageCount': '{count} messages',
+                'workspace.preview': 'Preview',
+                'workspace.edit': 'Edit',
+                'workspace.timeUnknown': 'Unknown time',
+                'targetBackup.title': 'Target Backup (RikkaHub)',
+                'targetBackup.select': 'Select Backup ZIP',
+                'targetBackup.hint': 'You can import and organize conversations first, then choose original RikkaHub backup when clicking merge. Upload now is also supported.',
+                'targetBackup.upload': 'Click to select original RikkaHub backup ZIP',
+                'merge.duplicate.label': 'Conflict Strategy',
+                'merge.duplicate.skip': 'Skip existing conversations (default)',
+                'merge.duplicate.keepBoth': 'Keep both (auto-generate new conversation ID)',
+                'merge.duplicate.hint': 'When imported conversation IDs already exist in target backup, this strategy will be used. Default "skip" is safer.',
+                'merge.assistant.label': 'Assistant Merge Strategy',
+                'merge.assistant.bySource': 'Split assistants by source (default)',
+                'merge.assistant.single': 'Merge into one assistant',
+                'merge.assistant.nameLabel': 'Unified Assistant Name',
+                'merge.assistant.namePlaceholder': 'Leave empty to use default: Unified Import',
+                'merge.assistant.hint.bySource': 'Create/reuse import assistants by source for clear separation.',
+                'merge.assistant.hint.single': 'All imported conversations go to one assistant, ideal for unified archive.',
+                'merge.button.ready': 'Merge Conversations',
+                'merge.button.needUpload': 'Merge Conversations (upload source first)',
+                'merge.button.noSelection': 'Merge Conversations (no conversation selected)',
+                'merge.button.needBackup': 'Merge Conversations (next: select RikkaHub backup)',
+                'merge.button.processing': 'Merging...',
+                'merge.button.title.needSource': 'Upload source data first',
+                'merge.button.title.needSelection': 'Select at least one conversation in workspace',
+                'merge.button.title.needBackup': 'Click to choose original RikkaHub backup ZIP',
+                'theme.dark.toLight': '☀️ Switch to Light Mode',
+                'theme.dark.toDark': '🌙 Switch to Dark Mode',
+                'toast.success': 'Success',
+                'toast.error': 'Error',
+                'toast.info': 'Info',
+                'error.conversationNotFound': 'Conversation not found, it may have been refreshed.',
+                'info.conversationUpdated': 'Conversation updated.',
+                'error.rikkaPickerMissing': 'RikkaHub file picker is not available.',
+                'error.downloadNotReady': 'Merged package is not ready. Please run merge again.',
+                'info.downloadStarted': 'Merged package download started.',
+                'error.downloadFailed': 'Failed to start download. Try desktop browser or merge in smaller batches.',
+                'error.fileMustJson': 'File must be in .json format.',
+                'error.yasNoFileUpload': 'YourAIScroll source does not support file upload. Use Paste Markdown instead.',
+                'error.fileMustZipCsv': 'File must be .zip or .csv.',
+                'error.yasRemoved': 'YourAIScroll file upload is removed. Use Paste Markdown instead.',
+                'error.readFileFailed': 'Failed to read file: {message}',
+                'error.readFileGeneral': 'An error occurred while reading file.',
+                'error.zipTooSmall': 'File is too small to be a valid ZIP.',
+                'error.zipInvalid': 'File is not a valid ZIP.',
+                'error.chatgptNoConversationsJson': 'conversations.json not found in ZIP. Please upload a valid ChatGPT export package.',
+                'info.chatgptLoaded': '{count} ChatGPT conversations loaded{imageMsg}',
+                'info.chatgptImageMsg': ', detected {count} image references (will be indexed on-demand during merge)',
+                'error.pasteEmpty': 'Please paste content first.',
+                'info.pasteAppended': 'Added {platform} conversation with {msgCount} messages. Total in pool: {total}{dedupeHint}',
+                'info.pasteDedupeHint': ' (duplicate detected, previous one replaced)',
+                'error.pasteParseFailed': 'Failed to parse pasted content: {message}',
+                'error.previewNoMessages': 'No previewable message. Keep at least one selected message.',
+                'error.previewKeepOne': 'Keep at least one message before saving.',
+                'error.previewSessionExpired': 'Conversation context expired. Close and reopen editor.',
+                'info.previewMessagesSaved': 'Conversation messages saved.',
+                'info.previewConversationSaved': 'Conversation saved.',
+                'info.previewMessageUpdated': 'Message updated.',
+                'error.deepseekNoConversationsJson': 'conversations.json not found in ZIP. Please upload a valid DeepSeek export package.',
+                'info.deepseekLoaded': '{count} DeepSeek conversations loaded',
+                'error.csvEmpty': 'CSV is empty or invalid.',
+                'error.csvMissingColumns': 'CSV is invalid, required columns missing (id, time, role, content).',
+                'info.deepseekLoadedFromMessages': '{count} DeepSeek conversations loaded (from {msgCount} messages)',
+                'error.deepseekOldMustZip': 'DeepSeek legacy file must be .zip.',
+                'error.deepseekOldMissingCsv': 'chat.csv or coder.csv not found in ZIP. Please upload valid DeepSeek legacy export.',
+                'error.deepseekOldReadFailed': 'Error while reading DeepSeek legacy file.',
+                'error.deepseekOldReadFailedWithMsg': 'Failed to read DeepSeek legacy file: {message}',
+                'error.deepseekOldInvalidZip': 'File is not a valid ZIP or is corrupted.',
+                'error.deepseekOldInvalidJson': 'JSON format in file is invalid.',
+                'info.deepseekOldLoaded': 'DeepSeek legacy loaded: {count} conversations (from {msgCount} messages)',
+                'error.rikkaMustZip': 'RikkaHub file must be .zip.',
+                'error.rikkaTooSmall': 'RikkaHub file is too small to be a valid ZIP.',
+                'error.rikkaInvalidZipPrefix': 'RikkaHub file is not a valid ZIP. First 4 bytes: {prefix}',
+                'error.rikkaDbMissing': 'rikka_hub.db not found in RikkaHub ZIP. Files in package: {files}',
+                'info.rikkaDbLoadedWal': 'RikkaHub DB loaded (recovered {frameCount} WAL frames), {count} conversations found',
+                'info.rikkaDbLoaded': 'RikkaHub DB loaded, {count} conversations found',
+                'info.rikkaSettingsLoaded': 'RikkaHub settings loaded, {count} assistants found',
+                'error.rikkaCoreTablesMissing': 'ConversationEntity / message_node table not found. Current tables: {tables}. {walHint}',
+                'error.rikkaWalHintDetected': 'WAL detected, but conversation tables could not be reconstructed from WAL.',
+                'error.rikkaWalHintMissing': 'WAL file not detected.',
+                'error.rikkaCorrupt': 'RikkaHub file is invalid or corrupted. Please ensure:\\n1) filename ends with .zip\\n2) file is full backup exported from RikkaHub\\n3) try exporting backup again',
+                'error.rikkaDbFormat': 'RikkaHub database format is invalid. Please verify file integrity.',
+                'error.rikkaReadFailed': 'Failed to read RikkaHub file: {message}\\nTip: upload a .zip backup exported from RikkaHub.',
+                'error.rikkaReadGeneral': 'An error occurred while reading RikkaHub file.',
+                'error.mergeNeedSource': 'Upload source data first.',
+                'error.mergeNeedSelection': 'Select at least one conversation in workspace first.',
+                'info.mergeNeedRikka': 'Select original RikkaHub backup ZIP first, merge will continue automatically.',
+                'info.mergeInit': 'Initializing...',
+                'info.mergeInitDb': 'Initializing database...',
+                'info.mergeCreateAssistant': 'Creating assistant...',
+                'info.mergePrepareImages': 'Preparing ChatGPT image index...',
+                'info.mergeProcessSources': 'Processing multi-source data...',
+                'info.mergeDryRunReady': 'Dry-run completed, waiting for confirmation...',
+                'info.mergeCancelled': 'Merge cancelled. No data was written.',
+                'info.mergeWritingDb': 'Writing database...',
+                'info.mergePrepareDb': 'Preparing database...',
+                'info.mergeGeneratingZip': 'Generating ZIP package...',
+                'info.mergeGeneratingDownload': 'Generating download package...',
+                'error.mergeUnknownSchema': 'Unable to identify RikkaHub conversation table schema. Detected tables: {tableList}',
+                'error.mergeReadConversationTable': 'Failed to read conversation table: {message}',
+                'summary.mergeDryRun': 'Selected {selected} conversations, estimated {added} conversations / {messages} messages to write, skipping {skipped} conversations.',
+                'success.mergeCompleted': 'Merge completed! Written {convCount} conversations / {msgCount} messages.{duplicateText}{keepBothText}{emptySkipText}{warningText}\\n{assistantStrategyText}\\n{titleHint}\\nDownload package is ready, please confirm in popup.\\nOriginal RikkaHub conversations are not modified.',
+                'success.mergeDuplicate': '\\nSkipped {count} duplicate conversations (already existed).',
+                'success.mergeKeepBoth': '\\nDetected {count} ID conflicts, generated new IDs with keep-both strategy.',
+                'success.mergeEmptySkip': '\\nSkipped {count} empty conversations (no valid messages after conversion).',
+                'success.mergeWarning': '\\n{count} dry-run warnings. Check details in download popup.',
+                'success.titleHint.default': 'Conversation titles follow source default strategy.',
+                'success.titleHint.chatgpt': 'ChatGPT titles are prefixed with [ChatGPT] for easier recognition.',
+                'success.titleHint.deepseek': 'DeepSeek new titles are prefixed with [DeepSeek], legacy titles stay original.',
+                'success.titleHint.youraiscroll': 'YourAIScroll titles stay original.',
+                'success.titleHint.multi': 'Multi-source merge completed: {summary}.',
+                'success.assistant.single': 'Assistant strategy: merge into single assistant.',
+                'success.assistant.bySource': 'Assistant strategy: split assistants by source.',
+                'summary.mergeModal': 'Selected {selected} conversations, wrote {added} conversations and {messages} messages, skipped {skipped} conversations.',
+                'summary.unknownMore': '...{count} more not shown',
+                'summary.sourceItem': '{source} {count}',
+                'summary.noTablesDetected': '(no tables detected)',
+                'report.sourceDiffLine': '{source}: added {added}, skipped {skipped}, warnings {warnings}',
+                'report.warning.imageMissing': 'ChatGPT has {count} image references missing from export package: text messages are kept and missing images skipped.',
+                'report.warning.unknownBlocks': 'Detected {count} unrecognized block markers: preserved as plain text.',
+                'report.warning.emptyConversations': '{count} conversations have no valid messages after conversion: auto skipped.',
+                'report.warning.duplicatesSkipped': 'Detected {count} duplicate conversation IDs: applied "skip existing" strategy.',
+                'report.warning.keepBoth': 'Detected {count} conversation ID conflicts: applied "keep both" strategy.',
+                'report.warning.none': 'No structure risk found.',
+                'fallback.youraiscrollConversationTitle': 'YourAIScroll Conversation',
+                'error.mergeFailed': 'Merge failed: {message}\\n\\nDetails: {detail}'
+            }
+        };
+
+        function normalizeLanguage(lang) {
+            const value = String(lang || '').toLowerCase();
+            return value.startsWith('en') ? 'en-US' : 'zh-CN';
+        }
+
+        function t(key, vars = {}) {
+            const langDict = I18N_STRINGS[currentLanguage] || I18N_STRINGS['zh-CN'];
+            const fallbackDict = I18N_STRINGS['zh-CN'];
+            const template = langDict[key] || fallbackDict[key] || key;
+            return String(template).replace(/\{(\w+)\}/g, (_, name) => {
+                return Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name]) : `{${name}}`;
+            });
+        }
+
+        function getDataSourceLabel(sourceType) {
+            if (sourceType === 'deepseek') return t('source.option.deepseek');
+            if (sourceType === 'youraiscroll') return t('source.option.youraiscroll');
+            return t('source.option.chatgpt');
+        }
+
+        function updateLanguageToggleButton() {
+            const langBtn = document.getElementById('languageToggleBtn');
+            if (langBtn) {
+                langBtn.textContent = t('btn.lang');
+            }
+        }
+
+        function renderUsageModalBody() {
+            const body = document.querySelector('#modalUsage .modal-body');
+            if (!body) return;
+            if (currentLanguage === 'en-US') {
+                body.innerHTML = `
+                    <p style="margin-bottom: 10px;"><strong>Start here: DeepSeek → RikkaHub (most common path)</strong></p>
+                    <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.7; margin-bottom: 14px;">
+                        Follow these 4 steps and you should be good.
+                    </p>
+                    <ol style="margin-left: 20px; line-height: 1.85;">
+                        <li>
+                            Export DeepSeek history:
+                            open <a href="https://chat.deepseek.com/" target="_blank">chat.deepseek.com</a>,
+                            sign in, tap the bottom-right three-dot menu → <strong>Settings</strong> → <strong>Data Management</strong>,
+                            then click <strong>Export</strong> next to "Export all conversations".
+                            Most users get the new backup package; early 2024 users may also receive a legacy backup.
+                        </li>
+                        <li>
+                            Export your original RikkaHub backup:
+                            download RikkaHub from
+                            <a href="https://rikka-ai.com/" target="_blank">rikka-ai.com</a>,
+                            then open app menu → Settings → <strong>Data Backup</strong> → <strong>Import / Export</strong> → <strong>Export to file</strong>.
+                        </li>
+                        <li>
+                            Back in this tool, choose <strong>DeepSeek Data</strong>, upload the DeepSeek export,
+                            review/select conversations in workspace,
+                            upload the RikkaHub backup from step 2, then click <strong>Merge Conversations</strong>.
+                            Confirm download in the popup to get merged ZIP.
+                        </li>
+                        <li>
+                            Import merged ZIP back into RikkaHub:
+                            app menu → Settings → <strong>Data Backup</strong> → <strong>Import / Export</strong> → <strong>Import backup file</strong>.
+                            Restart app and switch to the imported assistant to view DeepSeek history.
+                        </li>
+                    </ol>
+
+                    <p style="margin-top: 16px; padding: 14px; background: var(--md-sys-color-secondary-container); border-radius: var(--md-sys-shape-corner-medium); color: var(--md-sys-color-on-secondary-container); line-height: 1.75;">
+                        <strong>Extra:</strong> If you want to keep chatting with DeepSeek v3.2, configure provider in RikkaHub.
+                        Not sure which provider to pick? You can start with:
+                        <a href="https://yunwu.ai/register?aff=PMO3" target="_blank" style="color: inherit; text-decoration: underline;">https://yunwu.ai/register?aff=PMO3</a>
+                        Note: this is an affiliate link. If you register via this link, the first 3 top-ups can bring 10% cashback to the tool author for maintenance.
+                    </p>
+
+                    <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
+                        <button
+                            class="btn-text"
+                            type="button"
+                            onclick="closeModalDirect('usage'); openModal('usageMore');"
+                            style="padding: 10px 16px; border: 1px solid var(--md-sys-color-outline);"
+                        >
+                            More Methods
+                        </button>
+                    </div>
+                `.trim();
+                return;
+            }
+
+            body.innerHTML = `
+                <p style="margin-bottom: 10px;"><strong>先看最常用流程：DeepSeek 合并到 RikkaHub</strong></p>
+                <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.7; margin-bottom: 14px;">
+                    按下面 4 步走就行，基本不会踩坑。
+                </p>
+                <ol style="margin-left: 20px; line-height: 1.85;">
+                    <li>
+                        先导出 DeepSeek 聊天记录：打开
+                        <a href="https://chat.deepseek.com/" target="_blank">chat.deepseek.com</a>
+                        登录，右下角“三个点” → <strong>系统设置</strong> → <strong>数据管理</strong>，
+                        在“导出所有历史对话”右侧点<strong>导出</strong>。正常会拿到新版备份；
+                        如果你是 2024 年早期用户，可能还会额外收到一份旧版备份。
+                    </li>
+                    <li>
+                        准备 RikkaHub 原始备份：从
+                        <a href="https://rikka-ai.com/" target="_blank">rikka-ai.com</a>
+                        下载 RikkaHub，打开后左上角菜单 → 设置 → <strong>数据备份</strong> → <strong>导入和导出</strong> → <strong>导出为文件</strong>。
+                    </li>
+                    <li>
+                        回到本工具：来源选 <strong>DeepSeek 数据</strong>，上传刚导出的 DeepSeek 文件；
+                        在“会话工作台”里勾选/编辑要合并的会话；
+                        再上传第 2 步导出的 RikkaHub 备份，点<strong>合并聊天记录</strong>，
+                        最后在下载确认弹窗点下载，得到合并后的 ZIP。
+                    </li>
+                    <li>
+                        把合并后的 ZIP 导回 RikkaHub：右上角菜单 → 设置 → <strong>数据备份</strong> → <strong>导入和导出</strong> → <strong>备份文件导入</strong>。
+                        导入后重启 App，左上角菜单切到新导入助手，就能看到 DeepSeek 历史会话。
+                    </li>
+                </ol>
+
+                <p style="margin-top: 16px; padding: 14px; background: var(--md-sys-color-secondary-container); border-radius: var(--md-sys-shape-corner-medium); color: var(--md-sys-color-on-secondary-container); line-height: 1.75;">
+                    <strong>补充：</strong>如果你还想继续用 DeepSeek v3.2 聊天，可以在 RikkaHub 的“提供商”页面添加或选择相应提供商。
+                    还没选好提供商？推荐先用这个入口快速开通（流程简单，适合先小额测试）：
+                    <a href="https://yunwu.ai/register?aff=PMO3" target="_blank" style="color: inherit; text-decoration: underline;">https://yunwu.ai/register?aff=PMO3</a>
+                    说明：这是推广链接；通过该链接注册后，用户前 3 次充值可为本工具作者带来 10% 返现，用于持续维护与更新本工具。
+                </p>
+
+                <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
+                    <button
+                        class="btn-text"
+                        type="button"
+                        onclick="closeModalDirect('usage'); openModal('usageMore');"
+                        style="padding: 10px 16px; border: 1px solid var(--md-sys-color-outline);"
+                    >
+                        更多方法
+                    </button>
+                </div>
+            `.trim();
+        }
+
+        function renderUsageMoreModalBody() {
+            const body = document.querySelector('#modalUsageMore .modal-body');
+            if (!body) return;
+            if (currentLanguage === 'en-US') {
+                body.innerHTML = `
+                    <p><strong>ChatGPT Official Export → RikkaHub</strong></p>
+                    <ol style="margin-left: 20px; line-height: 1.8;">
+                        <li>Export full ChatGPT data ZIP from Data Controls (do not upload only <code>conversations.json</code>).</li>
+                        <li>Choose "ChatGPT Data" in this tool, upload ZIP, then review/select conversations in workspace.</li>
+                        <li>Upload original RikkaHub backup ZIP, merge, download, and import back to RikkaHub.</li>
+                    </ol>
+
+                    <p style="margin-top: 16px;"><strong>YourAIScroll Markdown → RikkaHub</strong></p>
+                    <ol style="margin-left: 20px; line-height: 1.8;">
+                        <li>Switch source to "YourAIScroll Data", click "Paste Markdown".</li>
+                        <li>Paste one conversation per time; include <code>Original URL</code>, <code>[USER]</code>, <code>[ASSISTANT]</code> when possible.</li>
+                        <li>After save, it goes into workspace. Keep adding more and merge in one batch.</li>
+                    </ol>
+
+                    <p style="margin-top: 16px;"><strong>Mixed-source merge (recommended)</strong></p>
+                    <ol style="margin-left: 20px; line-height: 1.8;">
+                        <li>Import ChatGPT / DeepSeek / YourAIScroll into the same workspace.</li>
+                        <li>Search, filter, edit, and select conversations you want.</li>
+                        <li>Merge once into one RikkaHub backup for unified archive.</li>
+                    </ol>
+
+                    <p style="margin-top: 16px; padding: 14px; background: var(--md-sys-color-primary-container); border-radius: var(--md-sys-shape-corner-medium); color: var(--md-sys-color-on-primary-container); line-height: 1.7;">
+                        <strong>Tip:</strong> Validate with 1-3 conversations first, then do full merge.
+                    </p>
+                `.trim();
+                return;
+            }
+
+            body.innerHTML = `
+                <p><strong>ChatGPT 官方导出 → RikkaHub</strong></p>
+                <ol style="margin-left: 20px; line-height: 1.8;">
+                    <li>在 ChatGPT 的 Data Controls 导出完整数据 ZIP（不要只拿 <code>conversations.json</code>）。</li>
+                    <li>本工具来源选“ChatGPT 数据”，上传 ZIP，进会话工作台勾选并检查消息。</li>
+                    <li>上传 RikkaHub 原始备份 ZIP，点击合并并下载，最后导回 RikkaHub。</li>
+                </ol>
+
+                <p style="margin-top: 16px;"><strong>YourAIScroll Markdown → RikkaHub</strong></p>
+                <ol style="margin-left: 20px; line-height: 1.8;">
+                    <li>来源切到 “YourAIScroll 数据”，点击“粘贴 Markdown 文本”。</li>
+                    <li>每次粘贴一个会话，建议包含 <code>Original URL</code>、<code>[USER]</code>、<code>[ASSISTANT]</code> 标记。</li>
+                    <li>保存后会进入会话工作台，可继续追加粘贴多个会话，再统一合并。</li>
+                </ol>
+
+                <p style="margin-top: 16px;"><strong>多来源混合合并（推荐）</strong></p>
+                <ol style="margin-left: 20px; line-height: 1.8;">
+                    <li>分别导入 ChatGPT / DeepSeek / YourAIScroll 数据到同一个会话工作台。</li>
+                    <li>按标题搜索、筛选、编辑后，一次勾选你要的会话。</li>
+                    <li>一次合并到同一个 RikkaHub 备份，便于统一归档。</li>
+                </ol>
+
+                <p style="margin-top: 16px; padding: 14px; background: var(--md-sys-color-primary-container); border-radius: var(--md-sys-shape-corner-medium); color: var(--md-sys-color-on-primary-container); line-height: 1.7;">
+                    <strong>小提醒：</strong>先拿 1-3 个会话做小样导入，确认格式没问题，再做全量合并，最稳。
+                </p>
+            `.trim();
+        }
+
+        function renderSupportModalBody() {
+            const body = document.querySelector('#modalSupport .modal-body');
+            if (!body) return;
+            if (currentLanguage === 'en-US') {
+                body.innerHTML = `
+                    <div class="support-grid">
+                        <div class="support-card support-success">
+                            <div class="support-header">
+                                <span class="support-icon">✅</span>
+                                <h3>Supported</h3>
+                            </div>
+                            <ul class="support-list">
+                                <li><strong>ChatGPT official ZIP export</strong>: text, images (upload + generated), title and timestamps (v1.5 stable mapping; no standalone thoughts/reasoning_recap field writes)</li>
+                                <li><strong>DeepSeek new ZIP (conversations.json)</strong>: REQUEST/THINK/RESPONSE fragments (including THINK-only nodes), title and time</li>
+                                <li><strong>DeepSeek legacy ZIP (chat.csv / coder.csv)</strong>: role, text, message time and title</li>
+                                <li><strong>YourAIScroll Markdown paste</strong>: one conversation per paste, URL platform recognition, role tags, Markdown links/images, common reasoning markers</li>
+                                <li><strong>YourAIScroll tool/document markers</strong>: explicit syntax like <code>Function: name(args)</code> and doc link extraction</li>
+                                <li><strong>Unified workspace</strong>: multi-source import, conversation/message level selection, edit before merge</li>
+                                <li><strong>RikkaHub compatibility</strong>: writes to ConversationEntity + message_node (DB v12), schema cross-checked with v1.9.0beta code (DB v13)</li>
+                            </ul>
+                        </div>
+
+                        <div class="support-card support-error">
+                            <div class="support-header">
+                                <span class="support-icon">❌</span>
+                                <h3>Not Supported</h3>
+                            </div>
+                            <ul class="support-list">
+                                <li>ChatGPT account profile data, archive/favorite state, plugin data, custom GPT config, group chats, feedback history, Sora video, shopping-related data</li>
+                                <li>DeepSeek voice messages and file attachments</li>
+                                <li>YourAIScroll file upload import (paste-only), exact original timestamps, auto-downloading external images into backup</li>
+                                <li>All platforms: edit history, deleted messages, complete branch state, live runtime session state, exact token accounting</li>
+                            </ul>
+                        </div>
+                    </div>
+                `.trim();
+                return;
+            }
+
+            body.innerHTML = `
+                <div class="support-grid">
+                    <div class="support-card support-success">
+                        <div class="support-header">
+                            <span class="support-icon">✅</span>
+                            <h3>已支持</h3>
+                        </div>
+                        <ul class="support-list">
+                            <li><strong>ChatGPT 官方导出 ZIP</strong>：对话文本、图片（用户上传 + 生成图）、标题与创建/更新时间（按 v1.5 稳定口径，不单独写入 thoughts/reasoning_recap）</li>
+                            <li><strong>DeepSeek 新版 ZIP（conversations.json）</strong>：REQUEST/THINK/RESPONSE 片段（含 THINK-only 节点）、标题与时间</li>
+                            <li><strong>DeepSeek 旧版 ZIP（chat.csv / coder.csv）</strong>：角色、文本、消息时间与标题</li>
+                            <li><strong>YourAIScroll Markdown 粘贴导入</strong>：每次一个会话，支持 URL 平台识别、角色标记、Markdown 图片/链接、常见深度思考标记</li>
+                            <li><strong>YourAIScroll 工具/文档标记</strong>：支持显式语法 <code>Function: name(args)</code> 与文档链接提取（非显式格式不保证识别）</li>
+                            <li><strong>统一会话工作台</strong>：多来源并存导入、会话级与消息级勾选、逐条编辑后再合并</li>
+                            <li><strong>RikkaHub 兼容口径</strong>：写入 ConversationEntity + message_node（DB v12），并对 v1.9.0beta 源码 schema（DB v13）完成结构对照</li>
+                        </ul>
+                    </div>
+
+                    <div class="support-card support-error">
+                        <div class="support-header">
+                            <span class="support-icon">❌</span>
+                            <h3>不支持</h3>
+                        </div>
+                        <ul class="support-list">
+                            <li>ChatGPT：账号信息（邮箱、手机号）、收藏/归档状态、插件数据、自定义助手（Gizmo）、群聊记录、消息反馈、Sora 视频、购物相关数据</li>
+                            <li>DeepSeek：语音消息、文件附件</li>
+                            <li>YourAIScroll：文件上传导入（仅支持粘贴 Markdown）；原始精确时间戳（Markdown 通常不含）；外链图片不会自动下载入包</li>
+                            <li>所有平台：消息编辑历史、已删除消息、完整分支状态、实时会话状态、精确 token 使用量</li>
+                        </ul>
+                    </div>
+                </div>
+            `.trim();
+        }
+
+        function renderAboutThemeCards() {
+            const labels = currentLanguage === 'en-US'
+                ? {
+                    sakura: 'Sakura Pink',
+                    ocean: 'Ocean Blue',
+                    spring: 'Spring Green',
+                    autumn: 'Autumn Gold',
+                    black: 'Neutral Black'
+                }
+                : {
+                    sakura: '樱花粉',
+                    ocean: '海湾蓝',
+                    spring: '原野绿',
+                    autumn: '秋黄',
+                    black: '中性黑'
+                };
+
+            const colors = {
+                sakura: '#8E4955',
+                ocean: '#116682',
+                spring: '#4C662B',
+                autumn: '#735C0C',
+                black: '#606060'
+            };
+
+            return ['sakura', 'ocean', 'spring', 'autumn', 'black'].map(theme => `
+                <div class="theme-card ${currentTheme === theme ? 'active' : ''}" data-theme="${theme}" onclick="applyTheme('${theme}', this)" title="${labels[theme]}">
+                    <div class="theme-preview">
+                        <div style="background: ${colors[theme]}; border-radius: 50%; width: 40px; height: 40px;"></div>
+                    </div>
+                    <span>${labels[theme]}</span>
+                </div>
+            `).join('');
+        }
+
+        function renderAboutModalBody() {
+            const body = document.querySelector('#modalAbout .modal-body');
+            if (!body) return;
+
+            if (currentLanguage === 'en-US') {
+                body.innerHTML = `
+                    <h2 style="font-size: 24px; margin-bottom: 8px;">ChatWeave</h2>
+                    <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">Unified Conversation Workspace v1.6.4</p>
+                    <div class="about-info">
+                        <p>ChatWeave is a unified chat workspace for multi-source import, conversation preview, message editing, selection filtering, and target backup merge.</p>
+                        <p>Current version focuses on generating backups importable to RikkaHub, while keeping a unified data layer for future target platforms.</p>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        <p style="margin: 0 0 8px 0; font-size: 13px; color: var(--md-sys-color-on-surface-variant);">Project Links</p>
+                        <p style="margin: 0; display: flex; gap: 12px; flex-wrap: wrap;">
+                            <a href="https://github.com/SpiritHerb/ChatWeave" target="_blank" class="about-link">GitHub Repository</a>
+                        </p>
+                        <p style="margin: 12px 0 8px 0; font-size: 13px; color: var(--md-sys-color-on-surface-variant);">Friend Links</p>
+                        <p style="margin: 0; display: flex; gap: 12px; flex-wrap: wrap;">
+                            <a href="https://rikka-ai.com/" target="_blank" class="about-link">RikkaHub Official Site</a>
+                        </p>
+                    </div>
+
+                    <div style="margin-top: 18px; padding: 16px; background: var(--md-sys-color-surface-container-low); border-radius: var(--md-sys-shape-corner-medium);">
+                        <h3 style="margin: 0 0 10px 0; font-size: 16px;">☕ Support</h3>
+                        <p style="margin: 0 0 10px 0; font-size: 13px; color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
+                            If this tool saves your time, feel free to scan and support ongoing maintenance.
+                        </p>
+                        <img
+                            src="https://rewardreiso.spiritherb.top"
+                            alt="Donation QR"
+                            style="display: block; width: 180px; max-width: 100%; border-radius: 12px; border: 1px solid var(--md-sys-color-outline-variant); background: var(--md-sys-color-surface);"
+                            onerror="if(!this.dataset.fallback){this.dataset.fallback='1'; this.src='donation_qr.png';} else {this.style.display='none'; this.nextElementSibling.style.display='block';}"
+                        >
+                        <p style="display: none; margin: 8px 0 0 0; font-size: 12px; color: var(--md-sys-color-on-surface-variant);">
+                            Donation image not found. Put <code>donation_qr.png</code> next to this HTML file.
+                        </p>
+                    </div>
+
+                    <h3 style="margin-top: 32px; margin-bottom: 12px; font-size: 16px;">🎨 Theme</h3>
+                    <div style="margin-bottom: 16px;">
+                        <button class="btn-text" id="darkModeToggle" onclick="toggleDarkMode()" style="padding: 8px 16px; background: var(--md-sys-color-surface-container-high);"></button>
+                    </div>
+                    <div class="theme-grid">
+                        ${renderAboutThemeCards()}
+                    </div>
+
+                    <div style="margin-top: 24px; padding: 16px; background: var(--md-sys-color-surface-container-low); border-radius: var(--md-sys-shape-corner-medium);">
+                        <h4 style="margin-bottom: 8px; font-size: 14px; font-weight: 600;">📝 Notes & Terms</h4>
+                        <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 0;">
+                            This is a community project and is not officially affiliated with ChatGPT, DeepSeek, YourAIScroll, or RikkaHub.
+                        </p>
+                        <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 8px 0 0 0;">
+                            Conversion runs locally in your browser. Keep source exports and backups until validation is complete.
+                        </p>
+                        <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 8px 0 0 0;">
+                            Compatibility baseline: RikkaHub DB schema v12 (verified) and v1.9.0beta schema v13 (cross-checked).
+                        </p>
+                        <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 8px 0 0 0;">
+                            No warranty: use at your own risk for any data loss, crash, or other consequences.
+                        </p>
+                        <ul style="margin: 8px 0 0 20px; font-size: 13px; line-height: 1.7; color: var(--md-sys-color-on-surface-variant);">
+                            <li>Keep original source ZIP and original RikkaHub backup ZIP before deleting anything</li>
+                            <li>Create one extra RikkaHub backup copy before each import batch</li>
+                            <li>If import fails, clear app data and restore from original backup</li>
+                            <li>This is not an official support channel; please report issues in project community</li>
+                        </ul>
+                    </div>
+                `.trim();
+                return;
+            }
+
+            body.innerHTML = `
+                <h2 style="font-size: 24px; margin-bottom: 8px;">ChatWeave</h2>
+                <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">统一会话工作台 v1.6.4</p>
+                <div class="about-info">
+                    <p>ChatWeave 是一个统一聊天记录工作台：支持多来源导入、会话预览、消息编辑、勾选过滤和目标备份合并。</p>
+                    <p>当前版本重点输出可导入 RikkaHub 的备份包，同时保留统一数据层，便于后续扩展更多目标平台。</p>
+                </div>
+                <div style="margin-top: 16px;">
+                    <p style="margin: 0 0 8px 0; font-size: 13px; color: var(--md-sys-color-on-surface-variant);">项目链接</p>
+                    <p style="margin: 0; display: flex; gap: 12px; flex-wrap: wrap;">
+                        <a href="https://github.com/SpiritHerb/ChatWeave" target="_blank" class="about-link">GitHub 项目</a>
+                    </p>
+                    <p style="margin: 12px 0 8px 0; font-size: 13px; color: var(--md-sys-color-on-surface-variant);">友链</p>
+                    <p style="margin: 0; display: flex; gap: 12px; flex-wrap: wrap;">
+                        <a href="https://rikka-ai.com/" target="_blank" class="about-link">RikkaHub 官网</a>
+                    </p>
+                </div>
+
+                <div style="margin-top: 18px; padding: 16px; background: var(--md-sys-color-surface-container-low); border-radius: var(--md-sys-shape-corner-medium);">
+                    <h3 style="margin: 0 0 10px 0; font-size: 16px;">☕ 赞赏支持</h3>
+                    <p style="margin: 0 0 10px 0; font-size: 13px; color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
+                        如果这个工具帮你省了时间，可以扫码支持一下后续维护。
+                    </p>
+                    <img
+                        src="https://rewardreiso.spiritherb.top"
+                        alt="赞赏码"
+                        style="display: block; width: 180px; max-width: 100%; border-radius: 12px; border: 1px solid var(--md-sys-color-outline-variant); background: var(--md-sys-color-surface);"
+                        onerror="if(!this.dataset.fallback){this.dataset.fallback='1'; this.src='donation_qr.png';} else {this.style.display='none'; this.nextElementSibling.style.display='block';}"
+                    >
+                    <p style="display: none; margin: 8px 0 0 0; font-size: 12px; color: var(--md-sys-color-on-surface-variant);">
+                        暂未找到赞赏码图片。可在本文件同目录放置 <code>donation_qr.png</code>。
+                    </p>
+                </div>
+
+                <h3 style="margin-top: 32px; margin-bottom: 12px; font-size: 16px;">🎨 主题选择</h3>
+                <div style="margin-bottom: 16px;">
+                    <button class="btn-text" id="darkModeToggle" onclick="toggleDarkMode()" style="padding: 8px 16px; background: var(--md-sys-color-surface-container-high);"></button>
+                </div>
+                <div class="theme-grid">
+                    ${renderAboutThemeCards()}
+                </div>
+
+                <div style="margin-top: 24px; padding: 16px; background: var(--md-sys-color-surface-container-low); border-radius: var(--md-sys-shape-corner-medium);">
+                    <h4 style="margin-bottom: 8px; font-size: 14px; font-weight: 600;">📝 说明与条款</h4>
+                    <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 0;">
+                        本工具为社区项目，与 ChatGPT、DeepSeek、YourAIScroll、RikkaHub 均无官方从属关系。
+                    </p>
+                    <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 8px 0 0 0;">
+                        数据转换在本地浏览器完成；请自行保管源文件与备份文件，确认可用前不要删除原始备份。
+                    </p>
+                    <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 8px 0 0 0;">
+                        兼容验证基线：RikkaHub 备份数据库结构 v12（实测）与 v1.9.0beta 源码 schema v13（结构对照）。后续版本仍可能出现差异。
+                    </p>
+                    <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 8px 0 0 0;">
+                        无担保声明：本工具不对导入结果作绝对保证。因使用导致的数据丢失、崩溃或其他损失，请自行承担风险。
+                    </p>
+                    <ul style="margin: 8px 0 0 20px; font-size: 13px; line-height: 1.7; color: var(--md-sys-color-on-surface-variant);">
+                        <li>请保留原始导出 ZIP 与 RikkaHub 原始备份 ZIP，确认可用前不要删除</li>
+                        <li>建议每次导入前额外复制一份 RikkaHub 备份作为回滚点</li>
+                        <li>若导入后异常，请清空应用数据并重新导入原始备份</li>
+                        <li>本工具并非 RikkaHub 官方支持渠道，请优先在项目社区反馈问题</li>
+                    </ul>
+                </div>
+            `.trim();
+        }
+
+        function renderLocalizedModalContents() {
+            renderUsageModalBody();
+            renderUsageMoreModalBody();
+            renderSupportModalBody();
+            renderAboutModalBody();
+        }
+
+        function applyI18nToStaticUI() {
+            document.title = `ChatWeave - ${t('app.titleSuffix')}`;
+            const setText = (id, key) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = t(key);
+            };
+            setText('appSubtitle', 'app.subtitle');
+            setText('warningCardTitle', 'warning.title');
+            setText('warningCardDesc', 'warning.desc');
+            setText('warningItem1', 'warning.item1');
+            setText('warningItem2', 'warning.item2');
+            setText('warningItem3', 'warning.item3');
+            setText('warningItem4', 'warning.item4');
+            setText('usageBtn', 'btn.usage');
+            setText('supportBtn', 'btn.support');
+            setText('aboutBtn', 'btn.about');
+            setText('usageModalTitle', 'modal.usage.title');
+            setText('usageMoreModalTitle', 'modal.usageMore.title');
+            setText('supportModalTitle', 'modal.support.title');
+            setText('aboutModalTitle', 'modal.about.title');
+            setText('sourceOptionChatgpt', 'source.option.chatgpt');
+            setText('sourceOptionDeepseek', 'source.option.deepseek');
+            setText('sourceOptionYouraiscroll', 'source.option.youraiscroll');
+            setText('sourceUploadCardTitle', 'source.upload.title');
+            setText('deepseekOldUploadCardTitle', 'source.upload.deepseekOld.title');
+            setText('deepseekSecondUploadText', 'source.upload.deepseekOld');
+            setText('pasteMarkdownBtn', 'source.upload.paste');
+            setText('workspaceCardTitle', 'workspace.title');
+            setText('workspaceSelectAllBtn', 'workspace.selectAll');
+            setText('workspaceSelectNoneBtn', 'workspace.selectNone');
+            setText('workspaceInvertSelectBtn', 'workspace.invert');
+            setText('targetBackupTitle', 'targetBackup.title');
+            setText('targetBackupSelectBtn', 'targetBackup.select');
+            setText('targetBackupHint', 'targetBackup.hint');
+            setText('rikkahubUploadText', 'targetBackup.upload');
+            setText('duplicateStrategyLabel', 'merge.duplicate.label');
+            setText('duplicateStrategySkipBtn', 'merge.duplicate.skip');
+            setText('duplicateStrategyKeepBothBtn', 'merge.duplicate.keepBoth');
+            setText('duplicateStrategyHint', 'merge.duplicate.hint');
+            setText('assistantMergeStrategyLabel', 'merge.assistant.label');
+            setText('assistantMergeBySourceBtn', 'merge.assistant.bySource');
+            setText('assistantMergeSingleBtn', 'merge.assistant.single');
+            setText('unifiedAssistantNameLabel', 'merge.assistant.nameLabel');
+
+            const searchInput = document.getElementById('workspaceSearchInput');
+            if (searchInput) searchInput.placeholder = t('workspace.searchPlaceholder');
+            const unifiedNameInput = document.getElementById('unifiedAssistantNameInput');
+            if (unifiedNameInput) unifiedNameInput.placeholder = t('merge.assistant.namePlaceholder');
+
+            const selectedValue = document.getElementById('selectedValue');
+            if (selectedValue) {
+                selectedValue.textContent = getDataSourceLabel(currentDataSource);
+            }
+
+            renderLocalizedModalContents();
+            updateSourceUploadHintByType(currentDataSource);
+            refreshSourceStatusInfoTexts();
+            updateLanguageToggleButton();
+        }
+
+        function setLanguage(lang) {
+            currentLanguage = normalizeLanguage(lang);
+            try {
+                localStorage.setItem('chatweave.lang', currentLanguage);
+            } catch (error) {
+                console.warn('save language failed:', error);
+            }
+            document.documentElement.lang = currentLanguage === 'en-US' ? 'en' : 'zh-CN';
+            applyI18nToStaticUI();
+            updateSourceUploadHintByType(currentDataSource);
+            renderWorkspaceList();
+            checkReady();
+            updateAssistantMergeStrategyUI();
+            updateDarkModeToggleLabel();
+        }
+
+        function toggleLanguage() {
+            const next = currentLanguage === 'zh-CN' ? 'en-US' : 'zh-CN';
+            setLanguage(next);
+        }
 
         // 存储 ChatGPT ZIP 和图片索引：key -> { zipPath: string, mimeType: string }
         let chatgptZip = null;
@@ -3546,8 +4408,8 @@
 
             if (strategyHint) {
                 strategyHint.textContent = isSingleAssistant
-                    ? '所有导入会话会写入同一个助手，适合统一归档；可自定义助手名称。'
-                    : '按来源创建/复用导入助手，便于区分 ChatGPT / DeepSeek / YourAIScroll。';
+                    ? t('merge.assistant.hint.single')
+                    : t('merge.assistant.hint.bySource');
             }
         }
 
@@ -3599,9 +4461,9 @@
         }
 
         function formatWorkspaceTimestamp(ms) {
-            if (!ms || !Number.isFinite(ms)) return '未知时间';
+            if (!ms || !Number.isFinite(ms)) return t('workspace.timeUnknown');
             try {
-                return new Date(ms).toLocaleString('zh-CN', {
+                return new Date(ms).toLocaleString(currentLanguage === 'en-US' ? 'en-US' : 'zh-CN', {
                     year: 'numeric',
                     month: '2-digit',
                     day: '2-digit',
@@ -3822,13 +4684,13 @@
             if (!shouldShow) {
                 card.style.display = 'none';
                 list.innerHTML = '';
-                meta.textContent = '已选 0 / 0';
+                meta.textContent = t('workspace.meta', { selected: 0, total: 0 });
                 return;
             }
 
             card.style.display = 'block';
             const selectedCount = allConversations.filter(item => item.selected !== false).length;
-            meta.textContent = `已选 ${selectedCount} / ${allConversations.length}`;
+            meta.textContent = t('workspace.meta', { selected: selectedCount, total: allConversations.length });
 
             const keyword = String(searchInput?.value || '').trim().toLowerCase();
             const visibleConversations = keyword
@@ -3839,13 +4701,13 @@
                 : allConversations;
 
             if (visibleConversations.length === 0) {
-                list.innerHTML = '<div class="workspace-empty">没有匹配的会话</div>';
+                list.innerHTML = `<div class="workspace-empty">${escapeWorkspaceHtml(t('workspace.noMatch'))}</div>`;
                 return;
             }
 
             list.innerHTML = visibleConversations.map(item => {
                 const subtitleParts = [];
-                subtitleParts.push(`${item.messageCount || 0} 条消息`);
+                subtitleParts.push(t('workspace.messageCount', { count: item.messageCount || 0 }));
                 subtitleParts.push(formatWorkspaceTimestamp(item.updatedAtMs || item.createdAtMs));
                 return `
                     <div class="workspace-item">
@@ -3868,7 +4730,7 @@
                                     data-action="preview"
                                     data-id="${escapeWorkspaceHtml(item.id)}"
                                 >
-                                    预览
+                                    ${escapeWorkspaceHtml(t('workspace.preview'))}
                                 </button>
                                 <button
                                     type="button"
@@ -3876,7 +4738,7 @@
                                     data-action="edit"
                                     data-id="${escapeWorkspaceHtml(item.id)}"
                                 >
-                                    编辑
+                                    ${escapeWorkspaceHtml(t('workspace.edit'))}
                                 </button>
                             </div>
                         </div>
@@ -4402,7 +5264,7 @@
             closeWorkspacePreviewModal();
             const binding = getWorkspaceConversationBinding(workspaceId);
             if (!binding) {
-                showError('未找到会话，可能已被刷新。');
+                showError(t('error.conversationNotFound'));
                 return;
             }
 
@@ -4464,7 +5326,7 @@
             closeWorkspaceConversationModal();
             renderWorkspaceList();
             checkReady();
-            showInfo('会话已更新');
+            showInfo(t('info.conversationUpdated'));
         }
 
         function getMergeDataByWorkspaceSelection() {
@@ -4896,7 +5758,7 @@
         function triggerRikkaHubFilePicker(continueMerge = false) {
             const input = document.getElementById('rikkahubFile');
             if (!input) {
-                showError('未找到 RikkaHub 文件选择控件');
+                showError(t('error.rikkaPickerMissing'));
                 return;
             }
 
@@ -4934,17 +5796,17 @@
             const unknownTotal = Number(options?.unknownTotal || 0);
 
             if (summaryElement) {
-                summaryElement.textContent = summaryText || '预检完成。';
+                summaryElement.textContent = summaryText || t('info.mergeDryRunReady');
             }
-            renderMergeReportList(diffList, diffLines, '暂无来源差异。');
-            renderMergeReportList(warningList, warningLines, '未发现结构风险。');
+            renderMergeReportList(diffList, diffLines, currentLanguage === 'en-US' ? 'No source diff.' : '暂无来源差异。');
+            renderMergeReportList(warningList, warningLines, currentLanguage === 'en-US' ? 'No structure risk found.' : '未发现结构风险。');
             if (unknownBlock) {
                 unknownBlock.style.display = unknownTotal > 0 ? 'block' : 'none';
             }
             if (unknownTotal > 0) {
-                renderMergeReportList(unknownList, unknownLines, '未收集到具体样例。');
+                renderMergeReportList(unknownList, unknownLines, currentLanguage === 'en-US' ? 'No sample details collected.' : '未收集到具体样例。');
             } else {
-                renderMergeReportList(unknownList, [], '无无法识别块。');
+                renderMergeReportList(unknownList, [], currentLanguage === 'en-US' ? 'No unrecognized blocks.' : '无无法识别块。');
             }
 
             if (modal) {
@@ -5002,12 +5864,18 @@
 
             const lines = [];
             if (shouldWarn) {
-                lines.push(`检测到移动端下载环境，当前下载包约 ${sizeMB.toFixed(1)} MB。`);
+                lines.push(currentLanguage === 'en-US'
+                    ? `Mobile download environment detected. Current package is about ${sizeMB.toFixed(1)} MB.`
+                    : `检测到移动端下载环境，当前下载包约 ${sizeMB.toFixed(1)} MB。`);
                 if (isEdgeMobile) {
-                    lines.push('Edge 手机版在大文件 Blob 下载时可能出现闪退，建议优先使用兼容下载方式。');
+                    lines.push(currentLanguage === 'en-US'
+                        ? 'Edge mobile may crash on large Blob downloads. Compatibility mode is recommended.'
+                        : 'Edge 手机版在大文件 Blob 下载时可能出现闪退，建议优先使用兼容下载方式。');
                 }
                 if (isHuge) {
-                    lines.push('包体积较大，建议分批合并后再下载。');
+                    lines.push(currentLanguage === 'en-US'
+                        ? 'Package is large. Merge in smaller batches before downloading.'
+                        : '包体积较大，建议分批合并后再下载。');
                 }
             }
 
@@ -5042,12 +5910,14 @@
                 const imageCount = uniqueImagePaths.size || chatgptImages.size;
                 chatgptImages.clear();
                 chatgptIndexedImageKeys.clear();
-                released.push(`释放 ChatGPT 图片索引 ${imageCount} 项`);
+                released.push(currentLanguage === 'en-US'
+                    ? `Released ChatGPT image index (${imageCount} items)`
+                    : `释放 ChatGPT 图片索引 ${imageCount} 项`);
             }
             if (chatgptZip) {
                 chatgptZip = null;
                 chatgptIndexedImageKeys.clear();
-                released.push('释放 ChatGPT ZIP 缓存');
+                released.push(currentLanguage === 'en-US' ? 'Released ChatGPT ZIP cache' : '释放 ChatGPT ZIP 缓存');
             }
             return released;
         }
@@ -5139,7 +6009,7 @@
 
             const summaryElement = document.getElementById('mergeDownloadSummary');
             if (summaryElement) {
-                summaryElement.textContent = summaryText || '合并包已准备完成。';
+                summaryElement.textContent = summaryText || (currentLanguage === 'en-US' ? 'Merged package is ready.' : '合并包已准备完成。');
             }
             const riskHint = document.getElementById('mergeDownloadRiskHint');
             const downloadConfirmBtn = document.getElementById('mergeDownloadConfirmBtn');
@@ -5154,7 +6024,9 @@
                 }
             }
             if (downloadConfirmBtn) {
-                downloadConfirmBtn.textContent = pendingMergedDownloadRisk?.preferCompatMode ? '兼容下载' : '下载';
+                downloadConfirmBtn.textContent = pendingMergedDownloadRisk?.preferCompatMode
+                    ? (currentLanguage === 'en-US' ? 'Compat Download' : '兼容下载')
+                    : (currentLanguage === 'en-US' ? 'Download' : '下载');
             }
 
             const diffBlock = document.getElementById('mergeDownloadDiffBlock');
@@ -5171,19 +6043,19 @@
             if (diffBlock) {
                 diffBlock.style.display = diffLines.length > 0 ? 'block' : 'none';
             }
-            renderMergeReportList(diffList, diffLines, '暂无来源差异。');
+            renderMergeReportList(diffList, diffLines, currentLanguage === 'en-US' ? 'No source diff.' : '暂无来源差异。');
 
             if (warningBlock) {
                 warningBlock.style.display = warningLines.length > 0 ? 'block' : 'none';
             }
-            renderMergeReportList(warningList, warningLines, '未发现结构风险。');
+            renderMergeReportList(warningList, warningLines, currentLanguage === 'en-US' ? 'No structure risk found.' : '未发现结构风险。');
             if (unknownBlock) {
                 unknownBlock.style.display = unknownTotal > 0 ? 'block' : 'none';
             }
             if (unknownTotal > 0) {
-                renderMergeReportList(unknownList, unknownLines, '未收集到具体样例。');
+                renderMergeReportList(unknownList, unknownLines, currentLanguage === 'en-US' ? 'No sample details collected.' : '未收集到具体样例。');
             } else {
-                renderMergeReportList(unknownList, [], '无无法识别块。');
+                renderMergeReportList(unknownList, [], currentLanguage === 'en-US' ? 'No unrecognized blocks.' : '无无法识别块。');
             }
 
             openMergeDownloadModal();
@@ -5191,7 +6063,7 @@
 
         async function downloadMergedZipNow() {
             if (!pendingMergedDownloadUrl) {
-                showError('下载包未准备好，请重新执行合并。');
+                showError(t('error.downloadNotReady'));
                 return;
             }
 
@@ -5202,7 +6074,9 @@
             // 在高风险移动端先释放大缓存，降低下载触发瞬时内存压力
             const released = releaseLargeCachesBeforeDownload(riskInfo);
             if (released.length > 0) {
-                showInfo(`${released.join('，')}，正在启动下载...`);
+                showInfo(currentLanguage === 'en-US'
+                    ? `${released.join(', ')}. Starting download...`
+                    : `${released.join('，')}，正在启动下载...`);
                 await new Promise(resolve => setTimeout(resolve, 120));
             }
 
@@ -5243,9 +6117,9 @@
 
             closeMergeDownloadModal(false);
             if (started) {
-                showInfo('已开始下载合并包。');
+                showInfo(t('info.downloadStarted'));
             } else {
-                showError('下载启动失败，请改用桌面浏览器或分批合并后重试。');
+                showError(t('error.downloadFailed'));
             }
         }
 
@@ -5299,13 +6173,16 @@
         }
 
         // 切换深色/浅色模式
+        function updateDarkModeToggleLabel() {
+            const btn = document.getElementById('darkModeToggle');
+            if (!btn) return;
+            btn.textContent = isDarkMode ? t('theme.dark.toLight') : t('theme.dark.toDark');
+        }
+
         function toggleDarkMode() {
             isDarkMode = !isDarkMode;
             applyTheme(currentTheme);
-            
-            // 更新按钮文字
-            const btn = document.getElementById('darkModeToggle');
-            btn.textContent = isDarkMode ? '☀️ 切换到浅色模式' : '🌙 切换到深色模式';
+            updateDarkModeToggleLabel();
         }
 
         // Toast 提示函数
@@ -5360,7 +6237,7 @@
 
         function selectOption(value, text) {
             const selectedValue = document.getElementById('selectedValue');
-            selectedValue.textContent = text;
+            selectedValue.textContent = text || getDataSourceLabel(value);
             
             const wrapper = document.getElementById('dataSourceWrapper');
             const dropdown = document.getElementById('selectDropdown');
@@ -5428,6 +6305,15 @@
 
         // 页面加载时默认折叠指南
         document.addEventListener('DOMContentLoaded', function() {
+            try {
+                const storedLanguage = localStorage.getItem('chatweave.lang');
+                currentLanguage = normalizeLanguage(storedLanguage || navigator.language || 'zh-CN');
+            } catch (error) {
+                currentLanguage = normalizeLanguage(navigator.language || 'zh-CN');
+            }
+            document.documentElement.lang = currentLanguage === 'en-US' ? 'en' : 'zh-CN';
+            applyI18nToStaticUI();
+
             const content = document.getElementById('guideContent');
             const toggle = document.getElementById('guideToggle');
             if (content && toggle) {
@@ -5435,13 +6321,11 @@
                 toggle.classList.add('collapsed');
             }
             applyTheme(currentTheme);
-            const darkModeButton = document.getElementById('darkModeToggle');
-            if (darkModeButton) {
-                darkModeButton.textContent = isDarkMode ? '☀️ 切换到浅色模式' : '🌙 切换到深色模式';
-            }
+            updateDarkModeToggleLabel();
             setDuplicateStrategy(getDuplicateStrategy());
             setAssistantMergeStrategy(getAssistantMergeStrategy());
             updateAssistantMergeStrategyUI();
+            checkReady();
         });
 
         function updateDataSourceUI() {
@@ -5453,6 +6337,36 @@
                 loadSourceBuffersFromPool(currentDataSource);
             }
             updateDataSourceUIInternal(currentDataSource);
+        }
+
+        function updateSourceUploadHintByType(dataSource) {
+            const sourceText = document.getElementById('sourceUploadText');
+            if (!sourceText) return;
+            if (dataSource === 'deepseek') {
+                sourceText.textContent = t('source.upload.deepseek');
+            } else if (dataSource === 'youraiscroll') {
+                sourceText.textContent = t('source.upload.youraiscroll');
+            } else {
+                sourceText.textContent = t('source.upload.chatgpt');
+            }
+        }
+
+        function refreshSourceStatusInfoTexts() {
+            const sourceFileInfo = document.getElementById('sourceFileInfo');
+            if (sourceFileInfo) {
+                const currentPrimaryCount = Array.isArray(sourceData) ? sourceData.length : 0;
+                sourceFileInfo.textContent = currentPrimaryCount > 0
+                    ? t('source.status.loadedPrimary', { count: currentPrimaryCount })
+                    : '';
+            }
+
+            const deepseekSecondFileInfo = document.getElementById('deepseekSecondFileInfo');
+            if (deepseekSecondFileInfo) {
+                const currentSecondaryCount = Array.isArray(secondSourceData) ? secondSourceData.length : 0;
+                deepseekSecondFileInfo.textContent = currentSecondaryCount > 0
+                    ? t('source.status.loadedDeepseekOld', { count: currentSecondaryCount })
+                    : '';
+            }
         }
 
         function updateDataSourceUIInternal(dataSource) {
@@ -5467,7 +6381,9 @@
             const sourceFileInfo = document.getElementById('sourceFileInfo');
             if (sourceFileInfo) {
                 const currentPrimaryCount = Array.isArray(sourceData) ? sourceData.length : 0;
-                sourceFileInfo.textContent = currentPrimaryCount > 0 ? `当前来源已加载 ${currentPrimaryCount} 个会话` : '';
+                sourceFileInfo.textContent = currentPrimaryCount > 0
+                    ? t('source.status.loadedPrimary', { count: currentPrimaryCount })
+                    : '';
             }
 
             const deepseekSecondUpload = document.getElementById('deepseekSecondUpload');
@@ -5475,20 +6391,22 @@
             if (deepseekSecondUpload && deepseekSecondFileInfo) {
                 deepseekSecondUpload.classList.remove('has-file', 'error');
                 const currentSecondaryCount = Array.isArray(secondSourceData) ? secondSourceData.length : 0;
-                deepseekSecondFileInfo.textContent = currentSecondaryCount > 0 ? `已加载旧版 ${currentSecondaryCount} 个会话` : '';
+                deepseekSecondFileInfo.textContent = currentSecondaryCount > 0
+                    ? t('source.status.loadedDeepseekOld', { count: currentSecondaryCount })
+                    : '';
             }
 
             // 隐藏粘贴按钮
             if (pasteButtons) pasteButtons.style.display = 'none';
 
             if (dataSource === 'chatgpt') {
-                sourceText.textContent = '点击或拖拽上传 ChatGPT 压缩包';
+                sourceText.textContent = t('source.upload.chatgpt');
                 sourceFileInput.accept = '.zip';
                 sourceFileInput.disabled = false;  // 启用文件输入
                 sourceUploadBox.style.display = 'block';  // 显示上传框
                 if (deepseekSecondCard) deepseekSecondCard.style.display = 'none';
             } else if (dataSource === 'youraiscroll') {
-                sourceText.textContent = '粘贴 YourAIScroll 复制的 Markdown 内容';
+                sourceText.textContent = t('source.upload.youraiscroll');
                 sourceFileInput.accept = '';
                 sourceFileInput.disabled = true;  // 禁用文件输入
                 sourceUploadBox.style.display = 'none';  // 隐藏上传框
@@ -5496,7 +6414,7 @@
                 // 显示粘贴按钮
                 if (pasteButtons) pasteButtons.style.display = 'flex';
             } else if (dataSource === 'deepseek') {
-                sourceText.textContent = '点击或拖拽上传 DeepSeek 新版压缩包（包含 conversations.json）';
+                sourceText.textContent = t('source.upload.deepseek');
                 sourceFileInput.accept = '.zip';
                 sourceFileInput.disabled = false;  // 启用文件输入
                 sourceUploadBox.style.display = 'block';  // 显示上传框
@@ -5529,17 +6447,17 @@
                 // 验证文件类型
                 if (currentDataSource === 'youraiscroll') {
                     if (!file.name.endsWith('.json')) {
-                        showError('文件必须是 .json 格式');
+                        showError(t('error.fileMustJson'));
                         uploadBox.classList.add('error');
                         return;
                     }
                 } else {
                     if (currentDataSource === 'youraiscroll') {
-                        showError('YourAIScroll 数据源不支持文件上传，请使用粘贴 Markdown 功能');
+                        showError(t('error.yasNoFileUpload'));
                         uploadBox.classList.add('error');
                         return;
                     } else if (!file.name.endsWith('.zip') && !file.name.endsWith('.csv')) {
-                        showError('文件必须是 .zip 或 .csv 格式');
+                        showError(t('error.fileMustZipCsv'));
                         uploadBox.classList.add('error');
                         return;
                     }
@@ -5549,7 +6467,7 @@
                 
                 // 添加加载动画
                 uploadBox.classList.add('loading', 'has-wave');
-                fileInfo.innerHTML = `<span class="circular-wavy-loading"><span class="wave"></span><span class="wave"></span><span class="wave"></span></span> 读取中...`;
+                fileInfo.innerHTML = `<span class="circular-wavy-loading"><span class="wave"></span><span class="wave"></span><span class="wave"></span></span> ${currentLanguage === 'en-US' ? 'Reading...' : '读取中...'}`;
 
                 const reader = new FileReader();
                 reader.onload = async (e) => {
@@ -5559,7 +6477,7 @@
                         } else if (currentDataSource === 'deepseek') {
                             await handleDeepSeekNewFile(e.target.result, uploadBox, fileInfo, file.name);
                         } else if (currentDataSource === 'youraiscroll') {
-                            showError('YourAIScroll 数据源已移除，请使用粘贴 Markdown 功能');
+                            showError(t('error.yasRemoved'));
                             uploadBox.classList.remove('loading', 'has-wave');
                             fileInfo.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
                             uploadBox.classList.add('error');
@@ -5567,11 +6485,15 @@
                         }
                     } catch (error) {
                         console.error('文件处理错误:', error);
-                        let errorMsg = '读取文件失败: ' + error.message;
+                        let errorMsg = t('error.readFileFailed', { message: error.message });
                         if (error.message.includes('end of central directory')) {
-                            errorMsg = '文件不是有效的 ZIP 文件或文件已损坏。';
+                            errorMsg = currentLanguage === 'en-US'
+                                ? 'File is not a valid ZIP or is corrupted.'
+                                : '文件不是有效的 ZIP 文件或文件已损坏。';
                         } else if (error.message.includes('JSON')) {
-                            errorMsg = '文件中的 JSON 格式错误。';
+                            errorMsg = currentLanguage === 'en-US'
+                                ? 'JSON format is invalid in this file.'
+                                : '文件中的 JSON 格式错误。';
                         }
                         // 移除加载状态
                         uploadBox.classList.remove('loading', 'has-wave');
@@ -5585,7 +6507,7 @@
                     // 移除加载状态
                     uploadBox.classList.remove('loading', 'has-wave');
                     fileInfo.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
-                    showError('读取文件时发生错误');
+                    showError(t('error.readFileGeneral'));
                     uploadBox.classList.add('error');
                 };
 
@@ -5599,7 +6521,7 @@
             const data = new Uint8Array(arrayBuffer);
             if (data.length < 4) {
                 uploadBox.classList.remove('loading', 'has-wave');
-                showError('文件太小，不是有效的 ZIP 文件');
+                showError(t('error.zipTooSmall'));
                 uploadBox.classList.add('error');
                 return;
             }
@@ -5608,7 +6530,7 @@
             if (signature !== 'PK') {
                 uploadBox.classList.remove('loading', 'has-wave');
                 fileInfo.textContent = fileName + ' (' + formatFileSize(arrayBuffer.byteLength) + ')';
-                showError('文件不是有效的 ZIP 文件');
+                showError(t('error.zipInvalid'));
                 uploadBox.classList.add('error');
                 return;
             }
@@ -5621,7 +6543,7 @@
             if (!convFile) {
                 uploadBox.classList.remove('loading', 'has-wave');
                 fileInfo.textContent = fileName + ' (' + formatFileSize(arrayBuffer.byteLength) + ')';
-                showError('压缩包中未找到 conversations.json 文件。请确保上传的是正确的 ChatGPT 导出文件。');
+                showError(t('error.chatgptNoConversationsJson'));
                 uploadBox.classList.add('error');
                 return;
             }
@@ -5634,20 +6556,20 @@
             chatgptIndexedImageKeys.clear();
             const requiredImageKeys = collectChatGPTAssetPointerKeysFromConversations(sourceData);
             const imageMsg = requiredImageKeys.size > 0
-                ? `，检测到 ${requiredImageKeys.size} 个图片引用（将在合并时按需索引）`
+                ? t('info.chatgptImageMsg', { count: requiredImageKeys.size })
                 : '';
             
             // 移除加载状态
             uploadBox.classList.remove('loading', 'has-wave');
             fileInfo.textContent = fileName + ' (' + formatFileSize(arrayBuffer.byteLength) + ')';
             
-            showInfo(`已加载 ${sourceData.length} 个 ChatGPT 对话${imageMsg}`);
+            showInfo(t('info.chatgptLoaded', { count: sourceData.length, imageMsg: imageMsg }));
             saveCurrentSourceBuffersToPool();
             rebuildWorkspaceFromCurrentSource();
             checkReady();
             const mergeButton = document.getElementById('mergeButton');
             if (rikkahubData) {
-                mergeButton.textContent = '合并聊天记录';
+                mergeButton.textContent = t('merge.button.ready');
             }
         }
 
@@ -6280,8 +7202,10 @@
                         textarea.value = '';
             
                         // 设置标题和提示
-                        title.textContent = '📝 粘贴 Markdown 文本';
-                        hint.textContent = '请粘贴 YourAIScroll 复制的 Markdown 内容（每次一个对话，确认后会追加到会话工作台）：';
+                        title.textContent = t('source.upload.paste');
+                        hint.textContent = currentLanguage === 'en-US'
+                            ? 'Paste Markdown copied from YourAIScroll (one conversation each time; it will be appended to workspace after confirmation):'
+                            : '请粘贴 YourAIScroll 复制的 Markdown 内容（每次一个对话，确认后会追加到会话工作台）：';
             
                         // 显示对话框
                         modal.classList.add('active');
@@ -6300,7 +7224,7 @@
                         const content = textarea.value.trim();
 
                         if (!content) {
-                            showError('请输入内容');
+                            showError(t('error.pasteEmpty'));
                             return;
                         }
 
@@ -6310,7 +7234,7 @@
                         try {
                             // 显示加载状态
                             uploadBox.classList.add('loading', 'has-wave');
-                            fileInfo.innerHTML = `<span class="circular-wavy-loading"><span class="wave"></span><span class="wave"></span><span class="wave"></span></span> 解析中...`;
+                            fileInfo.innerHTML = `<span class="circular-wavy-loading"><span class="wave"></span><span class="wave"></span><span class="wave"></span></span> ${currentLanguage === 'en-US' ? 'Parsing...' : '解析中...'}`;
 
                             let result = parsePastedMarkdown(content);
 
@@ -6343,12 +7267,19 @@
 
                             // 移除加载状态
                             uploadBox.classList.remove('loading', 'has-wave');
-                            fileInfo.textContent = `已粘贴 Markdown 内容（累计 ${sourceData.length} 个会话）`;
+                            fileInfo.textContent = currentLanguage === 'en-US'
+                                ? `Markdown pasted (total ${sourceData.length} conversations)`
+                                : `已粘贴 Markdown 内容（累计 ${sourceData.length} 个会话）`;
 
                             const platform = result.platform || extractPlatformFromUrl(result.url) || 'Unknown';
                             const msgCount = result.messages ? result.messages.length : 0;
-                            const dedupeHint = duplicateIndex >= 0 ? '（检测到重复，已覆盖旧会话）' : '';
-                            showInfo(`已追加 ${platform} 对话，包含 ${msgCount} 条消息。当前会话池共 ${sourceData.length} 个${dedupeHint}`);
+                            const dedupeHint = duplicateIndex >= 0 ? t('info.pasteDedupeHint') : '';
+                            showInfo(t('info.pasteAppended', {
+                                platform: platform,
+                                msgCount: msgCount,
+                                total: sourceData.length,
+                                dedupeHint: dedupeHint
+                            }));
                             saveCurrentSourceBuffersToPool();
                             rebuildWorkspaceFromCurrentSource();
 
@@ -6364,15 +7295,15 @@
 
                             const mergeButton = document.getElementById('mergeButton');
                             if (rikkahubData) {
-                                mergeButton.textContent = '合并聊天记录';
+                                mergeButton.textContent = t('merge.button.ready');
                             }
 
                         } catch (error) {
                             console.error('粘贴内容处理错误:', error);
                             // 移除加载状态
                             uploadBox.classList.remove('loading', 'has-wave');
-                            fileInfo.textContent = '粘贴失败';
-                            showError('解析粘贴内容失败: ' + error.message);
+                            fileInfo.textContent = currentLanguage === 'en-US' ? 'Paste failed' : '粘贴失败';
+                            showError(t('error.pasteParseFailed', { message: error.message }));
                             uploadBox.classList.add('error');
                         }
                     }
@@ -6904,7 +7835,9 @@
                                     if (!countElement) return;
                                     const total = previewEditMessages.length;
                                     const selected = previewEditMessages.filter(msg => msg.selected !== false).length;
-                                    countElement.textContent = `(已选 ${selected} / ${total} 条)`;
+                                    countElement.textContent = currentLanguage === 'en-US'
+                                        ? `(Selected ${selected} / ${total})`
+                                        : `(已选 ${selected} / ${total} 条)`;
                                 }
 
                                 // 打开预览编辑对话框
@@ -6929,8 +7862,12 @@
                                     }
                                     if (intro) {
                                         intro.textContent = previewEditContext.messageOnly
-                                            ? '仅编辑消息内容：逐条修改/删除，取消勾选即不参与合并。'
-                                            : '你只需要做两件事：确认会话信息、勾选要保留的消息。';
+                                            ? (currentLanguage === 'en-US'
+                                                ? 'Message-only mode: edit/delete each message. Unchecked messages are excluded from merge.'
+                                                : '仅编辑消息内容：逐条修改/删除，取消勾选即不参与合并。')
+                                            : (currentLanguage === 'en-US'
+                                                ? 'Two steps only: verify conversation info, then keep the messages you want.'
+                                                : '你只需要做两件事：确认会话信息、勾选要保留的消息。');
                                     }
 
                                     document.getElementById('previewTitleInput').value = conversation?.title || '';
@@ -6950,7 +7887,7 @@
                                     const createMs = parseDateTimeInputToMs(createInput?.value, fallbackCreateMs);
                                     const sourceType = previewEditContext?.sourceType || previewEditConversation?.platform || currentDataSource;
                                     const sourceLabel = previewEditContext.messageOnly
-                                        ? `会话工作台 · ${resolvePreviewSourceLabel(sourceType)}`
+                                        ? `${currentLanguage === 'en-US' ? 'Workspace' : '会话工作台'} · ${resolvePreviewSourceLabel(sourceType)}`
                                         : resolvePreviewSourceLabel(sourceType);
 
                                     const messages = previewEditMessages
@@ -6964,7 +7901,7 @@
                                         .filter(msg => msg.content);
 
                                     if (messages.length === 0) {
-                                        showError('暂无可预览消息，请至少保留 1 条已勾选消息。');
+                                        showError(t('error.previewNoMessages'));
                                         return;
                                     }
 
@@ -7012,14 +7949,14 @@
                                         .filter(msg => String(msg.content || '').trim());
 
                                     if (selectedMessages.length === 0) {
-                                        showError('至少保留 1 条消息后再保存。');
+                                        showError(t('error.previewKeepOne'));
                                         return;
                                     }
 
                                     if (previewEditContext.mode === 'workspace' && previewEditConversation.__workspaceId) {
                                         const binding = getWorkspaceConversationBinding(previewEditConversation.__workspaceId);
                                         if (!binding) {
-                                            showError('会话已失效，请关闭后重新打开编辑。');
+                                            showError(t('error.previewSessionExpired'));
                                             return;
                                         }
 
@@ -7094,7 +8031,7 @@
                                         closePreviewEditModal();
                                         renderWorkspaceList();
                                         checkReady();
-                                        showInfo('会话消息已保存');
+                                        showInfo(t('info.previewMessagesSaved'));
                                         return;
                                     }
 
@@ -7140,7 +8077,7 @@
 
                                     closePreviewEditModal();
                                     rebuildWorkspaceFromCurrentSource();
-                                    showInfo('会话已保存');
+                                    showInfo(t('info.previewConversationSaved'));
                                 }
                         
                                 // 渲染消息列表
@@ -7150,7 +8087,7 @@
                                     updatePreviewMessageCount();
                         
                                     if (previewEditMessages.length === 0) {
-                                        listContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--md-sys-color-on-surface-variant);">暂无消息</div>';
+                                        listContainer.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--md-sys-color-on-surface-variant);">${currentLanguage === 'en-US' ? 'No messages' : '暂无消息'}</div>`;
                                         return;
                                     }
                         
@@ -7162,7 +8099,9 @@
                                         const isLongMessage = isPreviewMessageLong(msg.content);
                                         const collapsedClass = !msg._expanded && isLongMessage ? 'collapsed' : '';
                                         const renderedHtml = renderPreviewMessageHtml(msg.content);
-                                        const expandLabel = msg._expanded ? '收起' : '展开';
+                                        const expandLabel = msg._expanded
+                                            ? (currentLanguage === 'en-US' ? 'Collapse' : '收起')
+                                            : (currentLanguage === 'en-US' ? 'Expand' : '展开');
                         
                                         html += `
                                             <div class="preview-message-item role-${role} ${isChecked ? '' : 'is-unselected'}">
@@ -7180,8 +8119,8 @@
                                                     </div>
                                                     <div class="preview-message-actions">
                                                         ${isLongMessage ? `<button class="preview-message-action-btn" onclick="togglePreviewMessageExpand(${index})">${expandLabel}</button>` : ''}
-                                                        <button class="preview-message-action-btn" onclick="openMessageEditModal(${index})">编辑</button>
-                                                        <button class="preview-message-action-btn" onclick="deletePreviewMessage(${index})">删除</button>
+                                                        <button class="preview-message-action-btn" onclick="openMessageEditModal(${index})">${currentLanguage === 'en-US' ? 'Edit' : '编辑'}</button>
+                                                        <button class="preview-message-action-btn" onclick="deletePreviewMessage(${index})">${currentLanguage === 'en-US' ? 'Delete' : '删除'}</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -7275,14 +8214,14 @@
                                     // 关闭对话框并刷新列表
                                     closeMessageEditModal();
                                     renderPreviewMessagesList();
-                        
-                                    showInfo('消息已更新');
+
+                                    showInfo(t('info.previewMessageUpdated'));
                                 }
                         
                                 // 删除消息
                                 function deletePreviewMessage(messageIndex) {
                                     if (!previewEditMessages[messageIndex]) return;
-                                    if (confirm('确定要删除这条消息吗？')) {
+                                    if (confirm(currentLanguage === 'en-US' ? 'Delete this message?' : '确定要删除这条消息吗？')) {
                                         previewEditMessages.splice(messageIndex, 1);
                                         renderPreviewMessagesList();
                                     }
@@ -7328,12 +8267,12 @@
                                 }
                         
                         
-                                async function handleDeepSeekNewFile(arrayBuffer, uploadBox, fileInfo, fileName) {            // 验证ZIP文件签名
+        async function handleDeepSeekNewFile(arrayBuffer, uploadBox, fileInfo, fileName) {            // 验证ZIP文件签名
             const data = new Uint8Array(arrayBuffer);
             if (data.length < 4) {
                 uploadBox.classList.remove('loading', 'has-wave');
                 fileInfo.textContent = fileName + ' (' + formatFileSize(arrayBuffer.byteLength) + ')';
-                showError('文件太小，不是有效的 ZIP 文件');
+                showError(t('error.zipTooSmall'));
                 uploadBox.classList.add('error');
                 return;
             }
@@ -7342,7 +8281,7 @@
             if (signature !== 'PK') {
                 uploadBox.classList.remove('loading', 'has-wave');
                 fileInfo.textContent = fileName + ' (' + formatFileSize(arrayBuffer.byteLength) + ')';
-                showError('文件不是有效的 ZIP 文件');
+                showError(t('error.zipInvalid'));
                 uploadBox.classList.add('error');
                 return;
             }
@@ -7355,7 +8294,7 @@
             if (!convFile) {
                 uploadBox.classList.remove('loading', 'has-wave');
                 fileInfo.textContent = fileName + ' (' + formatFileSize(arrayBuffer.byteLength) + ')';
-                showError('压缩包中未找到 conversations.json 文件。请确保上传的是正确的 DeepSeek 导出文件。');
+                showError(t('error.deepseekNoConversationsJson'));
                 uploadBox.classList.add('error');
                 return;
             }
@@ -7367,13 +8306,13 @@
             uploadBox.classList.remove('loading', 'has-wave');
             fileInfo.textContent = fileName + ' (' + formatFileSize(arrayBuffer.byteLength) + ')';
             
-            showInfo(`已加载 ${sourceData.length} 个 DeepSeek 对话`);
+            showInfo(t('info.deepseekLoaded', { count: sourceData.length }));
             saveCurrentSourceBuffersToPool();
             rebuildWorkspaceFromCurrentSource();
             checkReady();
             const mergeButton = document.getElementById('mergeButton');
             if (rikkahubData) {
-                mergeButton.textContent = '合并聊天记录';
+                mergeButton.textContent = t('merge.button.ready');
             }
         }
 
@@ -7385,7 +8324,7 @@
             if (lines.length < 2) {
                 uploadBox.classList.remove('loading', 'has-wave');
                 fileInfo.textContent = fileName + ' (' + formatFileSize(arrayBuffer.byteLength) + ')';
-                showError('CSV 文件为空或格式不正确');
+                showError(t('error.csvEmpty'));
                 uploadBox.classList.add('error');
                 return;
             }
@@ -7400,7 +8339,7 @@
             if (idIndex === -1 || timeIndex === -1 || roleIndex === -1 || contentIndex === -1) {
                 uploadBox.classList.remove('loading', 'has-wave');
                 fileInfo.textContent = fileName + ' (' + formatFileSize(arrayBuffer.byteLength) + ')';
-                showError('CSV 文件格式不正确，缺少必要的列（id, time, role, content）');
+                showError(t('error.csvMissingColumns'));
                 uploadBox.classList.add('error');
                 return;
             }
@@ -7430,7 +8369,10 @@
             uploadBox.classList.remove('loading', 'has-wave');
             fileInfo.textContent = fileName + ' (' + formatFileSize(arrayBuffer.byteLength) + ')';
             
-            showInfo(`已加载 ${sourceData.length} 个 DeepSeek 对话（从 ${messages.length} 条消息）`);
+            showInfo(t('info.deepseekLoadedFromMessages', {
+                count: sourceData.length,
+                msgCount: messages.length
+            }));
             saveCurrentSourceBuffersToPool();
             rebuildWorkspaceFromCurrentSource();
             checkReady();
@@ -7497,7 +8439,7 @@
 
                 // 验证文件类型
                 if (!file.name.endsWith('.zip')) {
-                    showError('DeepSeek 旧版文件必须是 .zip 格式');
+                    showError(t('error.deepseekOldMustZip'));
                     uploadBox.classList.add('error');
                     return;
                 }
@@ -7506,7 +8448,7 @@
                 
                 // 添加加载动画
                 uploadBox.classList.add('loading', 'has-wave');
-                fileInfo.innerHTML = `<span class="circular-wavy-loading"><span class="wave"></span><span class="wave"></span><span class="wave"></span></span> 读取中...`;
+                fileInfo.innerHTML = `<span class="circular-wavy-loading"><span class="wave"></span><span class="wave"></span><span class="wave"></span></span> ${currentLanguage === 'en-US' ? 'Reading...' : '读取中...'}`;
 
                 const reader = new FileReader();
                 reader.onload = async (e) => {
@@ -7515,7 +8457,7 @@
                         const data = new Uint8Array(e.target.result);
                         if (data.length < 4) {
                             uploadBox.classList.remove('loading', 'has-wave');
-                            showError('文件太小，不是有效的 ZIP 文件');
+                            showError(t('error.zipTooSmall'));
                             uploadBox.classList.add('error');
                             return;
                         }
@@ -7523,7 +8465,7 @@
                         const signature = String.fromCharCode(data[0], data[1]);
                         if (signature !== 'PK') {
                             uploadBox.classList.remove('loading', 'has-wave');
-                            showError('文件不是有效的 ZIP 文件');
+                            showError(t('error.zipInvalid'));
                             uploadBox.classList.add('error');
                             return;
                         }
@@ -7535,7 +8477,7 @@
                         const csvFile = files.find(f => f.includes('chat.csv') || f.includes('coder.csv'));
                         if (!csvFile) {
                             uploadBox.classList.remove('loading', 'has-wave');
-                            showError('压缩包中未找到 chat.csv 或 coder.csv 文件。请确保上传的是正确的 DeepSeek 旧版导出文件。');
+                            showError(t('error.deepseekOldMissingCsv'));
                             uploadBox.classList.add('error');
                             return;
                         }
@@ -7548,7 +8490,7 @@
 
                         if (lines.length < 2) {
                             uploadBox.classList.remove('loading', 'has-wave');
-                            showError('CSV 文件为空或格式不正确');
+                            showError(t('error.csvEmpty'));
                             uploadBox.classList.add('error');
                             return;
                         }
@@ -7563,7 +8505,7 @@
                         if (idIndex === -1 || timeIndex === -1 || roleIndex === -1 || contentIndex === -1) {
                             uploadBox.classList.remove('loading', 'has-wave');
                             fileInfo.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
-                            showError('CSV 文件格式不正确，缺少必要的列（id, time, role, content）');
+                            showError(t('error.csvMissingColumns'));
                             uploadBox.classList.add('error');
                             return;
                         }
@@ -7591,17 +8533,20 @@
                         uploadBox.classList.remove('loading', 'has-wave');
                         fileInfo.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
 
-                        showInfo(`已加载 DeepSeek 旧版数据，包含 ${secondSourceData.length} 个对话（从 ${messages.length} 条消息）`);
+                        showInfo(t('info.deepseekOldLoaded', {
+                            count: secondSourceData.length,
+                            msgCount: messages.length
+                        }));
                         saveCurrentSourceBuffersToPool();
                         rebuildWorkspaceFromCurrentSource();
                         checkReady();
                     } catch (error) {
                         console.error('DeepSeek 旧版文件处理错误:', error);
-                        let errorMsg = '读取 DeepSeek 旧版文件失败: ' + error.message;
+                        let errorMsg = t('error.deepseekOldReadFailedWithMsg', { message: error.message });
                         if (error.message.includes('end of central directory')) {
-                            errorMsg = '文件不是有效的 ZIP 文件或文件已损坏。';
+                            errorMsg = t('error.deepseekOldInvalidZip');
                         } else if (error.message.includes('JSON')) {
-                            errorMsg = '文件中的 JSON 格式错误。';
+                            errorMsg = t('error.deepseekOldInvalidJson');
                         }
                         // 移除加载状态
                         uploadBox.classList.remove('loading', 'has-wave');
@@ -7615,7 +8560,7 @@
                     // 移除加载状态
                     uploadBox.classList.remove('loading', 'has-wave');
                     fileInfo.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
-                    showError('读取 DeepSeek 旧版文件时发生错误');
+                    showError(t('error.deepseekOldReadFailed'));
                     uploadBox.classList.add('error');
                 };
 
@@ -7845,7 +8790,7 @@
                 // 验证文件类型
                 if (!file.name.endsWith('.zip')) {
                     pendingMergeAfterRikkaUpload = false;
-                    showError('RikkaHub 文件必须是 .zip 格式');
+                    showError(t('error.rikkaMustZip'));
                     uploadBox.classList.add('error');
                     return;
                 }
@@ -7854,7 +8799,7 @@
                 
                 // 添加加载动画
                 uploadBox.classList.add('loading', 'has-wave');
-                fileInfo.innerHTML = `<span class="circular-wavy-loading"><span class="wave"></span><span class="wave"></span><span class="wave"></span></span> 读取中...`;
+                fileInfo.innerHTML = `<span class="circular-wavy-loading"><span class="wave"></span><span class="wave"></span><span class="wave"></span></span> ${currentLanguage === 'en-US' ? 'Reading...' : '读取中...'}`;
 
                 const reader = new FileReader();
                 reader.onload = async (e) => {
@@ -7864,7 +8809,7 @@
                         if (data.length < 4) {
                             uploadBox.classList.remove('loading', 'has-wave');
                             fileInfo.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
-                            showError('RikkaHub 文件太小，不是有效的 ZIP 文件');
+                            showError(t('error.rikkaTooSmall'));
                             uploadBox.classList.add('error');
                             return;
                         }
@@ -7874,8 +8819,8 @@
                         if (signature !== 'PK') {
                             uploadBox.classList.remove('loading', 'has-wave');
                             fileInfo.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
-                            showError('RikkaHub 文件不是有效的 ZIP 文件。文件前4字节: ' +
-                                Array.from(data.slice(0, 4)).map(b => b.toString(16).padStart(2, '0')).join(' '));
+                            const prefix = Array.from(data.slice(0, 4)).map(b => b.toString(16).padStart(2, '0')).join(' ');
+                            showError(t('error.rikkaInvalidZipPrefix', { prefix }));
                             uploadBox.classList.add('error');
                             return;
                         }
@@ -7893,7 +8838,7 @@
                             uploadBox.classList.remove('loading', 'has-wave');
                             fileInfo.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
                             console.log('ZIP文件中的文件列表:', files);
-                            showError('RikkaHub 压缩包中未找到 rikka_hub.db 文件。ZIP 文件中包含: ' + files.join(', '));
+                            showError(t('error.rikkaDbMissing', { files: files.join(', ') }));
                             uploadBox.classList.add('error');
                             return;
                         }
@@ -7927,11 +8872,14 @@
                         }
 
                         if (!tableMap.hasCoreTables) {
-                            const detectedTables = tableMap.tables.length > 0 ? tableMap.tables.join(', ') : '（未检测到表）';
+                            const detectedTables = tableMap.tables.length > 0 ? tableMap.tables.join(', ') : t('summary.noTablesDetected');
                             const walHint = walFile
-                                ? '已检测到 WAL，但无法从 WAL 重建会话表。'
-                                : '未检测到 WAL 文件。';
-                            throw new Error(`未找到 ConversationEntity / message_node 表。当前表: ${detectedTables}。${walHint}`);
+                                ? t('error.rikkaWalHintDetected')
+                                : t('error.rikkaWalHintMissing');
+                            throw new Error(t('error.rikkaCoreTablesMissing', {
+                                tables: detectedTables,
+                                walHint
+                            }));
                         }
 
                         // 验证数据库
@@ -7947,9 +8895,12 @@
                         fileInfo.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
                         
                         if (walRecoverInfo?.applied) {
-                            showInfo(`已加载 RikkaHub 数据库（从 WAL 重建 ${walRecoverInfo.frameCount} 帧），包含 ${conversationCount} 个对话`);
+                            showInfo(t('info.rikkaDbLoadedWal', {
+                                frameCount: walRecoverInfo.frameCount,
+                                count: conversationCount
+                            }));
                         } else {
-                            showInfo(`已加载 RikkaHub 数据库，包含 ${conversationCount} 个对话`);
+                            showInfo(t('info.rikkaDbLoaded', { count: conversationCount }));
                         }
 
                         testDb.close();
@@ -7959,7 +8910,9 @@
                         if (settingsFile) {
                             const settingsContent = await zip.file(settingsFile).async('string');
                             rikkahubSettings = JSON.parse(settingsContent);
-                            showInfo(`已加载 RikkaHub 设置文件，包含 ${rikkahubSettings.assistants ? rikkahubSettings.assistants.length : 0} 个助手`);
+                            showInfo(t('info.rikkaSettingsLoaded', {
+                                count: rikkahubSettings.assistants ? rikkahubSettings.assistants.length : 0
+                            }));
                         } else {
                             console.warn('RikkaHub 压缩包中未找到 settings.json 文件，将创建新配置');
                             rikkahubSettings = { assistants: [] };
@@ -7982,11 +8935,11 @@
                         uploadBox.classList.remove('loading', 'has-wave');
                         fileInfo.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
                         if (error.message.includes('end of central directory')) {
-                            showError('RikkaHub 文件不是有效的 ZIP 文件或文件已损坏。请确保：\n1. 文件名以 .zip 结尾\n2. 文件是从 RikkaHub 导出的完整备份\n3. 尝试重新导出 RikkaHub 备份');
+                            showError(t('error.rikkaCorrupt'));
                         } else if (error.message.includes('database')) {
-                            showError('RikkaHub 数据库文件格式错误。请确保文件完整。');
+                            showError(t('error.rikkaDbFormat'));
                         } else {
-                            showError('读取 RikkaHub 文件失败: ' + error.message + '\n提示：请上传从 RikkaHub 导出的 .zip 备份文件');
+                            showError(t('error.rikkaReadFailed', { message: error.message }));
                         }
                         uploadBox.classList.add('error');
                     }
@@ -7997,7 +8950,7 @@
                     // 移除加载状态
                     uploadBox.classList.remove('loading', 'has-wave');
                     fileInfo.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
-                    showError('读取 RikkaHub 文件时发生错误');
+                    showError(t('error.rikkaReadGeneral'));
                     uploadBox.classList.add('error');
                 };
 
@@ -8023,22 +8976,22 @@
 
             // 更新按钮文本和样式
             if (!ready) {
-                mergeButton.textContent = '合并聊天记录（请先上传文件）';
+                mergeButton.textContent = t('merge.button.needUpload');
                 if (!sourceReady) {
-                    mergeButton.title = '请先上传源数据文件';
+                    mergeButton.title = t('merge.button.title.needSource');
                 } else if (selectedConversationCount === 0) {
-                    mergeButton.title = '请先在会话工作台中勾选至少一个会话';
-                    mergeButton.textContent = '合并聊天记录（未选择会话）';
+                    mergeButton.title = t('merge.button.title.needSelection');
+                    mergeButton.textContent = t('merge.button.noSelection');
                 } else {
                     mergeButton.title = '';
                 }
             } else {
                 if (rikkahubReady) {
-                    mergeButton.textContent = '合并聊天记录';
+                    mergeButton.textContent = t('merge.button.ready');
                     mergeButton.title = '';
                 } else {
-                    mergeButton.textContent = '合并聊天记录（下一步选择 RikkaHub 备份）';
-                    mergeButton.title = '点击后选择 RikkaHub 原始备份 ZIP';
+                    mergeButton.textContent = t('merge.button.needBackup');
+                    mergeButton.title = t('merge.button.title.needBackup');
                 }
             }
         }
@@ -8051,23 +9004,16 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
-        function showInfo(message) {
-            const status = document.getElementById('status');
-            status.className = 'status info';
-            status.style.display = 'block';
-            status.textContent = message;
-        }
-
         function showSuccess(message) {
-            showToast('操作成功', message, 'success', 8000);
+            showToast(t('toast.success'), message, 'success', 8000);
         }
 
         function showError(message) {
-            showToast('错误', message, 'error', 10000);
+            showToast(t('toast.error'), message, 'error', 10000);
         }
 
         function showInfo(message) {
-            showToast('提示', message, 'info', 6000);
+            showToast(t('toast.info'), message, 'info', 6000);
         }
 
         function updateProgress(percent) {
@@ -8213,7 +9159,7 @@
             });
 
             if (uniqueLines.length > limit) {
-                clipped.push(`...其余 ${uniqueLines.length - limit} 条未展示`);
+                clipped.push(t('summary.unknownMore', { count: uniqueLines.length - limit }));
             }
             return clipped;
         }
@@ -8280,7 +9226,7 @@
                 const fallbackKey = conv._sourceKey || `${conv.title || ''}|${conv.create_at || ''}|${conv.update_at || ''}`;
                 baseConvId = normalizeConversationId(conv.id, 'youraiscroll', fallbackKey);
                 conflictSalt = 'youraiscroll';
-                title = conv.title || 'YourAIScroll 对话';
+                title = conv.title || t('fallback.youraiscrollConversationTitle');
                 createTime = (conv.create_at || Date.now() / 1000) * 1000;
                 updateTime = (conv.update_at || conv.create_at || Date.now() / 1000) * 1000;
 
@@ -8319,7 +9265,12 @@
             order.forEach(sourceType => {
                 const bucket = ensureMergeSourceStatsBucket(sourceStats, sourceType);
                 if (bucket.selected <= 0) return;
-                lines.push(`${getMergeSourceLabel(sourceType)}：新增 ${bucket.added}，跳过 ${bucket.skipped}，警告 ${bucket.warnings}`);
+                lines.push(t('report.sourceDiffLine', {
+                    source: getMergeSourceLabel(sourceType),
+                    added: bucket.added,
+                    skipped: bucket.skipped,
+                    warnings: bucket.warnings
+                }));
             });
             return lines;
         }
@@ -8327,22 +9278,32 @@
         function buildMergeWarningLinesFromReport(report) {
             const lines = [];
             if ((report?.chatgptImageMissingCount || 0) > 0) {
-                lines.push(`ChatGPT 有 ${report.chatgptImageMissingCount} 个图片引用未在导出包中找到：已保留文本消息并跳过缺失图片。`);
+                lines.push(t('report.warning.imageMissing', {
+                    count: report.chatgptImageMissingCount
+                }));
             }
             if ((report?.unknownBlockCount || 0) > 0) {
-                lines.push(`检测到 ${report.unknownBlockCount} 个无法识别块标记：将按普通文本保留。`);
+                lines.push(t('report.warning.unknownBlocks', {
+                    count: report.unknownBlockCount
+                }));
             }
             if ((report?.emptyConversationCount || 0) > 0) {
-                lines.push(`有 ${report.emptyConversationCount} 个会话在转换后无有效消息：已自动跳过。`);
+                lines.push(t('report.warning.emptyConversations', {
+                    count: report.emptyConversationCount
+                }));
             }
             if ((report?.duplicateCount || 0) > 0 && report?.duplicateStrategy === 'skip') {
-                lines.push(`检测到 ${report.duplicateCount} 个重复会话 ID：按策略“跳过已存在会话”。`);
+                lines.push(t('report.warning.duplicatesSkipped', {
+                    count: report.duplicateCount
+                }));
             }
             if ((report?.keepBothCount || 0) > 0) {
-                lines.push(`检测到 ${report.keepBothCount} 个会话 ID 冲突：已按策略“保留并另存”。`);
+                lines.push(t('report.warning.keepBoth', {
+                    count: report.keepBothCount
+                }));
             }
             if (lines.length === 0) {
-                lines.push('未发现结构风险。');
+                lines.push(t('report.warning.none'));
             }
             return lines;
         }
@@ -8355,13 +9316,13 @@
             const selectedConversationCount = selectedBindings.length;
 
             if (!hasAnyImportedSourceData()) {
-                showError('请先上传源数据文件');
+                showError(t('error.mergeNeedSource'));
                 checkReady();
                 return;
             }
 
             if (selectedConversationCount === 0) {
-                showError('请先在会话工作台中勾选至少一个会话');
+                showError(t('error.mergeNeedSelection'));
                 checkReady();
                 return;
             }
@@ -8369,7 +9330,7 @@
             if (!rikkahubData) {
                 pendingMergeAfterRikkaUpload = true;
                 openRikkaHubRequiredModal();
-                showInfo('请先选择 RikkaHub 原始备份 ZIP，选择后会自动继续合并。');
+                showInfo(t('info.mergeNeedRikka'));
                 checkReady();
                 return;
             }
@@ -8379,10 +9340,10 @@
             const imageFiles = new Map();
             const mergeButton = document.getElementById('mergeButton');
             mergeButton.disabled = true;
-            mergeButton.innerHTML = `<span class="circular-wavy-loading"><span class="wave"></span><span class="wave"></span><span class="wave"></span></span> 合并中...`;
+            mergeButton.innerHTML = `<span class="circular-wavy-loading"><span class="wave"></span><span class="wave"></span><span class="wave"></span></span> ${t('merge.button.processing')}`;
 
             updateProgress(5);
-            showInfo('正在初始化...');
+            showInfo(t('info.mergeInit'));
             await new Promise(resolve => setTimeout(resolve, 50));
 
             let mergedDb = null;
@@ -8391,14 +9352,14 @@
 
             try {
                 updateProgress(10);
-                showInfo('正在初始化数据库...');
+                showInfo(t('info.mergeInitDb'));
 
                 await initSQL();
                 mergedDb = new db.Database(rikkahubData);
                 const tableMap = getRikkaDbTableMap(mergedDb);
                 if (!tableMap.hasCoreTables) {
-                    const tableList = tableMap.tables.length > 0 ? tableMap.tables.join(', ') : '（未检测到表）';
-                    throw new Error('无法识别 RikkaHub 会话表结构。检测到表: ' + tableList);
+                    const tableList = tableMap.tables.length > 0 ? tableMap.tables.join(', ') : t('summary.noTablesDetected');
+                    throw new Error(t('error.mergeUnknownSchema', { tableList }));
                 }
                 const conversationTableSql = quoteSqlIdentifier(tableMap.conversationTable);
                 const messageNodeTableSql = quoteSqlIdentifier(tableMap.messageNodeTable);
@@ -8415,12 +9376,12 @@
                         });
                     }
                 } catch (e) {
-                    throw new Error('无法读取会话表: ' + e.message);
+                    throw new Error(t('error.mergeReadConversationTable', { message: e.message }));
                 }
                 const baselineConversationCount = existingConversationIds.size;
 
                 updateProgress(15);
-                showInfo('正在创建助手...');
+                showInfo(t('info.mergeCreateAssistant'));
 
                 let settings = rikkahubSettings || { assistants: [] };
                 const assistantMergeStrategy = getAssistantMergeStrategy();
@@ -8517,11 +9478,11 @@
                 }
 
                 updateProgress(18);
-                showInfo('正在准备 ChatGPT 图片索引...');
+                showInfo(t('info.mergePrepareImages'));
                 const chatgptImageIndexReport = await ensureChatGPTImageIndexForBindings(selectedBindings);
 
                 updateProgress(20);
-                showInfo('正在处理多来源数据...');
+                showInfo(t('info.mergeProcessSources'));
 
                 const sourceStats = {
                     chatgpt: createMergeSourceStatsBucket(),
@@ -8649,10 +9610,15 @@
                 const dryRunDiffLines = buildMergeSourceDiffLines(sourceStats);
                 const dryRunWarningLines = buildMergeWarningLinesFromReport(dryRunReport);
                 const unknownDetailPreviewLines = buildUnknownDetailPreviewLines(unknownBlockDetailLines, 24);
-                const dryRunSummary = `本次已选 ${selectedConversationCount} 个会话，预计写入 ${preparedConversations.length} 个会话 / ${insertedMessageCount} 条消息，跳过 ${duplicateCount + emptyConversationCount} 个会话。`;
+                const dryRunSummary = t('summary.mergeDryRun', {
+                    selected: selectedConversationCount,
+                    added: preparedConversations.length,
+                    messages: insertedMessageCount,
+                    skipped: duplicateCount + emptyConversationCount
+                });
 
                 updateProgress(45);
-                showInfo('预检完成，等待确认...');
+                showInfo(t('info.mergeDryRunReady'));
                 const dryRunConfirmed = await requestMergeDryRunConfirmation(
                     dryRunSummary,
                     dryRunDiffLines,
@@ -8663,12 +9629,12 @@
                     }
                 );
                 if (!dryRunConfirmed) {
-                    showInfo('已取消合并：未写入任何数据。');
+                    showInfo(t('info.mergeCancelled'));
                     return;
                 }
 
                 updateProgress(50);
-                showInfo('正在写入数据库...');
+                showInfo(t('info.mergeWritingDb'));
                 mergedDb.run('BEGIN TRANSACTION');
                 transactionStarted = true;
 
@@ -8727,12 +9693,12 @@
                 }
 
                 updateProgress(85);
-                showInfo('正在准备数据库...');
+                showInfo(t('info.mergePrepareDb'));
 
                 mergedDb.run('PRAGMA journal_mode = DELETE');
                 mergedDb.run('PRAGMA wal_checkpoint(TRUNCATE)');
 
-                showInfo('正在生成压缩包...');
+                showInfo(t('info.mergeGeneratingZip'));
 
                 const data = mergedDb.export();
                 mergedDb.close();
@@ -8799,43 +9765,57 @@
                 }
 
                 updateProgress(95);
-                showInfo('正在生成下载包...');
+                showInfo(t('info.mergeGeneratingDownload'));
 
                 const content = await zip.generateAsync({ type: 'blob' });
 
                 updateProgress(100);
-                const duplicateText = duplicateCount > 0 ? `\n跳过 ${duplicateCount} 个重复会话（已存在）` : '';
-                const keepBothText = keepBothCount > 0 ? `\n发现 ${keepBothCount} 个 ID 冲突，已按“保留并另存”生成新会话 ID。` : '';
-                const emptySkipText = emptyConversationCount > 0 ? `\n跳过 ${emptyConversationCount} 个空会话（转换后无有效消息）。` : '';
-                const warningText = warningCount > 0 ? `\n预检警告 ${warningCount} 条，请在下载弹窗查看详情。` : '';
+                const duplicateText = duplicateCount > 0 ? t('success.mergeDuplicate', { count: duplicateCount }) : '';
+                const keepBothText = keepBothCount > 0 ? t('success.mergeKeepBoth', { count: keepBothCount }) : '';
+                const emptySkipText = emptyConversationCount > 0 ? t('success.mergeEmptySkip', { count: emptyConversationCount }) : '';
+                const warningText = warningCount > 0 ? t('success.mergeWarning', { count: warningCount }) : '';
                 const sourceTypeSet = new Set(selectedBindings.map(binding => binding?.item?.dataSource || currentDataSource));
                 const sourceSummary = [];
-                if (sourceStats.chatgpt.added > 0) sourceSummary.push(`ChatGPT ${sourceStats.chatgpt.added} 个`);
-                if (sourceStats.deepseek.added > 0) sourceSummary.push(`DeepSeek ${sourceStats.deepseek.added} 个`);
-                if (sourceStats.youraiscroll.added > 0) sourceSummary.push(`YourAIScroll ${sourceStats.youraiscroll.added} 个`);
+                if (sourceStats.chatgpt.added > 0) sourceSummary.push(t('summary.sourceItem', { source: 'ChatGPT', count: sourceStats.chatgpt.added }));
+                if (sourceStats.deepseek.added > 0) sourceSummary.push(t('summary.sourceItem', { source: 'DeepSeek', count: sourceStats.deepseek.added }));
+                if (sourceStats.youraiscroll.added > 0) sourceSummary.push(t('summary.sourceItem', { source: 'YourAIScroll', count: sourceStats.youraiscroll.added }));
 
-                let titleHint = '会话标题保持导入来源的默认策略。';
+                let titleHint = t('success.titleHint.default');
                 if (sourceTypeSet.size === 1 && sourceTypeSet.has('chatgpt')) {
-                    titleHint = 'ChatGPT 会话标题会自动添加 [ChatGPT] 前缀，方便识别。';
+                    titleHint = t('success.titleHint.chatgpt');
                 } else if (sourceTypeSet.size === 1 && sourceTypeSet.has('deepseek')) {
-                    titleHint = 'DeepSeek 新版会话标题会自动添加 [DeepSeek] 前缀，旧版会话保留原标题。';
+                    titleHint = t('success.titleHint.deepseek');
                 } else if (sourceTypeSet.size === 1 && sourceTypeSet.has('youraiscroll')) {
-                    titleHint = 'YourAIScroll 会话保留原标题。';
+                    titleHint = t('success.titleHint.youraiscroll');
                 } else if (sourceSummary.length > 0) {
-                    titleHint = `多来源合并完成：${sourceSummary.join('，')}。`;
+                    titleHint = t('success.titleHint.multi', { summary: sourceSummary.join(currentLanguage === 'en-US' ? ', ' : '，') });
                 }
 
                 const assistantStrategyText = assistantMergeStrategy === 'single_assistant'
-                    ? '助手策略：统一到单一助手。'
-                    : '助手策略：按来源分配助手。';
-                const mergeSummaryForModal = `本次已选 ${selectedConversationCount} 个会话，成功写入 ${actualAddedConversationCount} 个会话，写入 ${insertedMessageCount} 条消息，跳过 ${duplicateCount + emptyConversationCount} 个会话。`;
+                    ? t('success.assistant.single')
+                    : t('success.assistant.bySource');
+                const mergeSummaryForModal = t('summary.mergeModal', {
+                    selected: selectedConversationCount,
+                    added: actualAddedConversationCount,
+                    messages: insertedMessageCount,
+                    skipped: duplicateCount + emptyConversationCount
+                });
                 prepareMergedZipDownload(content, 'rikka_hub_merged.zip', mergeSummaryForModal, {
                     diffLines: dryRunDiffLines,
                     warningLines: dryRunWarningLines,
                     unknownLines: unknownDetailPreviewLines,
                     unknownTotal: unknownBlockCount
                 });
-                showSuccess(`合并完成！已写入 ${actualAddedConversationCount} 个会话 / ${insertedMessageCount} 条消息。${duplicateText}${keepBothText}${emptySkipText}${warningText}\n${assistantStrategyText}\n${titleHint}\n已生成下载包，请在弹窗中确认下载。\n不会影响原有的 RikkaHub 对话。`);
+                showSuccess(t('success.mergeCompleted', {
+                    convCount: actualAddedConversationCount,
+                    msgCount: insertedMessageCount,
+                    duplicateText,
+                    keepBothText,
+                    emptySkipText,
+                    warningText,
+                    assistantStrategyText,
+                    titleHint
+                }));
 
             } catch (error) {
                 if (mergedDb && transactionStarted) {
@@ -8847,7 +9827,7 @@
                 }
                 console.error('合并失败:', error);
                 console.error('错误堆栈:', error.stack);
-                showError('合并失败: ' + error.message + '\n\n详细信息: ' + error);
+                showError(t('error.mergeFailed', { message: error.message, detail: error }));
             } finally {
                 if (mergedDb && !dbClosed) {
                     try {
@@ -8862,7 +9842,7 @@
                 gridLoading.querySelector('.grid-loading').classList.remove('animating');
 
                 mergeButton.disabled = false;
-                mergeButton.textContent = '合并聊天记录';
+                mergeButton.textContent = t('merge.button.ready');
             }
         }
 
