@@ -131,6 +131,124 @@
             font-size: 14px;
         }
 
+        .subtitle-note {
+            text-align: center;
+            color: var(--md-sys-color-on-surface-variant);
+            margin-top: calc(var(--md-sys-spacing-2xl) * -0.65);
+            margin-bottom: var(--md-sys-spacing-lg);
+            font-size: 13px;
+            line-height: 1.75;
+            opacity: 0.92;
+        }
+
+        .mission-card {
+            border: 1px solid color-mix(in srgb, var(--md-sys-color-primary) 26%, var(--md-sys-color-outline));
+            background:
+                radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--md-sys-color-primary-container) 50%, transparent), transparent 60%),
+                var(--md-sys-color-surface-container);
+            margin-bottom: var(--md-sys-spacing-xl);
+        }
+
+        .mission-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            font-weight: 700;
+            color: var(--md-sys-color-on-primary-container);
+            background: var(--md-sys-color-primary-container);
+            margin-bottom: 10px;
+        }
+
+        .mission-title {
+            margin: 0;
+            font-size: 24px;
+            line-height: 1.35;
+            color: var(--md-sys-color-on-surface);
+        }
+
+        .mission-desc {
+            margin-top: 10px;
+            margin-bottom: 0;
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--md-sys-color-on-surface-variant);
+        }
+
+        .mission-manifesto {
+            margin-top: 14px;
+            margin-bottom: 0;
+            padding: 10px 12px;
+            border-radius: var(--md-sys-shape-corner-small);
+            border-left: 3px solid var(--md-sys-color-primary);
+            background: color-mix(in srgb, var(--md-sys-color-primary-container) 45%, transparent);
+            color: var(--md-sys-color-on-primary-container);
+            font-size: 13px;
+            line-height: 1.7;
+            font-weight: 600;
+        }
+
+        .mission-pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .mission-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            line-height: 1;
+            border: 1px solid var(--md-sys-color-outline-variant);
+            background: var(--md-sys-color-surface-container-high);
+            color: var(--md-sys-color-on-surface-variant);
+        }
+
+        .mission-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .mission-action-primary,
+        .mission-action-secondary {
+            padding: 10px 14px;
+            border-radius: var(--md-sys-shape-corner-small);
+            border: 1px solid var(--md-sys-color-outline);
+        }
+
+        .mission-action-primary {
+            color: var(--md-sys-color-on-primary-container);
+            background: var(--md-sys-color-primary-container);
+            border-color: color-mix(in srgb, var(--md-sys-color-primary) 40%, var(--md-sys-color-outline));
+        }
+
+        .mission-action-secondary {
+            color: var(--md-sys-color-on-surface);
+            background: var(--md-sys-color-surface-container-high);
+        }
+
+        @media (max-width: 768px) {
+            .mission-title {
+                font-size: 21px;
+            }
+
+            .mission-actions {
+                flex-direction: column;
+            }
+
+            .mission-action-primary,
+            .mission-action-secondary {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
         /* 卡片组件 - 参考 Material Design 3 Elevation */
         .card {
             background: var(--md-sys-color-surface-container);
@@ -2707,17 +2825,34 @@
 
     <div class="container">
         <h1>ChatWeave</h1>
-        <p class="subtitle" id="appSubtitle">统一聊天记录工作台（导入 / 浏览 / 编辑 / 合并）v1.6.4</p>
+        <p class="subtitle" id="appSubtitle">把旧对话接回现在（导入 / 浏览 / 编辑 / 合并）v1.6.5</p>
+        <p class="subtitle-note" id="appEmotionalNote">你不是来重来的。把熟悉的聊天迁回这里，继续和 ta 说下去。</p>
+
+        <div class="card mission-card">
+            <div class="mission-badge" id="missionBadge">CONVERSATION CONTINUITY</div>
+            <h2 class="mission-title" id="missionTitle">不是重来，是把熟悉的 ta 接回来</h2>
+            <p class="mission-desc" id="missionDesc">把你们已经说过的话整理好、带走、继续。</p>
+            <p class="mission-manifesto" id="missionManifesto">我们代表那 0.1%，相信有些声音不应被抹去。</p>
+            <div class="mission-pill-row">
+                <span class="mission-pill" id="missionPill1">本地处理</span>
+                <span class="mission-pill" id="missionPill2">可预览可编辑</span>
+                <span class="mission-pill" id="missionPill3">可回滚</span>
+            </div>
+            <div class="mission-actions">
+                <button class="btn-text mission-action-primary" id="missionPrimaryBtn" type="button" onclick="openModal('usage')">开始迁回熟悉的 ta</button>
+                <button class="btn-text mission-action-secondary" id="missionSecondaryBtn" type="button" onclick="openModal('about')">先看流程与边界</button>
+            </div>
+        </div>
 
         <!-- 重要须知卡片 -->
         <div class="card warning-card">
-            <p><strong id="warningCardTitle">⚠️ 风险与备份须知</strong></p>
-            <p id="warningCardDesc">本工具为第三方本地转换工具，不代表 ChatGPT、DeepSeek、YourAIScroll 或 RikkaHub 官方立场。</p>
+            <p><strong id="warningCardTitle">合并前先做这 3 件事</strong></p>
+            <p id="warningCardDesc">先备份、先小样、再全量。这样最稳，也最不容易丢失回忆。</p>
             <ul style="margin: 8px 0 0 20px; line-height: 1.8;">
-                <li id="warningItem1">务必保留：源导出文件 + RikkaHub 原始备份 ZIP（回滚基线）</li>
-                <li id="warningItem2">建议先导入 1-3 个会话做小样验证，再进行全量合并</li>
-                <li id="warningItem3">如导入后闪退或异常，可清空应用数据并回滚原始备份</li>
-                <li id="warningItem4">详细兼容范围与恢复建议见“关于”页面</li>
+                <li id="warningItem1">保留两份原件：源导出文件 + RikkaHub 原始备份 ZIP</li>
+                <li id="warningItem2">先用 1-3 个会话试跑，确认展示正常再全量合并</li>
+                <li id="warningItem3">导入异常可回滚：清空应用数据后导回原始备份</li>
+                <li id="warningItem4">模型会变化，但会话可以迁移、可编辑、可继续</li>
             </ul>
         </div>
 
@@ -2746,10 +2881,10 @@
         <div class="upload-grid">
             <div class="upload-card">
                 <div class="step-badge">1</div>
-                <h3 id="sourceUploadCardTitle">上传源数据</h3>
+                <h3 id="sourceUploadCardTitle">上传待迁移会话</h3>
                 <div class="upload-box" id="sourceUpload" onclick="document.getElementById('sourceFile').click()">
                     <div class="upload-icon">📁</div>
-                    <div class="upload-text" id="sourceUploadText">点击或拖拽上传 ChatGPT 压缩包</div>
+                    <div class="upload-text" id="sourceUploadText">点击或拖拽上传 ChatGPT 官方导出 ZIP</div>
                     <div class="file-info" id="sourceFileInfo"></div>
                     <input type="file" id="sourceFile" accept=".zip,.csv" onchange="handleSourceFile(this)">
                 </div>
@@ -2760,10 +2895,10 @@
 
             <div class="upload-card" id="deepseekSecondCard" style="display: none;">
                 <div class="step-badge">2</div>
-                <h3 id="deepseekOldUploadCardTitle">上传 DeepSeek 旧版数据</h3>
+                <h3 id="deepseekOldUploadCardTitle">（可选）上传 DeepSeek 旧版数据</h3>
                 <div class="upload-box" id="deepseekSecondUpload" onclick="document.getElementById('deepseekSecondFile').click()">
                     <div class="upload-icon">📁</div>
-                    <div class="upload-text" id="deepseekSecondUploadText">点击或拖拽上传 DeepSeek 旧版压缩包（如果有的话）</div>
+                    <div class="upload-text" id="deepseekSecondUploadText">点击或拖拽上传 DeepSeek 旧版 ZIP（如果你有）</div>
                     <div class="file-info" id="deepseekSecondFileInfo"></div>
                     <input type="file" id="deepseekSecondFile" accept=".zip" onchange="handleDeepSeekSecondFile(this)">
                 </div>
@@ -2781,7 +2916,7 @@
                     type="text"
                     id="workspaceSearchInput"
                     class="workspace-search"
-                    placeholder="搜索会话标题或来源..."
+                    placeholder="搜索标题、来源或关键词..."
                     oninput="renderWorkspaceList()"
                 >
                 <button class="btn-text" id="workspaceSelectAllBtn" type="button" onclick="setWorkspaceSelectionState(true)">全选</button>
@@ -2793,11 +2928,11 @@
 
         <div class="card target-backup-card" id="rikkahubCard">
             <div class="target-backup-head">
-                <h3 id="targetBackupTitle">目标备份（RikkaHub）</h3>
+                <h3 id="targetBackupTitle">第 2 步：选择 RikkaHub 备份</h3>
                 <button class="btn-text" id="targetBackupSelectBtn" type="button" onclick="triggerRikkaHubFilePicker(false)">选择备份 ZIP</button>
             </div>
             <p class="merge-options-hint" id="targetBackupHint" style="margin-top: 0;">
-                可以先导入并整理会话，再点击“合并聊天记录”时选择 RikkaHub 原始备份。你也可以现在先上传，后续会直接合并。
+                建议先在会话工作台整理好内容，最后一步再选择 RikkaHub 原始备份并合并。你也可以现在先上传，后续会直接合并。
             </p>
             <div class="upload-box" id="rikkahubUpload" onclick="triggerRikkaHubFilePicker(false)">
                 <div class="upload-icon">📁</div>
@@ -2809,18 +2944,18 @@
 
         <div class="card merge-options-card">
             <div class="merge-options-row">
-                <label class="merge-options-label" id="duplicateStrategyLabel">冲突处理策略</label>
+                <label class="merge-options-label" id="duplicateStrategyLabel">同 ID 会话处理方式</label>
                 <div class="merge-option-tags" id="duplicateStrategyTags">
-                    <button type="button" class="merge-option-tag selected" id="duplicateStrategySkipBtn" data-value="skip" onclick="setDuplicateStrategy('skip')">跳过已存在会话（默认）</button>
-                    <button type="button" class="merge-option-tag" id="duplicateStrategyKeepBothBtn" data-value="keep_both" onclick="setDuplicateStrategy('keep_both')">保留并另存（自动生成新会话 ID）</button>
+                    <button type="button" class="merge-option-tag selected" id="duplicateStrategySkipBtn" data-value="skip" onclick="setDuplicateStrategy('skip')">跳过已有会话（更稳妥）</button>
+                    <button type="button" class="merge-option-tag" id="duplicateStrategyKeepBothBtn" data-value="keep_both" onclick="setDuplicateStrategy('keep_both')">两份都保留（自动生成新会话 ID）</button>
                 </div>
                 <input type="hidden" id="duplicateStrategyValue" value="skip">
             </div>
             <div class="merge-options-row" style="margin-top: 12px;">
-                <label class="merge-options-label" id="assistantMergeStrategyLabel">助手合并策略</label>
+                <label class="merge-options-label" id="assistantMergeStrategyLabel">合并后放到哪个助手</label>
                 <div class="merge-option-tags" id="assistantMergeStrategyTags">
-                    <button type="button" class="merge-option-tag selected" id="assistantMergeBySourceBtn" data-value="by_source" onclick="setAssistantMergeStrategy('by_source')">按来源分配助手（默认）</button>
-                    <button type="button" class="merge-option-tag" id="assistantMergeSingleBtn" data-value="single_assistant" onclick="setAssistantMergeStrategy('single_assistant')">统一到单一助手</button>
+                    <button type="button" class="merge-option-tag selected" id="assistantMergeBySourceBtn" data-value="by_source" onclick="setAssistantMergeStrategy('by_source')">按来源分助手（推荐）</button>
+                    <button type="button" class="merge-option-tag" id="assistantMergeSingleBtn" data-value="single_assistant" onclick="setAssistantMergeStrategy('single_assistant')">全部放到同一助手</button>
                 </div>
                 <input type="hidden" id="assistantMergeStrategyValue" value="by_source">
             </div>
@@ -2828,8 +2963,8 @@
                 <label for="unifiedAssistantNameInput" id="unifiedAssistantNameLabel" class="merge-options-label">统一助手名称</label>
                 <input type="text" id="unifiedAssistantNameInput" class="form-input" placeholder="留空使用默认名称 Unified Import">
             </div>
-            <p class="merge-options-hint" id="duplicateStrategyHint">当待导入会话与目标备份中的会话 ID 相同，会按此策略处理。建议默认使用“跳过”，更稳妥。</p>
-            <p class="merge-options-hint" id="assistantMergeStrategyHint">默认按来源创建/复用导入助手，便于区分来源。</p>
+            <p class="merge-options-hint" id="duplicateStrategyHint">当导入会话 ID 与目标备份重复时，按这里的规则处理。</p>
+            <p class="merge-options-hint" id="assistantMergeStrategyHint">会按来源自动创建/复用助手，后续更好区分。</p>
         </div>
 
         <!-- 合并按钮 -->
@@ -2864,15 +2999,15 @@
     <div class="modal-overlay" id="rikkahubRequiredModal" onclick="closeRikkaHubRequiredModalOnOverlay(event)">
         <div class="modal" style="max-width: 560px;">
             <div class="modal-header">
-                <h3 class="modal-title">📦 选择 RikkaHub 原始备份</h3>
+                <h3 class="modal-title">📦 就差最后一步：选择 RikkaHub 原始备份</h3>
                 <button class="modal-close" onclick="closeRikkaHubRequiredModal()">×</button>
             </div>
             <div class="modal-body">
                 <p style="margin: 0 0 12px 0; color: var(--md-sys-color-on-surface); line-height: 1.6;">
-                    当前已完成来源导入与会话选择。下一步请选择一个 <strong>RikkaHub 原始备份 ZIP</strong> 作为合并目标。
+                    你已经完成会话导入和勾选。现在请选择一个 <strong>RikkaHub 原始备份 ZIP</strong> 作为合并目标。
                 </p>
                 <p style="margin: 0 0 18px 0; color: var(--md-sys-color-on-surface-variant); font-size: 13px; line-height: 1.6;">
-                    只会在你选择的备份副本上写入，不会修改源聊天导出文件。
+                    只会在你选择的备份副本上写入，不会改动源聊天导出文件。
                 </p>
                 <div style="display: flex; gap: 10px; justify-content: flex-end;">
                     <button class="btn-text" type="button" onclick="closeRikkaHubRequiredModal()" style="padding: 10px 18px; border: 1px solid var(--md-sys-color-outline);">取消</button>
@@ -2885,21 +3020,21 @@
     <div class="modal-overlay" id="mergeDryRunModal" onclick="closeMergeDryRunModalOnOverlay(event)">
         <div class="modal" style="max-width: 700px;">
             <div class="modal-header">
-                <h3 class="modal-title">🧪 合并前预检（Dry Run）</h3>
+                <h3 class="modal-title">🧪 合并前确认（不会写入数据）</h3>
                 <button class="modal-close" onclick="closeMergeDryRunModal(false)">×</button>
             </div>
             <div class="modal-body">
                 <p id="mergeDryRunSummary" style="margin: 0 0 12px 0; color: var(--md-sys-color-on-surface); line-height: 1.6;">
-                    正在生成预检报告...
+                    正在生成合并确认信息...
                 </p>
                 <div class="merge-report-block">
-                    <p class="merge-report-title">按来源差异预估</p>
+                    <p class="merge-report-title">按来源的变更预估</p>
                     <ul class="merge-report-list" id="mergeDryRunDiffList">
                         <li>暂无数据</li>
                     </ul>
                 </div>
                 <div class="merge-report-block">
-                    <p class="merge-report-title">预检警告</p>
+                    <p class="merge-report-title">需要你注意的项</p>
                     <ul class="merge-report-list" id="mergeDryRunWarningList">
                         <li>暂无警告</li>
                     </ul>
@@ -2910,7 +3045,7 @@
                 </div>
                 <div style="display: flex; gap: 10px; justify-content: flex-end;">
                     <button class="btn-text" type="button" onclick="closeMergeDryRunModal(false)" style="padding: 10px 18px; border: 1px solid var(--md-sys-color-outline);">取消</button>
-                    <button class="btn-primary" type="button" onclick="closeMergeDryRunModal(true)" style="padding: 10px 18px; background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); border: none; border-radius: var(--md-sys-shape-corner-small); cursor: pointer;">继续合并</button>
+                    <button class="btn-primary" type="button" onclick="closeMergeDryRunModal(true)" style="padding: 10px 18px; background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); border: none; border-radius: var(--md-sys-shape-corner-small); cursor: pointer;">确认继续</button>
                 </div>
             </div>
         </div>
@@ -2919,20 +3054,20 @@
     <div class="modal-overlay" id="mergeDownloadModal" onclick="closeMergeDownloadModalOnOverlay(event)">
         <div class="modal" style="max-width: 620px;">
             <div class="modal-header">
-                <h3 class="modal-title">✅ 合并完成，请确认下载</h3>
+                <h3 class="modal-title">✅ 合并已完成，确认后下载</h3>
                 <button class="modal-close" onclick="closeMergeDownloadModal(true)">×</button>
             </div>
             <div class="modal-body">
                 <p id="mergeDownloadSummary" style="margin: 0 0 12px 0; color: var(--md-sys-color-on-surface); line-height: 1.6;">
-                    合并包已准备完成。
+                    合并包已准备完成，你可以先看一下结果摘要再下载。
                 </p>
                 <p id="mergeDownloadRiskHint" style="display: none; margin: 0 0 12px 0; color: #D97706; font-size: 13px; line-height: 1.6;"></p>
                 <div class="merge-report-block" id="mergeDownloadDiffBlock" style="display: none;">
-                    <p class="merge-report-title">按来源差异清单（实际执行）</p>
+                    <p class="merge-report-title">按来源变更清单（实际执行）</p>
                     <ul class="merge-report-list" id="mergeDownloadDiffList"></ul>
                 </div>
                 <div class="merge-report-block" id="mergeDownloadWarningBlock" style="display: none;">
-                    <p class="merge-report-title">预检警告（请重点留意）</p>
+                    <p class="merge-report-title">风险提示（请重点留意）</p>
                     <ul class="merge-report-list" id="mergeDownloadWarningList"></ul>
                 </div>
                 <div class="merge-report-block" id="mergeDownloadUnknownBlock" style="display: none;">
@@ -2940,7 +3075,7 @@
                     <ul class="merge-report-list" id="mergeDownloadUnknownList"></ul>
                 </div>
                 <p style="margin: 0 0 8px 0; color: var(--md-sys-color-on-surface-variant); font-size: 13px; line-height: 1.6;">
-                    下载前请确认以下事项：
+                    下载前请确认：
                 </p>
                 <ul style="margin: 0 0 18px 20px; color: var(--md-sys-color-on-surface-variant); font-size: 13px; line-height: 1.7;">
                     <li>请保留原始导出文件与原始 RikkaHub 备份 ZIP，便于回滚</li>
@@ -2993,10 +3128,12 @@
                 </ol>
 
                 <p style="margin-top: 16px; padding: 14px; background: var(--md-sys-color-secondary-container); border-radius: var(--md-sys-shape-corner-medium); color: var(--md-sys-color-on-secondary-container); line-height: 1.75;">
-                    <strong>补充：</strong>如果你还想继续用 DeepSeek v3.2 聊天，可以在 RikkaHub 的“提供商”页面添加或选择相应提供商。
-                    还没选好提供商？推荐先用这个入口快速开通（流程简单，适合先小额测试）：
-                    <a href="https://yunwu.ai/register?aff=PMO3" target="_blank" style="color: inherit; text-decoration: underline;">https://yunwu.ai/register?aff=PMO3</a>
-                    说明：这是推广链接；通过该链接注册后，用户前 3 次充值可为本工具作者带来 10% 返现，用于持续维护与更新本工具。
+                    <strong>补充：</strong>如果你还想继续用 DeepSeek 系模型聊天，可以在 RikkaHub 的“提供商”页面添加或选择相应提供商。
+                    两个入口都可用于 DeepSeek 系模型；其中入口 A 还可以用国外的大模型，价格相对更具性价比：<br>
+                    入口 A：<a href="https://yunwu.ai/register?aff=PMO3" target="_blank" style="color: inherit; text-decoration: underline;">https://yunwu.ai/register?aff=PMO3</a><br>
+                    入口 B：<a href="https://cloud.siliconflow.cn/i/XfEPO9tm" target="_blank" style="color: inherit; text-decoration: underline;">https://cloud.siliconflow.cn/i/XfEPO9tm</a><br>
+                    一般情况下，多数模型价格会比官方直连更实惠（以平台实时价格为准）。
+                    说明：以上两个入口均为推广信息。
                 </p>
 
                 <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
@@ -3071,7 +3208,7 @@
                             <li><strong>YourAIScroll Markdown 粘贴导入</strong>：每次一个会话，支持 URL 平台识别、角色标记、Markdown 图片/链接、常见深度思考标记</li>
                             <li><strong>YourAIScroll 工具/文档标记</strong>：支持显式语法 <code>Function: name(args)</code> 与文档链接提取（非显式格式不保证识别）</li>
                             <li><strong>统一会话工作台</strong>：多来源并存导入、会话级与消息级勾选、逐条编辑后再合并</li>
-                            <li><strong>RikkaHub 兼容口径</strong>：写入 ConversationEntity + message_node（DB v12），并对 v1.9.0beta 源码 schema（DB v13）完成结构对照</li>
+                            <li><strong>RikkaHub 兼容口径</strong>：输出可直接导入 RikkaHub 的备份包，兼容性持续跟进</li>
                         </ul>
                     </div>
 
@@ -3102,7 +3239,7 @@
             </div>
             <div class="modal-body">
                 <h2 style="font-size: 24px; margin-bottom: 8px;">ChatWeave</h2>
-                <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">统一会话工作台 v1.6.4</p>
+                <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">统一会话工作台 v1.6.5</p>
                 <div class="about-info">
                     <p>ChatWeave 是一个统一聊天记录工作台：支持多来源导入、会话预览、消息编辑、勾选过滤和目标备份合并。</p>
                     <p>当前版本重点输出可导入 RikkaHub 的备份包，同时保留统一数据层，便于后续扩展更多目标平台。</p>
@@ -3184,7 +3321,7 @@
                         数据转换在本地浏览器完成；请自行保管源文件与备份文件，确认可用前不要删除原始备份。
                     </p>
                     <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 8px 0 0 0;">
-                        兼容验证基线：RikkaHub 备份数据库结构 v12（实测）与 v1.9.0beta 源码 schema v13（结构对照）。后续版本仍可能出现差异。
+                        兼容会持续跟进：如果后续版本出现差异，我们会优先修复导入链路。
                     </p>
                     <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 8px 0 0 0;">
                         无担保声明：本工具不对导入结果作绝对保证。因使用导致的数据丢失、崩溃或其他损失，请自行承担风险。
@@ -3397,13 +3534,23 @@
         const I18N_STRINGS = {
             'zh-CN': {
                 'app.titleSuffix': '统一会话工作台',
-                'app.subtitle': '统一聊天记录工作台（导入 / 浏览 / 编辑 / 合并）v1.6.4',
-                'warning.title': '⚠️ 风险与备份须知',
-                'warning.desc': '本工具为第三方本地转换工具，不代表 ChatGPT、DeepSeek、YourAIScroll 或 RikkaHub 官方立场。',
-                'warning.item1': '务必保留：源导出文件 + RikkaHub 原始备份 ZIP（回滚基线）',
-                'warning.item2': '建议先导入 1-3 个会话做小样验证，再进行全量合并',
-                'warning.item3': '如导入后闪退或异常，可清空应用数据并回滚原始备份',
-                'warning.item4': '详细兼容范围与恢复建议见“关于”页面',
+                'app.subtitle': '把旧对话接回现在（导入 / 浏览 / 编辑 / 合并）v1.6.5',
+                'app.emotionalNote': '你不是来重来的。把熟悉的聊天迁回这里，继续和 ta 说下去。',
+                'mission.badge': 'CONVERSATION CONTINUITY',
+                'mission.title': '不是重来，是把熟悉的 ta 接回来',
+                'mission.desc': '把你们已经说过的话整理好、带走、继续。',
+                'mission.manifesto': '我们代表那 0.1%，相信有些声音不应被抹去。',
+                'mission.pill.local': '本地处理',
+                'mission.pill.edit': '可预览可编辑',
+                'mission.pill.rollback': '可回滚',
+                'mission.btn.primary': '开始迁回熟悉的 ta',
+                'mission.btn.secondary': '先看流程与边界',
+                'warning.title': '合并前先做这 3 件事',
+                'warning.desc': '先备份、先小样、再全量。这样最稳，也最不容易丢失回忆。',
+                'warning.item1': '保留两份原件：源导出文件 + RikkaHub 原始备份 ZIP',
+                'warning.item2': '先用 1-3 个会话试跑，确认展示正常再全量合并',
+                'warning.item3': '导入异常可回滚：清空应用数据后导回原始备份',
+                'warning.item4': '模型会变化，但会话可以迁移、可编辑、可继续',
                 'btn.usage': '📖 使用说明',
                 'btn.support': '📋 支持列表明细',
                 'btn.about': 'ℹ️ 关于',
@@ -3415,18 +3562,18 @@
                 'source.option.chatgpt': 'ChatGPT 数据',
                 'source.option.deepseek': 'DeepSeek 数据（新旧两个版本）',
                 'source.option.youraiscroll': 'YourAIScroll 数据（支持 12 个平台）',
-                'source.upload.title': '上传源数据',
-                'source.upload.chatgpt': '点击或拖拽上传 ChatGPT 压缩包',
+                'source.upload.title': '上传待迁移会话',
+                'source.upload.chatgpt': '点击或拖拽上传 ChatGPT 官方导出 ZIP',
                 'source.upload.deepseek': '点击或拖拽上传 DeepSeek 新版压缩包（包含 conversations.json）',
                 'source.upload.youraiscroll': '粘贴 YourAIScroll 复制的 Markdown 内容',
-                'source.upload.deepseekOld.title': '上传 DeepSeek 旧版数据',
-                'source.upload.deepseekOld': '点击或拖拽上传 DeepSeek 旧版压缩包（如果有的话）',
+                'source.upload.deepseekOld.title': '（可选）上传 DeepSeek 旧版数据',
+                'source.upload.deepseekOld': '点击或拖拽上传 DeepSeek 旧版 ZIP（如果你有）',
                 'source.upload.paste': '📝 粘贴 Markdown 文本',
                 'source.status.loadedPrimary': '当前来源已加载 {count} 个会话',
                 'source.status.loadedDeepseekOld': '已加载旧版 {count} 个会话',
                 'workspace.title': '会话工作台',
                 'workspace.meta': '已选 {selected} / {total}',
-                'workspace.searchPlaceholder': '搜索会话标题或来源...',
+                'workspace.searchPlaceholder': '搜索标题、来源或关键词...',
                 'workspace.selectAll': '全选',
                 'workspace.selectNone': '全不选',
                 'workspace.invert': '反选',
@@ -3435,25 +3582,25 @@
                 'workspace.preview': '预览',
                 'workspace.edit': '编辑',
                 'workspace.timeUnknown': '未知时间',
-                'targetBackup.title': '目标备份（RikkaHub）',
+                'targetBackup.title': '第 2 步：选择 RikkaHub 备份',
                 'targetBackup.select': '选择备份 ZIP',
-                'targetBackup.hint': '可以先导入并整理会话，再点击“合并聊天记录”时选择 RikkaHub 原始备份。你也可以现在先上传，后续会直接合并。',
+                'targetBackup.hint': '建议先在会话工作台整理好内容，最后一步再选择 RikkaHub 原始备份并合并。你也可以现在先上传，后续会直接合并。',
                 'targetBackup.upload': '点击选择 RikkaHub 原始备份 ZIP',
-                'merge.duplicate.label': '冲突处理策略',
-                'merge.duplicate.skip': '跳过已存在会话（默认）',
-                'merge.duplicate.keepBoth': '保留并另存（自动生成新会话 ID）',
-                'merge.duplicate.hint': '当待导入会话与目标备份中的会话 ID 相同，会按此策略处理。建议默认使用“跳过”，更稳妥。',
-                'merge.assistant.label': '助手合并策略',
-                'merge.assistant.bySource': '按来源分配助手（默认）',
-                'merge.assistant.single': '统一到单一助手',
+                'merge.duplicate.label': '同 ID 会话处理方式',
+                'merge.duplicate.skip': '跳过已有会话（更稳妥）',
+                'merge.duplicate.keepBoth': '两份都保留（自动生成新会话 ID）',
+                'merge.duplicate.hint': '当导入会话 ID 与目标备份重复时，按这里的规则处理。',
+                'merge.assistant.label': '合并后放到哪个助手',
+                'merge.assistant.bySource': '按来源分助手（推荐）',
+                'merge.assistant.single': '全部放到同一助手',
                 'merge.assistant.nameLabel': '统一助手名称',
                 'merge.assistant.namePlaceholder': '留空使用默认名称 Unified Import',
-                'merge.assistant.hint.bySource': '按来源创建/复用导入助手，便于区分 ChatGPT / DeepSeek / YourAIScroll。',
-                'merge.assistant.hint.single': '所有导入会话会写入同一个助手，适合统一归档；可自定义助手名称。',
+                'merge.assistant.hint.bySource': '会按来源自动创建/复用助手，后续更好区分。',
+                'merge.assistant.hint.single': '所有会话写入同一助手，适合做一个统一档案。',
                 'merge.button.ready': '合并聊天记录',
                 'merge.button.needUpload': '合并聊天记录（请先上传文件）',
                 'merge.button.noSelection': '合并聊天记录（未选择会话）',
-                'merge.button.needBackup': '合并聊天记录（下一步选择 RikkaHub 备份）',
+                'merge.button.needBackup': '合并聊天记录（需先选择 RikkaHub 备份）',
                 'merge.button.processing': '合并中...',
                 'merge.button.title.needSource': '请先上传源数据文件',
                 'merge.button.title.needSelection': '请先在会话工作台中勾选至少一个会话',
@@ -3518,26 +3665,26 @@
                 'error.rikkaReadGeneral': '读取 RikkaHub 文件时发生错误',
                 'error.mergeNeedSource': '请先上传源数据文件',
                 'error.mergeNeedSelection': '请先在会话工作台中勾选至少一个会话',
-                'info.mergeNeedRikka': '请先选择 RikkaHub 原始备份 ZIP，选择后会自动继续合并。',
-                'info.mergeInit': '正在初始化...',
-                'info.mergeInitDb': '正在初始化数据库...',
-                'info.mergeCreateAssistant': '正在创建助手...',
-                'info.mergePrepareImages': '正在准备 ChatGPT 图片索引...',
-                'info.mergeProcessSources': '正在处理多来源数据...',
-                'info.mergeDryRunReady': '预检完成，等待确认...',
+                'info.mergeNeedRikka': '请先选择 RikkaHub 原始备份 ZIP；选完会自动继续合并。',
+                'info.mergeInit': '正在准备合并流程...',
+                'info.mergeInitDb': '正在检查并读取目标备份...',
+                'info.mergeCreateAssistant': '正在准备助手与归档信息...',
+                'info.mergePrepareImages': '正在整理 ChatGPT 图片引用...',
+                'info.mergeProcessSources': '正在整理已选会话...',
+                'info.mergeDryRunReady': '合并确认信息已生成，请确认...',
                 'info.mergeCancelled': '已取消合并：未写入任何数据。',
-                'info.mergeWritingDb': '正在写入数据库...',
-                'info.mergePrepareDb': '正在准备数据库...',
-                'info.mergeGeneratingZip': '正在生成压缩包...',
-                'info.mergeGeneratingDownload': '正在生成下载包...',
+                'info.mergeWritingDb': '正在写入合并结果...',
+                'info.mergePrepareDb': '正在收尾并校验结果...',
+                'info.mergeGeneratingZip': '正在打包合并文件...',
+                'info.mergeGeneratingDownload': '正在准备下载文件...',
                 'error.mergeUnknownSchema': '无法识别 RikkaHub 会话表结构。检测到表: {tableList}',
                 'error.mergeReadConversationTable': '无法读取会话表: {message}',
-                'summary.mergeDryRun': '本次已选 {selected} 个会话，预计写入 {added} 个会话 / {messages} 条消息，跳过 {skipped} 个会话。',
+                'summary.mergeDryRun': '已选 {selected} 个会话，预计新增 {added} 个会话 / {messages} 条消息，跳过 {skipped} 个。',
                 'success.mergeCompleted': '合并完成！已写入 {convCount} 个会话 / {msgCount} 条消息。{duplicateText}{keepBothText}{emptySkipText}{warningText}\\n{assistantStrategyText}\\n{titleHint}\\n已生成下载包，请在弹窗中确认下载。\\n不会影响原有的 RikkaHub 对话。',
                 'success.mergeDuplicate': '\\n跳过 {count} 个重复会话（已存在）',
                 'success.mergeKeepBoth': '\\n发现 {count} 个 ID 冲突，已按“保留并另存”生成新会话 ID。',
                 'success.mergeEmptySkip': '\\n跳过 {count} 个空会话（转换后无有效消息）。',
-                'success.mergeWarning': '\\n预检警告 {count} 条，请在下载弹窗查看详情。',
+                'success.mergeWarning': '\\n风险提示 {count} 条，请在下载弹窗查看详情。',
                 'success.titleHint.default': '会话标题保持导入来源的默认策略。',
                 'success.titleHint.chatgpt': 'ChatGPT 会话标题会自动添加 [ChatGPT] 前缀，方便识别。',
                 'success.titleHint.deepseek': 'DeepSeek 新版会话标题会自动添加 [DeepSeek] 前缀，旧版会话保留原标题。',
@@ -3545,7 +3692,7 @@
                 'success.titleHint.multi': '多来源合并完成：{summary}。',
                 'success.assistant.single': '助手策略：统一到单一助手。',
                 'success.assistant.bySource': '助手策略：按来源分配助手。',
-                'summary.mergeModal': '本次已选 {selected} 个会话，成功写入 {added} 个会话，写入 {messages} 条消息，跳过 {skipped} 个会话。',
+                'summary.mergeModal': '本次已选 {selected} 个会话，实际新增 {added} 个会话，写入 {messages} 条消息，跳过 {skipped} 个。',
                 'summary.unknownMore': '...其余 {count} 条未展示',
                 'summary.sourceItem': '{source} {count} 个',
                 'summary.noTablesDetected': '（未检测到表）',
@@ -3561,13 +3708,23 @@
             },
             'en-US': {
                 'app.titleSuffix': 'Unified Conversation Workspace',
-                'app.subtitle': 'Unified Chat Workspace (Import / Browse / Edit / Merge) v1.6.4',
-                'warning.title': '⚠️ Risk & Backup Notes',
-                'warning.desc': 'This is a third-party local conversion tool and is not affiliated with ChatGPT, DeepSeek, YourAIScroll, or RikkaHub.',
-                'warning.item1': 'Keep both files: source export + original RikkaHub backup ZIP (rollback baseline).',
-                'warning.item2': 'Start with 1-3 conversations as a small validation batch before full merge.',
-                'warning.item3': 'If app crashes or behaves abnormally after import, clear app data and restore the original backup.',
-                'warning.item4': 'See the About page for compatibility scope and recovery guidance.',
+                'app.subtitle': 'Reconnect Old Conversations (Import / Browse / Edit / Merge) v1.6.5',
+                'app.emotionalNote': 'You are not here to start over. Bring familiar chats here and continue with ta.',
+                'mission.badge': 'CONVERSATION CONTINUITY',
+                'mission.title': 'Not restart. Reconnect the familiar ta.',
+                'mission.desc': 'Organize what you already said, carry it over, and continue.',
+                'mission.manifesto': 'We stand with the 0.1% who believe some voices should never be erased.',
+                'mission.pill.local': 'Local-first processing',
+                'mission.pill.edit': 'Preview and edit first',
+                'mission.pill.rollback': 'Rollback-friendly',
+                'mission.btn.primary': 'Start migration',
+                'mission.btn.secondary': 'Read flow and boundaries',
+                'warning.title': 'Do these 3 checks before merge',
+                'warning.desc': 'Backup first, test small first, then run full merge.',
+                'warning.item1': 'Keep two originals: source export + original RikkaHub backup ZIP',
+                'warning.item2': 'Run a 1-3 conversation test merge before full merge',
+                'warning.item3': 'If import behaves abnormally, rollback by restoring original backup',
+                'warning.item4': 'Models change, but your conversations can stay portable and editable',
                 'btn.usage': '📖 Guide',
                 'btn.support': '📋 Support Matrix',
                 'btn.about': 'ℹ️ About',
@@ -3579,18 +3736,18 @@
                 'source.option.chatgpt': 'ChatGPT Data',
                 'source.option.deepseek': 'DeepSeek Data (new + legacy)',
                 'source.option.youraiscroll': 'YourAIScroll Data (12 platforms)',
-                'source.upload.title': 'Upload Source Data',
-                'source.upload.chatgpt': 'Click or drag to upload a ChatGPT ZIP export',
+                'source.upload.title': 'Upload Conversations to Migrate',
+                'source.upload.chatgpt': 'Click or drag to upload ChatGPT official export ZIP',
                 'source.upload.deepseek': 'Click or drag to upload DeepSeek new ZIP (with conversations.json)',
                 'source.upload.youraiscroll': 'Paste YourAIScroll copied Markdown content',
-                'source.upload.deepseekOld.title': 'Upload DeepSeek Legacy Data',
-                'source.upload.deepseekOld': 'Click or drag to upload DeepSeek legacy ZIP (if available)',
+                'source.upload.deepseekOld.title': '(Optional) Upload DeepSeek Legacy Data',
+                'source.upload.deepseekOld': 'Click or drag to upload DeepSeek legacy ZIP (if you have one)',
                 'source.upload.paste': '📝 Paste Markdown',
                 'source.status.loadedPrimary': '{count} conversations loaded for current source',
                 'source.status.loadedDeepseekOld': 'Legacy loaded: {count} conversations',
                 'workspace.title': 'Conversation Workspace',
                 'workspace.meta': 'Selected {selected} / {total}',
-                'workspace.searchPlaceholder': 'Search by title or source...',
+                'workspace.searchPlaceholder': 'Search title, source, or keywords...',
                 'workspace.selectAll': 'Select All',
                 'workspace.selectNone': 'Clear',
                 'workspace.invert': 'Invert',
@@ -3599,25 +3756,25 @@
                 'workspace.preview': 'Preview',
                 'workspace.edit': 'Edit',
                 'workspace.timeUnknown': 'Unknown time',
-                'targetBackup.title': 'Target Backup (RikkaHub)',
+                'targetBackup.title': 'Step 2: Choose RikkaHub Backup',
                 'targetBackup.select': 'Select Backup ZIP',
-                'targetBackup.hint': 'You can import and organize conversations first, then choose original RikkaHub backup when clicking merge. Upload now is also supported.',
+                'targetBackup.hint': 'Recommended: organize conversations in workspace first, then choose original RikkaHub backup at final merge step.',
                 'targetBackup.upload': 'Click to select original RikkaHub backup ZIP',
-                'merge.duplicate.label': 'Conflict Strategy',
-                'merge.duplicate.skip': 'Skip existing conversations (default)',
-                'merge.duplicate.keepBoth': 'Keep both (auto-generate new conversation ID)',
-                'merge.duplicate.hint': 'When imported conversation IDs already exist in target backup, this strategy will be used. Default "skip" is safer.',
-                'merge.assistant.label': 'Assistant Merge Strategy',
-                'merge.assistant.bySource': 'Split assistants by source (default)',
-                'merge.assistant.single': 'Merge into one assistant',
+                'merge.duplicate.label': 'Same-ID Conversation Strategy',
+                'merge.duplicate.skip': 'Skip existing conversation (safer)',
+                'merge.duplicate.keepBoth': 'Keep both (auto-generate new ID)',
+                'merge.duplicate.hint': 'If imported conversation ID already exists in target backup, this rule is applied.',
+                'merge.assistant.label': 'Where Merged Chats Go',
+                'merge.assistant.bySource': 'Split assistants by source (recommended)',
+                'merge.assistant.single': 'Put all into one assistant',
                 'merge.assistant.nameLabel': 'Unified Assistant Name',
                 'merge.assistant.namePlaceholder': 'Leave empty to use default: Unified Import',
-                'merge.assistant.hint.bySource': 'Create/reuse import assistants by source for clear separation.',
-                'merge.assistant.hint.single': 'All imported conversations go to one assistant, ideal for unified archive.',
+                'merge.assistant.hint.bySource': 'Auto create/reuse assistants by source for easier management.',
+                'merge.assistant.hint.single': 'All conversations go to one assistant for a single archive.',
                 'merge.button.ready': 'Merge Conversations',
                 'merge.button.needUpload': 'Merge Conversations (upload source first)',
                 'merge.button.noSelection': 'Merge Conversations (no conversation selected)',
-                'merge.button.needBackup': 'Merge Conversations (next: select RikkaHub backup)',
+                'merge.button.needBackup': 'Merge Conversations (select RikkaHub backup first)',
                 'merge.button.processing': 'Merging...',
                 'merge.button.title.needSource': 'Upload source data first',
                 'merge.button.title.needSelection': 'Select at least one conversation in workspace',
@@ -3682,26 +3839,26 @@
                 'error.rikkaReadGeneral': 'An error occurred while reading RikkaHub file.',
                 'error.mergeNeedSource': 'Upload source data first.',
                 'error.mergeNeedSelection': 'Select at least one conversation in workspace first.',
-                'info.mergeNeedRikka': 'Select original RikkaHub backup ZIP first, merge will continue automatically.',
-                'info.mergeInit': 'Initializing...',
-                'info.mergeInitDb': 'Initializing database...',
-                'info.mergeCreateAssistant': 'Creating assistant...',
-                'info.mergePrepareImages': 'Preparing ChatGPT image index...',
-                'info.mergeProcessSources': 'Processing multi-source data...',
-                'info.mergeDryRunReady': 'Dry-run completed, waiting for confirmation...',
+                'info.mergeNeedRikka': 'Select original RikkaHub backup ZIP first; merge continues automatically.',
+                'info.mergeInit': 'Preparing merge flow...',
+                'info.mergeInitDb': 'Reading and checking target backup...',
+                'info.mergeCreateAssistant': 'Preparing assistant/archive settings...',
+                'info.mergePrepareImages': 'Organizing ChatGPT image references...',
+                'info.mergeProcessSources': 'Organizing selected conversations...',
+                'info.mergeDryRunReady': 'Merge review is ready. Waiting for confirmation...',
                 'info.mergeCancelled': 'Merge cancelled. No data was written.',
-                'info.mergeWritingDb': 'Writing database...',
-                'info.mergePrepareDb': 'Preparing database...',
-                'info.mergeGeneratingZip': 'Generating ZIP package...',
-                'info.mergeGeneratingDownload': 'Generating download package...',
+                'info.mergeWritingDb': 'Writing merged result...',
+                'info.mergePrepareDb': 'Finalizing and validating result...',
+                'info.mergeGeneratingZip': 'Packaging merged file...',
+                'info.mergeGeneratingDownload': 'Preparing download file...',
                 'error.mergeUnknownSchema': 'Unable to identify RikkaHub conversation table schema. Detected tables: {tableList}',
                 'error.mergeReadConversationTable': 'Failed to read conversation table: {message}',
-                'summary.mergeDryRun': 'Selected {selected} conversations, estimated {added} conversations / {messages} messages to write, skipping {skipped} conversations.',
+                'summary.mergeDryRun': 'Selected {selected} conversations. Estimated +{added} conversations / {messages} messages, skip {skipped}.',
                 'success.mergeCompleted': 'Merge completed! Written {convCount} conversations / {msgCount} messages.{duplicateText}{keepBothText}{emptySkipText}{warningText}\\n{assistantStrategyText}\\n{titleHint}\\nDownload package is ready, please confirm in popup.\\nOriginal RikkaHub conversations are not modified.',
                 'success.mergeDuplicate': '\\nSkipped {count} duplicate conversations (already existed).',
                 'success.mergeKeepBoth': '\\nDetected {count} ID conflicts, generated new IDs with keep-both strategy.',
                 'success.mergeEmptySkip': '\\nSkipped {count} empty conversations (no valid messages after conversion).',
-                'success.mergeWarning': '\\n{count} dry-run warnings. Check details in download popup.',
+                'success.mergeWarning': '\\n{count} risk hints found. Check details in download popup.',
                 'success.titleHint.default': 'Conversation titles follow source default strategy.',
                 'success.titleHint.chatgpt': 'ChatGPT titles are prefixed with [ChatGPT] for easier recognition.',
                 'success.titleHint.deepseek': 'DeepSeek new titles are prefixed with [DeepSeek], legacy titles stay original.',
@@ -3709,7 +3866,7 @@
                 'success.titleHint.multi': 'Multi-source merge completed: {summary}.',
                 'success.assistant.single': 'Assistant strategy: merge into single assistant.',
                 'success.assistant.bySource': 'Assistant strategy: split assistants by source.',
-                'summary.mergeModal': 'Selected {selected} conversations, wrote {added} conversations and {messages} messages, skipped {skipped} conversations.',
+                'summary.mergeModal': 'Selected {selected} conversations. Added {added}, wrote {messages} messages, skipped {skipped}.',
                 'summary.unknownMore': '...{count} more not shown',
                 'summary.sourceItem': '{source} {count}',
                 'summary.noTablesDetected': '(no tables detected)',
@@ -3757,42 +3914,50 @@
             if (!body) return;
             if (currentLanguage === 'en-US') {
                 body.innerHTML = `
-                    <p style="margin-bottom: 10px;"><strong>Start here: DeepSeek → RikkaHub (most common path)</strong></p>
+                    <p style="margin-bottom: 10px;"><strong>Main Flow: reconnect the chat companion you trust</strong></p>
                     <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.7; margin-bottom: 14px;">
-                        Follow these 4 steps and you should be good.
+                        This is not "start over". This is "bring your old conversations back and continue".
                     </p>
                     <ol style="margin-left: 20px; line-height: 1.85;">
                         <li>
                             Export DeepSeek history:
                             open <a href="https://chat.deepseek.com/" target="_blank">chat.deepseek.com</a>,
-                            sign in, tap the bottom-right three-dot menu → <strong>Settings</strong> → <strong>Data Management</strong>,
+                            sign in, open the bottom-right three-dot menu → <strong>Settings</strong> → <strong>Data Management</strong>,
                             then click <strong>Export</strong> next to "Export all conversations".
-                            Most users get the new backup package; early 2024 users may also receive a legacy backup.
+                            Most users receive a new backup; early 2024 users may also receive a legacy backup.
                         </li>
                         <li>
                             Export your original RikkaHub backup:
-                            download RikkaHub from
-                            <a href="https://rikka-ai.com/" target="_blank">rikka-ai.com</a>,
-                            then open app menu → Settings → <strong>Data Backup</strong> → <strong>Import / Export</strong> → <strong>Export to file</strong>.
+                            download RikkaHub from <a href="https://rikka-ai.com/" target="_blank">rikka-ai.com</a>,
+                            then app menu → Settings → <strong>Data Backup</strong> → <strong>Import / Export</strong> → <strong>Export to file</strong>.
                         </li>
                         <li>
-                            Back in this tool, choose <strong>DeepSeek Data</strong>, upload the DeepSeek export,
-                            review/select conversations in workspace,
-                            upload the RikkaHub backup from step 2, then click <strong>Merge Conversations</strong>.
-                            Confirm download in the popup to get merged ZIP.
+                            Back in ChatWeave:
+                            choose <strong>DeepSeek Data</strong>, upload DeepSeek export, then review/select/edit in workspace.
                         </li>
                         <li>
-                            Import merged ZIP back into RikkaHub:
+                            Upload the RikkaHub backup from step 2, click <strong>Merge Conversations</strong>, then confirm download in popup.
+                            You will get a merged ZIP package.
+                        </li>
+                        <li>
+                            Import merged ZIP into RikkaHub:
                             app menu → Settings → <strong>Data Backup</strong> → <strong>Import / Export</strong> → <strong>Import backup file</strong>.
-                            Restart app and switch to the imported assistant to view DeepSeek history.
+                            Restart app, switch to imported assistant, and your old DeepSeek chats are back.
                         </li>
                     </ol>
 
+                    <p style="margin-top: 16px; padding: 14px; background: var(--md-sys-color-primary-container); border-radius: var(--md-sys-shape-corner-medium); color: var(--md-sys-color-on-primary-container); line-height: 1.75;">
+                        <strong>After migration, keep chatting:</strong>
+                        in RikkaHub open <strong>Providers</strong>, add/select a provider, then choose a DeepSeek model (for example DeepSeek v3.2) and continue from the imported conversations.
+                    </p>
+
                     <p style="margin-top: 16px; padding: 14px; background: var(--md-sys-color-secondary-container); border-radius: var(--md-sys-shape-corner-medium); color: var(--md-sys-color-on-secondary-container); line-height: 1.75;">
-                        <strong>Extra:</strong> If you want to keep chatting with DeepSeek v3.2, configure provider in RikkaHub.
-                        Not sure which provider to pick? You can start with:
-                        <a href="https://yunwu.ai/register?aff=PMO3" target="_blank" style="color: inherit; text-decoration: underline;">https://yunwu.ai/register?aff=PMO3</a>
-                        Note: this is an affiliate link. If you register via this link, the first 3 top-ups can bring 10% cashback to the tool author for maintenance.
+                        <strong>Provider quick-start option:</strong>
+                        both entries support DeepSeek-family models; Entry A also provides mainstream global models with better price-performance in many cases:<br>
+                        Entry A: <a href="https://yunwu.ai/register?aff=PMO3" target="_blank" style="color: inherit; text-decoration: underline;">https://yunwu.ai/register?aff=PMO3</a><br>
+                        Entry B: <a href="https://cloud.siliconflow.cn/i/XfEPO9tm" target="_blank" style="color: inherit; text-decoration: underline;">https://cloud.siliconflow.cn/i/XfEPO9tm</a><br>
+                        In many cases, pricing is more cost-effective than official direct endpoints (check live pricing on the provider page).
+                        Disclosure: both entries above are promotional links.
                     </p>
 
                     <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
@@ -3810,40 +3975,50 @@
             }
 
             body.innerHTML = `
-                <p style="margin-bottom: 10px;"><strong>先看最常用流程：DeepSeek 合并到 RikkaHub</strong></p>
+                <p style="margin-bottom: 10px;"><strong>主流程：把你信任的聊天伙伴接回来</strong></p>
                 <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.7; margin-bottom: 14px;">
-                    按下面 4 步走就行，基本不会踩坑。
+                    这不是“重来一次”，而是“把旧对话接回来继续聊”。
                 </p>
                 <ol style="margin-left: 20px; line-height: 1.85;">
                     <li>
-                        先导出 DeepSeek 聊天记录：打开
+                        导出 DeepSeek 历史：打开
                         <a href="https://chat.deepseek.com/" target="_blank">chat.deepseek.com</a>
                         登录，右下角“三个点” → <strong>系统设置</strong> → <strong>数据管理</strong>，
-                        在“导出所有历史对话”右侧点<strong>导出</strong>。正常会拿到新版备份；
-                        如果你是 2024 年早期用户，可能还会额外收到一份旧版备份。
+                        在“导出所有历史对话”右侧点<strong>导出</strong>。正常会得到新版备份；
+                        如果你是 2024 年早期用户，可能还会额外收到旧版备份。
                     </li>
                     <li>
-                        准备 RikkaHub 原始备份：从
+                        导出 RikkaHub 原始备份：从
                         <a href="https://rikka-ai.com/" target="_blank">rikka-ai.com</a>
                         下载 RikkaHub，打开后左上角菜单 → 设置 → <strong>数据备份</strong> → <strong>导入和导出</strong> → <strong>导出为文件</strong>。
                     </li>
                     <li>
-                        回到本工具：来源选 <strong>DeepSeek 数据</strong>，上传刚导出的 DeepSeek 文件；
-                        在“会话工作台”里勾选/编辑要合并的会话；
-                        再上传第 2 步导出的 RikkaHub 备份，点<strong>合并聊天记录</strong>，
-                        最后在下载确认弹窗点下载，得到合并后的 ZIP。
+                        回到 ChatWeave：来源选 <strong>DeepSeek 数据</strong>，上传 DeepSeek 导出包，
+                        在“会话工作台”里筛选、勾选、编辑你要迁移的会话。
                     </li>
                     <li>
-                        把合并后的 ZIP 导回 RikkaHub：右上角菜单 → 设置 → <strong>数据备份</strong> → <strong>导入和导出</strong> → <strong>备份文件导入</strong>。
-                        导入后重启 App，左上角菜单切到新导入助手，就能看到 DeepSeek 历史会话。
+                        上传第 2 步导出的 RikkaHub 备份，点<strong>合并聊天记录</strong>，
+                        在确认弹窗点击下载，得到合并后的 ZIP。
+                    </li>
+                    <li>
+                        把合并 ZIP 导回 RikkaHub：右上角菜单 → 设置 → <strong>数据备份</strong> → <strong>导入和导出</strong> → <strong>备份文件导入</strong>。
+                        导入后重启 App，切到新导入助手，你之前的 DeepSeek 聊天就回来了。
                     </li>
                 </ol>
 
+                <p style="margin-top: 16px; padding: 14px; background: var(--md-sys-color-primary-container); border-radius: var(--md-sys-shape-corner-medium); color: var(--md-sys-color-on-primary-container); line-height: 1.75;">
+                    <strong>迁移后继续聊天：</strong>
+                    在 RikkaHub 打开<strong>提供商</strong>页面，添加或选择可用提供商，
+                    再选择 DeepSeek 系模型（例如 DeepSeek v3.2），就能基于导入的历史继续聊。
+                </p>
+
                 <p style="margin-top: 16px; padding: 14px; background: var(--md-sys-color-secondary-container); border-radius: var(--md-sys-shape-corner-medium); color: var(--md-sys-color-on-secondary-container); line-height: 1.75;">
-                    <strong>补充：</strong>如果你还想继续用 DeepSeek v3.2 聊天，可以在 RikkaHub 的“提供商”页面添加或选择相应提供商。
-                    还没选好提供商？推荐先用这个入口快速开通（流程简单，适合先小额测试）：
-                    <a href="https://yunwu.ai/register?aff=PMO3" target="_blank" style="color: inherit; text-decoration: underline;">https://yunwu.ai/register?aff=PMO3</a>
-                    说明：这是推广链接；通过该链接注册后，用户前 3 次充值可为本工具作者带来 10% 返现，用于持续维护与更新本工具。
+                    <strong>提供商快速开通入口：</strong>
+                    两个入口都可用于 DeepSeek 系模型；其中入口 A 还可以用国外的大模型，价格相对更具性价比：<br>
+                    入口 A：<a href="https://yunwu.ai/register?aff=PMO3" target="_blank" style="color: inherit; text-decoration: underline;">https://yunwu.ai/register?aff=PMO3</a><br>
+                    入口 B：<a href="https://cloud.siliconflow.cn/i/XfEPO9tm" target="_blank" style="color: inherit; text-decoration: underline;">https://cloud.siliconflow.cn/i/XfEPO9tm</a><br>
+                    一般情况下，多数模型价格会比官方直连更实惠（以平台实时价格为准）。
+                    说明：以上两个入口均为推广信息。
                 </p>
 
                 <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
@@ -3864,58 +4039,68 @@
             if (!body) return;
             if (currentLanguage === 'en-US') {
                 body.innerHTML = `
+                    <p style="margin-bottom: 10px;"><strong>More Migration Paths</strong></p>
+                    <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.7; margin-bottom: 14px;">
+                        If your history is spread across platforms, use one workspace and merge once.
+                    </p>
+
                     <p><strong>ChatGPT Official Export → RikkaHub</strong></p>
                     <ol style="margin-left: 20px; line-height: 1.8;">
-                        <li>Export full ChatGPT data ZIP from Data Controls (do not upload only <code>conversations.json</code>).</li>
-                        <li>Choose "ChatGPT Data" in this tool, upload ZIP, then review/select conversations in workspace.</li>
-                        <li>Upload original RikkaHub backup ZIP, merge, download, and import back to RikkaHub.</li>
+                        <li>Export full ChatGPT data ZIP from Data Controls (not just <code>conversations.json</code>).</li>
+                        <li>Choose "ChatGPT Data", upload ZIP, then review/select/edit in workspace.</li>
+                        <li>Upload original RikkaHub backup ZIP, merge, download, then import back into RikkaHub.</li>
                     </ol>
 
                     <p style="margin-top: 16px;"><strong>YourAIScroll Markdown → RikkaHub</strong></p>
                     <ol style="margin-left: 20px; line-height: 1.8;">
                         <li>Switch source to "YourAIScroll Data", click "Paste Markdown".</li>
-                        <li>Paste one conversation per time; include <code>Original URL</code>, <code>[USER]</code>, <code>[ASSISTANT]</code> when possible.</li>
-                        <li>After save, it goes into workspace. Keep adding more and merge in one batch.</li>
+                        <li>Paste one conversation each time; keep <code>Original URL</code>, <code>[USER]</code>, <code>[ASSISTANT]</code> markers when possible.</li>
+                        <li>Save to workspace, then continue adding more conversations before one batch merge.</li>
                     </ol>
 
                     <p style="margin-top: 16px;"><strong>Mixed-source merge (recommended)</strong></p>
                     <ol style="margin-left: 20px; line-height: 1.8;">
                         <li>Import ChatGPT / DeepSeek / YourAIScroll into the same workspace.</li>
-                        <li>Search, filter, edit, and select conversations you want.</li>
-                        <li>Merge once into one RikkaHub backup for unified archive.</li>
+                        <li>Search, filter, edit, and select only the conversations you really want.</li>
+                        <li>Merge once into one RikkaHub backup for a single archive.</li>
                     </ol>
 
                     <p style="margin-top: 16px; padding: 14px; background: var(--md-sys-color-primary-container); border-radius: var(--md-sys-shape-corner-medium); color: var(--md-sys-color-on-primary-container); line-height: 1.7;">
-                        <strong>Tip:</strong> Validate with 1-3 conversations first, then do full merge.
+                        <strong>Tip:</strong> validate with 1-3 conversations first, then run full merge.
                     </p>
                 `.trim();
                 return;
             }
 
             body.innerHTML = `
+                <p style="margin-bottom: 10px;"><strong>更多迁移路径</strong></p>
+                <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.7; margin-bottom: 14px;">
+                    适合“聊天历史分散在多个平台，但你只想整理成一个可继续使用的档案”。
+                </p>
+
                 <p><strong>ChatGPT 官方导出 → RikkaHub</strong></p>
                 <ol style="margin-left: 20px; line-height: 1.8;">
                     <li>在 ChatGPT 的 Data Controls 导出完整数据 ZIP（不要只拿 <code>conversations.json</code>）。</li>
-                    <li>本工具来源选“ChatGPT 数据”，上传 ZIP，进会话工作台勾选并检查消息。</li>
-                    <li>上传 RikkaHub 原始备份 ZIP，点击合并并下载，最后导回 RikkaHub。</li>
+                    <li>本工具来源选“ChatGPT 数据”，上传 ZIP，在会话工作台里筛选、勾选、编辑。</li>
+                    <li>上传 RikkaHub 原始备份 ZIP，合并下载后再导回 RikkaHub。</li>
                 </ol>
 
                 <p style="margin-top: 16px;"><strong>YourAIScroll Markdown → RikkaHub</strong></p>
                 <ol style="margin-left: 20px; line-height: 1.8;">
                     <li>来源切到 “YourAIScroll 数据”，点击“粘贴 Markdown 文本”。</li>
-                    <li>每次粘贴一个会话，建议包含 <code>Original URL</code>、<code>[USER]</code>、<code>[ASSISTANT]</code> 标记。</li>
-                    <li>保存后会进入会话工作台，可继续追加粘贴多个会话，再统一合并。</li>
+                    <li>每次粘贴一个会话，建议保留 <code>Original URL</code>、<code>[USER]</code>、<code>[ASSISTANT]</code> 标记。</li>
+                    <li>保存后会进入会话工作台，可继续追加多个会话，再统一合并。</li>
                 </ol>
 
                 <p style="margin-top: 16px;"><strong>多来源混合合并（推荐）</strong></p>
                 <ol style="margin-left: 20px; line-height: 1.8;">
                     <li>分别导入 ChatGPT / DeepSeek / YourAIScroll 数据到同一个会话工作台。</li>
-                    <li>按标题搜索、筛选、编辑后，一次勾选你要的会话。</li>
+                    <li>按标题搜索、筛选、编辑后，勾选你真正要保留的会话。</li>
                     <li>一次合并到同一个 RikkaHub 备份，便于统一归档。</li>
                 </ol>
 
                 <p style="margin-top: 16px; padding: 14px; background: var(--md-sys-color-primary-container); border-radius: var(--md-sys-shape-corner-medium); color: var(--md-sys-color-on-primary-container); line-height: 1.7;">
-                    <strong>小提醒：</strong>先拿 1-3 个会话做小样导入，确认格式没问题，再做全量合并，最稳。
+                    <strong>小提醒：</strong>先拿 1-3 个会话做小样导入，确认没问题再做全量，最稳。
                 </p>
             `.trim();
         }
@@ -3925,6 +4110,10 @@
             if (!body) return;
             if (currentLanguage === 'en-US') {
                 body.innerHTML = `
+                    <div style="margin-bottom: 16px; padding: 14px; background: var(--md-sys-color-primary-container); border-radius: var(--md-sys-shape-corner-medium); color: var(--md-sys-color-on-primary-container); line-height: 1.75;">
+                        <strong>Scope:</strong> ChatWeave is for <strong>conversation continuity</strong> (import + edit + merge), not full account cloning.
+                    </div>
+
                     <div class="support-grid">
                         <div class="support-card support-success">
                             <div class="support-header">
@@ -3932,13 +4121,12 @@
                                 <h3>Supported</h3>
                             </div>
                             <ul class="support-list">
-                                <li><strong>ChatGPT official ZIP export</strong>: text, images (upload + generated), title and timestamps (v1.5 stable mapping; no standalone thoughts/reasoning_recap field writes)</li>
-                                <li><strong>DeepSeek new ZIP (conversations.json)</strong>: REQUEST/THINK/RESPONSE fragments (including THINK-only nodes), title and time</li>
-                                <li><strong>DeepSeek legacy ZIP (chat.csv / coder.csv)</strong>: role, text, message time and title</li>
-                                <li><strong>YourAIScroll Markdown paste</strong>: one conversation per paste, URL platform recognition, role tags, Markdown links/images, common reasoning markers</li>
-                                <li><strong>YourAIScroll tool/document markers</strong>: explicit syntax like <code>Function: name(args)</code> and doc link extraction</li>
-                                <li><strong>Unified workspace</strong>: multi-source import, conversation/message level selection, edit before merge</li>
-                                <li><strong>RikkaHub compatibility</strong>: writes to ConversationEntity + message_node (DB v12), schema cross-checked with v1.9.0beta code (DB v13)</li>
+                                <li><strong>ChatGPT official ZIP</strong>: titles, message text, timestamps, image references</li>
+                                <li><strong>DeepSeek new ZIP (conversations.json)</strong>: REQUEST / THINK / RESPONSE structure and metadata</li>
+                                <li><strong>DeepSeek legacy ZIP (chat.csv / coder.csv)</strong>: role, message text, timestamps, titles</li>
+                                <li><strong>YourAIScroll Markdown paste</strong>: one-conversation paste flow with role and URL recognition</li>
+                                <li><strong>Unified workspace</strong>: multi-source import, search, select, edit, then one-click merge</li>
+                                <li><strong>RikkaHub-ready output</strong>: generated package can be imported back into RikkaHub directly</li>
                             </ul>
                         </div>
 
@@ -3948,10 +4136,10 @@
                                 <h3>Not Supported</h3>
                             </div>
                             <ul class="support-list">
-                                <li>ChatGPT account profile data, archive/favorite state, plugin data, custom GPT config, group chats, feedback history, Sora video, shopping-related data</li>
-                                <li>DeepSeek voice messages and file attachments</li>
-                                <li>YourAIScroll file upload import (paste-only), exact original timestamps, auto-downloading external images into backup</li>
-                                <li>All platforms: edit history, deleted messages, complete branch state, live runtime session state, exact token accounting</li>
+                                <li>Account-level settings and profile data (email, phone, favorite/archive state, etc.)</li>
+                                <li>Voice/file attachments that are not in export package</li>
+                                <li>YourAIScroll file upload mode (paste-only), exact original timestamps, auto-downloading external image URLs</li>
+                                <li>Edit history, deleted messages, live branch runtime state, exact token accounting</li>
                             </ul>
                         </div>
                     </div>
@@ -3960,37 +4148,40 @@
             }
 
             body.innerHTML = `
+                <div style="margin-bottom: 16px; padding: 14px; background: var(--md-sys-color-primary-container); border-radius: var(--md-sys-shape-corner-medium); color: var(--md-sys-color-on-primary-container); line-height: 1.75;">
+                    <strong>范围说明：</strong>ChatWeave 解决的是<strong>会话连续性迁移</strong>（导入 + 编辑 + 合并），不是账号级完整克隆。
+                </div>
+
                 <div class="support-grid">
                     <div class="support-card support-success">
                         <div class="support-header">
                             <span class="support-icon">✅</span>
                             <h3>已支持</h3>
+                            </div>
+                            <ul class="support-list">
+                                <li><strong>ChatGPT 官方导出 ZIP</strong>：标题、消息文本、时间、图片引用</li>
+                                <li><strong>DeepSeek 新版 ZIP（conversations.json）</strong>：REQUEST / THINK / RESPONSE 结构与元信息</li>
+                                <li><strong>DeepSeek 旧版 ZIP（chat.csv / coder.csv）</strong>：角色、消息文本、时间、标题</li>
+                                <li><strong>YourAIScroll Markdown 粘贴导入</strong>：单会话粘贴流程，支持角色标记与 URL 识别</li>
+                                <li><strong>统一会话工作台</strong>：多来源导入、搜索筛选、勾选编辑、一次合并</li>
+                                <li><strong>RikkaHub 可导入输出</strong>：生成包可直接导回 RikkaHub 使用</li>
+                            </ul>
                         </div>
-                        <ul class="support-list">
-                            <li><strong>ChatGPT 官方导出 ZIP</strong>：对话文本、图片（用户上传 + 生成图）、标题与创建/更新时间（按 v1.5 稳定口径，不单独写入 thoughts/reasoning_recap）</li>
-                            <li><strong>DeepSeek 新版 ZIP（conversations.json）</strong>：REQUEST/THINK/RESPONSE 片段（含 THINK-only 节点）、标题与时间</li>
-                            <li><strong>DeepSeek 旧版 ZIP（chat.csv / coder.csv）</strong>：角色、文本、消息时间与标题</li>
-                            <li><strong>YourAIScroll Markdown 粘贴导入</strong>：每次一个会话，支持 URL 平台识别、角色标记、Markdown 图片/链接、常见深度思考标记</li>
-                            <li><strong>YourAIScroll 工具/文档标记</strong>：支持显式语法 <code>Function: name(args)</code> 与文档链接提取（非显式格式不保证识别）</li>
-                            <li><strong>统一会话工作台</strong>：多来源并存导入、会话级与消息级勾选、逐条编辑后再合并</li>
-                            <li><strong>RikkaHub 兼容口径</strong>：写入 ConversationEntity + message_node（DB v12），并对 v1.9.0beta 源码 schema（DB v13）完成结构对照</li>
-                        </ul>
-                    </div>
 
                     <div class="support-card support-error">
                         <div class="support-header">
                             <span class="support-icon">❌</span>
                             <h3>不支持</h3>
+                            </div>
+                            <ul class="support-list">
+                                <li>账号级设置与资料（邮箱、手机号、收藏/归档状态等）</li>
+                                <li>导出包里不存在的语音消息、文件附件</li>
+                                <li>YourAIScroll 文件上传模式（仅支持粘贴 Markdown）、精确原始时间戳、外链图片自动入包</li>
+                                <li>消息编辑历史、已删除消息、实时分支状态、精确 token 统计</li>
+                            </ul>
                         </div>
-                        <ul class="support-list">
-                            <li>ChatGPT：账号信息（邮箱、手机号）、收藏/归档状态、插件数据、自定义助手（Gizmo）、群聊记录、消息反馈、Sora 视频、购物相关数据</li>
-                            <li>DeepSeek：语音消息、文件附件</li>
-                            <li>YourAIScroll：文件上传导入（仅支持粘贴 Markdown）；原始精确时间戳（Markdown 通常不含）；外链图片不会自动下载入包</li>
-                            <li>所有平台：消息编辑历史、已删除消息、完整分支状态、实时会话状态、精确 token 使用量</li>
-                        </ul>
                     </div>
-                </div>
-            `.trim();
+                `.trim();
         }
 
         function renderAboutThemeCards() {
@@ -4035,10 +4226,13 @@
             if (currentLanguage === 'en-US') {
                 body.innerHTML = `
                     <h2 style="font-size: 24px; margin-bottom: 8px;">ChatWeave</h2>
-                    <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">Unified Conversation Workspace v1.6.4</p>
+                    <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">Unified Conversation Workspace v1.6.5</p>
                     <div class="about-info">
-                        <p>ChatWeave is a unified chat workspace for multi-source import, conversation preview, message editing, selection filtering, and target backup merge.</p>
-                        <p>Current version focuses on generating backups importable to RikkaHub, while keeping a unified data layer for future target platforms.</p>
+                        <p>ChatWeave exists for one reason: when models change, your important conversations should not disappear.</p>
+                        <p><strong>We stand with the 0.1% who believe some voices should never be erased.</strong></p>
+                        <p>This tool helps you import, review, edit, and merge old chats into a package you can continue using in RikkaHub.</p>
+                        <p><strong>Principles:</strong> continuity first, local-first processing, and rollback-safe workflow.</p>
+                        <p>After import, configure provider/model in RikkaHub and continue from the migrated history.</p>
                     </div>
                     <div style="margin-top: 16px;">
                         <p style="margin: 0 0 8px 0; font-size: 13px; color: var(--md-sys-color-on-surface-variant);">Project Links</p>
@@ -4054,7 +4248,7 @@
                     <div style="margin-top: 18px; padding: 16px; background: var(--md-sys-color-surface-container-low); border-radius: var(--md-sys-shape-corner-medium);">
                         <h3 style="margin: 0 0 10px 0; font-size: 16px;">☕ Support</h3>
                         <p style="margin: 0 0 10px 0; font-size: 13px; color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
-                            If this tool saves your time, feel free to scan and support ongoing maintenance.
+                            If this tool helped you reconnect important conversations, your support keeps updates going.
                         </p>
                         <img
                             src="https://rewardreiso.spiritherb.top"
@@ -4084,7 +4278,10 @@
                             Conversion runs locally in your browser. Keep source exports and backups until validation is complete.
                         </p>
                         <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 8px 0 0 0;">
-                            Compatibility baseline: RikkaHub DB schema v12 (verified) and v1.9.0beta schema v13 (cross-checked).
+                            Compatibility is continuously maintained. If future app versions change format, import flow will be updated first.
+                        </p>
+                        <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 8px 0 0 0;">
+                            No permanence promise for any single model. The promise is continuity of your conversation assets.
                         </p>
                         <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 8px 0 0 0;">
                             No warranty: use at your own risk for any data loss, crash, or other consequences.
@@ -4102,10 +4299,13 @@
 
             body.innerHTML = `
                 <h2 style="font-size: 24px; margin-bottom: 8px;">ChatWeave</h2>
-                <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">统一会话工作台 v1.6.4</p>
+                <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">统一会话工作台 v1.6.5</p>
                 <div class="about-info">
-                    <p>ChatWeave 是一个统一聊天记录工作台：支持多来源导入、会话预览、消息编辑、勾选过滤和目标备份合并。</p>
-                    <p>当前版本重点输出可导入 RikkaHub 的备份包，同时保留统一数据层，便于后续扩展更多目标平台。</p>
+                    <p>ChatWeave 的存在价值只有一件事：模型会变，但你重要的聊天不该消失。</p>
+                    <p><strong>我们代表那 0.1%，相信有些声音不应被抹去。</strong></p>
+                    <p>你可以把旧会话导入、审阅、编辑，再合并成可在 RikkaHub 继续使用的备份包。</p>
+                    <p><strong>产品原则：</strong>连续性优先、本地优先、可回滚优先。</p>
+                    <p>迁移完成后，可在 RikkaHub 的“提供商”页设置模型，基于已迁移历史继续聊天。</p>
                 </div>
                 <div style="margin-top: 16px;">
                     <p style="margin: 0 0 8px 0; font-size: 13px; color: var(--md-sys-color-on-surface-variant);">项目链接</p>
@@ -4121,7 +4321,7 @@
                 <div style="margin-top: 18px; padding: 16px; background: var(--md-sys-color-surface-container-low); border-radius: var(--md-sys-shape-corner-medium);">
                     <h3 style="margin: 0 0 10px 0; font-size: 16px;">☕ 赞赏支持</h3>
                     <p style="margin: 0 0 10px 0; font-size: 13px; color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
-                        如果这个工具帮你省了时间，可以扫码支持一下后续维护。
+                        如果这个工具帮你把重要会话接回来了，欢迎赞赏支持后续维护。
                     </p>
                     <img
                         src="https://rewardreiso.spiritherb.top"
@@ -4151,7 +4351,10 @@
                         数据转换在本地浏览器完成；请自行保管源文件与备份文件，确认可用前不要删除原始备份。
                     </p>
                     <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 8px 0 0 0;">
-                        兼容验证基线：RikkaHub 备份数据库结构 v12（实测）与 v1.9.0beta 源码 schema v13（结构对照）。后续版本仍可能出现差异。
+                        兼容会持续跟进：如果后续版本出现差异，我们会优先修复导入链路。
+                    </p>
+                    <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 8px 0 0 0;">
+                        不承诺任何单一模型会长期可用；本工具承诺的是你的会话资产具备持续迁移能力。
                     </p>
                     <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 8px 0 0 0;">
                         无担保声明：本工具不对导入结果作绝对保证。因使用导致的数据丢失、崩溃或其他损失，请自行承担风险。
@@ -4180,6 +4383,16 @@
                 if (el) el.textContent = t(key);
             };
             setText('appSubtitle', 'app.subtitle');
+            setText('appEmotionalNote', 'app.emotionalNote');
+            setText('missionBadge', 'mission.badge');
+            setText('missionTitle', 'mission.title');
+            setText('missionDesc', 'mission.desc');
+            setText('missionManifesto', 'mission.manifesto');
+            setText('missionPill1', 'mission.pill.local');
+            setText('missionPill2', 'mission.pill.edit');
+            setText('missionPill3', 'mission.pill.rollback');
+            setText('missionPrimaryBtn', 'mission.btn.primary');
+            setText('missionSecondaryBtn', 'mission.btn.secondary');
             setText('warningCardTitle', 'warning.title');
             setText('warningCardDesc', 'warning.desc');
             setText('warningItem1', 'warning.item1');
