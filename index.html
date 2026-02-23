@@ -945,20 +945,232 @@
             word-break: break-word;
         }
 
-        .preview-chat-text pre {
-            margin: 8px 0;
-            padding: 8px 10px;
-            border-radius: 8px;
-            background: var(--md-sys-color-surface-container-high);
-            overflow-x: auto;
-            font-size: 12px;
+        .preview-chat-text p,
+        .workspace-preview-rich p {
+            margin: 0 0 10px 0;
+            line-height: 1.65;
         }
 
-        .preview-chat-text code {
+        .preview-chat-text p:last-child,
+        .workspace-preview-rich p:last-child {
+            margin-bottom: 0;
+        }
+
+        .preview-chat-text strong,
+        .workspace-preview-rich strong {
+            font-weight: 700;
+        }
+
+        .preview-chat-text em,
+        .workspace-preview-rich em {
+            font-style: italic;
+        }
+
+        .preview-chat-text del,
+        .workspace-preview-rich del {
+            text-decoration: line-through;
+            color: var(--md-sys-color-on-surface-variant);
+        }
+
+        .preview-chat-text h1,
+        .workspace-preview-rich h1 {
+            margin: 14px 0 10px;
+            font-size: 20px;
+            line-height: 1.35;
+            font-weight: 760;
+            letter-spacing: 0.02em;
+        }
+
+        .preview-chat-text h2,
+        .workspace-preview-rich h2 {
+            margin: 12px 0 8px;
+            font-size: 17px;
+            line-height: 1.4;
+            font-weight: 700;
+            border-bottom: 1px solid var(--md-sys-color-outline-variant);
+            padding-bottom: 4px;
+        }
+
+        .preview-chat-text h3,
+        .workspace-preview-rich h3 {
+            margin: 10px 0 6px;
+            font-size: 15px;
+            line-height: 1.45;
+            font-weight: 680;
+        }
+
+        .preview-chat-text h4,
+        .workspace-preview-rich h4,
+        .preview-chat-text h5,
+        .workspace-preview-rich h5,
+        .preview-chat-text h6,
+        .workspace-preview-rich h6 {
+            margin: 8px 0 6px;
+            font-size: 13px;
+            line-height: 1.45;
+            font-weight: 650;
+        }
+
+        .preview-chat-text ul,
+        .workspace-preview-rich ul {
+            margin: 8px 0 10px 18px;
+            padding: 0;
+            list-style: disc;
+        }
+
+        .preview-chat-text ol,
+        .workspace-preview-rich ol {
+            margin: 8px 0 10px 18px;
+            padding: 0;
+            list-style: decimal;
+        }
+
+        .preview-chat-text li,
+        .workspace-preview-rich li {
+            margin: 4px 0;
+            line-height: 1.55;
+        }
+
+        .preview-chat-text .preview-rich-task-list,
+        .workspace-preview-rich .preview-rich-task-list {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .preview-chat-text .preview-rich-task-item,
+        .workspace-preview-rich .preview-rich-task-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .preview-chat-text .preview-rich-task-item input[type="checkbox"],
+        .workspace-preview-rich .preview-rich-task-item input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+            margin-top: 3px;
+            accent-color: var(--md-sys-color-primary);
+            flex-shrink: 0;
+        }
+
+        .preview-chat-text hr,
+        .workspace-preview-rich hr {
+            margin: 12px 0;
+            border: none;
+            border-top: 1px solid var(--md-sys-color-outline-variant);
+        }
+
+        .preview-chat-text table,
+        .workspace-preview-rich table {
+            margin: 8px 0 10px;
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid var(--md-sys-color-outline-variant);
+            border-radius: 10px;
+            overflow: hidden;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .preview-chat-text table thead,
+        .workspace-preview-rich table thead {
+            background: color-mix(in srgb, var(--md-sys-color-surface-container-high) 82%, var(--md-sys-color-surface));
+        }
+
+        .preview-chat-text table th,
+        .workspace-preview-rich table th,
+        .preview-chat-text table td,
+        .workspace-preview-rich table td {
+            border: 1px solid var(--md-sys-color-outline-variant);
+            padding: 6px 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .preview-chat-text table th,
+        .workspace-preview-rich table th {
+            font-weight: 660;
+        }
+
+        .preview-chat-text table tbody tr:nth-child(even),
+        .workspace-preview-rich table tbody tr:nth-child(even) {
+            background: color-mix(in srgb, var(--md-sys-color-surface-container-high) 55%, var(--md-sys-color-surface));
+        }
+
+        .preview-chat-text blockquote,
+        .workspace-preview-rich blockquote {
+            margin: 8px 0;
+            padding: 4px 0 4px 10px;
+            border-left: 3px solid var(--md-sys-color-outline);
+            color: var(--md-sys-color-on-surface-variant);
+        }
+
+        .preview-chat-text blockquote p,
+        .workspace-preview-rich blockquote p {
+            margin: 0 0 6px 0;
+        }
+
+        .preview-chat-text blockquote p:last-child,
+        .workspace-preview-rich blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        .preview-chat-text .preview-rich-inline-code,
+        .workspace-preview-rich .preview-rich-inline-code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 11px;
+            border-radius: 6px;
+            border: 1px solid var(--md-sys-color-outline-variant);
+            background: color-mix(in srgb, var(--md-sys-color-surface-container-high) 80%, var(--md-sys-color-surface));
+            padding: 1px 5px;
+        }
+
+        .preview-chat-text .preview-rich-code-block,
+        .workspace-preview-rich .preview-rich-code-block {
+            margin: 8px 0;
+            border: 1px solid var(--md-sys-color-outline-variant);
+            border-radius: 10px;
+            overflow: hidden;
+            background: color-mix(in srgb, var(--md-sys-color-surface-container-high) 82%, var(--md-sys-color-surface));
+        }
+
+        .preview-chat-text .preview-rich-code-header,
+        .workspace-preview-rich .preview-rich-code-header {
+            padding: 5px 10px;
+            border-bottom: 1px solid var(--md-sys-color-outline-variant);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            background: color-mix(in srgb, var(--md-sys-color-surface-container) 65%, var(--md-sys-color-surface));
+        }
+
+        .preview-chat-text .preview-rich-code-lang,
+        .workspace-preview-rich .preview-rich-code-lang {
+            font-size: 10px;
+            font-weight: 650;
+            color: var(--md-sys-color-on-surface-variant);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .preview-chat-text .preview-rich-code-block pre,
+        .workspace-preview-rich .preview-rich-code-block pre {
+            margin: 0;
+            padding: 10px 12px;
+            max-width: 100%;
+            overflow-x: auto;
+            background: transparent;
+            font-size: 12px;
+            line-height: 1.55;
+        }
+
+        .preview-chat-text .preview-rich-code-block code,
+        .workspace-preview-rich .preview-rich-code-block code {
             font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
         }
 
-        .preview-chat-text img {
+        .preview-chat-text img,
+        .workspace-preview-rich img {
             max-width: min(320px, 100%);
             max-height: 220px;
             border-radius: 10px;
@@ -968,10 +1180,28 @@
             object-fit: cover;
         }
 
-        .preview-chat-text a {
+        .preview-chat-text a,
+        .workspace-preview-rich a {
             color: var(--md-sys-color-primary);
             text-decoration: underline;
             word-break: break-all;
+        }
+
+        .preview-chat-text .preview-rich-citation-badge,
+        .workspace-preview-rich .preview-rich-citation-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            border: 1px solid color-mix(in srgb, var(--md-sys-color-primary) 38%, var(--md-sys-color-outline-variant));
+            background: color-mix(in srgb, var(--md-sys-color-primary) 14%, var(--md-sys-color-surface));
+            color: var(--md-sys-color-primary);
+            padding: 1px 6px;
+            font-size: 10px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            line-height: 1.5;
+            vertical-align: middle;
+            user-select: none;
         }
 
         .preview-chat-text .preview-rich-callout,
@@ -2128,6 +2358,10 @@
             margin-bottom: 12px;
         }
 
+        body.workspace-fullscreen-open {
+            overflow: hidden;
+        }
+
         .workspace-search {
             flex: 1;
             min-width: 200px;
@@ -2151,6 +2385,97 @@
             border: 1px solid var(--md-sys-color-outline-variant);
             border-radius: var(--md-sys-shape-corner-medium);
             background: var(--md-sys-color-surface);
+        }
+
+        .workspace-row-actions {
+            display: flex;
+            gap: 6px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .workspace-card.workspace-fullscreen {
+            position: fixed;
+            z-index: 980;
+            top: calc(env(safe-area-inset-top, 0px) + 8px);
+            right: calc(env(safe-area-inset-right, 0px) + 8px);
+            bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
+            left: calc(env(safe-area-inset-left, 0px) + 8px);
+            margin: 0;
+            border-radius: 14px;
+            box-shadow: 0 20px 48px color-mix(in srgb, var(--md-sys-color-shadow) 48%, transparent);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .workspace-card.workspace-fullscreen .workspace-toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            background: var(--md-sys-color-surface-container-high);
+        }
+
+        .workspace-card.workspace-fullscreen .workspace-list {
+            flex: 1;
+            min-height: 0;
+            max-height: none;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+        }
+
+        .workspace-card.workspace-fullscreen .workspace-search {
+            min-width: 140px;
+        }
+
+        .workspace-card.workspace-fullscreen .workspace-row {
+            grid-template-columns: auto 1fr;
+            grid-template-areas:
+                "check main"
+                "badge badge"
+                "actions actions";
+            row-gap: 8px;
+            align-items: start;
+        }
+
+        .workspace-card.workspace-fullscreen .workspace-row > .workspace-checkbox {
+            grid-area: check;
+            margin-top: 2px;
+        }
+
+        .workspace-card.workspace-fullscreen .workspace-row > .workspace-row-main {
+            grid-area: main;
+        }
+
+        .workspace-card.workspace-fullscreen .workspace-row > .workspace-badge {
+            grid-area: badge;
+            justify-self: start;
+            max-width: 100%;
+        }
+
+        .workspace-card.workspace-fullscreen .workspace-row > .workspace-row-actions {
+            grid-area: actions;
+            justify-content: flex-start;
+        }
+
+        @media (max-width: 680px) {
+            .workspace-card.workspace-fullscreen {
+                top: calc(env(safe-area-inset-top, 0px) + 4px);
+                right: calc(env(safe-area-inset-right, 0px) + 4px);
+                bottom: calc(env(safe-area-inset-bottom, 0px) + 4px);
+                left: calc(env(safe-area-inset-left, 0px) + 4px);
+                border-radius: 12px;
+            }
+
+            .workspace-card.workspace-fullscreen .workspace-toolbar {
+                gap: 6px;
+            }
+
+            .workspace-card.workspace-fullscreen .workspace-search {
+                min-width: 100%;
+            }
         }
 
         .workspace-row {
@@ -2390,41 +2715,10 @@
             color: var(--md-sys-color-on-surface);
             word-break: break-word;
             overflow-wrap: anywhere;
-            line-height: 1.5;
+            line-height: 1.55;
+            font-size: 13px;
             max-height: none;
             overflow: visible;
-        }
-
-        .workspace-preview-rich pre {
-            margin: 6px 0;
-            padding: 8px 10px;
-            border-radius: 8px;
-            background: var(--md-sys-color-surface-container-high);
-            overflow-x: auto;
-            font-size: 12px;
-        }
-
-        .workspace-preview-rich blockquote {
-            margin: 6px 0;
-            padding: 4px 0 4px 10px;
-            border-left: 3px solid var(--md-sys-color-outline);
-            color: var(--md-sys-color-on-surface-variant);
-        }
-
-        .workspace-preview-rich img {
-            max-width: min(220px, 100%);
-            max-height: min(320px, 56vh);
-            border-radius: 8px;
-            border: 1px solid var(--md-sys-color-outline-variant);
-            display: block;
-            margin: 6px 0;
-            object-fit: contain;
-        }
-
-        .workspace-preview-rich a {
-            color: var(--md-sys-color-primary);
-            text-decoration: underline;
-            word-break: break-all;
         }
 
         .workspace-preview-empty {
@@ -2825,7 +3119,7 @@
 
     <div class="container">
         <h1>ChatWeave</h1>
-        <p class="subtitle" id="appSubtitle">让旧对话在新家续写（导入·浏览·编辑·合并）v1.6.6</p>
+        <p class="subtitle" id="appSubtitle">让旧对话在新家续写（导入·浏览·编辑·合并）v1.7.0</p>
         <p class="subtitle-note" id="appEmotionalNote">不必从零开始。把熟悉的对话带到这里，继续和 ta 聊下去。</p>
 
         <div class="card mission-card">
@@ -2922,6 +3216,7 @@
                 <button class="btn-text" id="workspaceSelectAllBtn" type="button" onclick="setWorkspaceSelectionState(true)">全选</button>
                 <button class="btn-text" id="workspaceSelectNoneBtn" type="button" onclick="setWorkspaceSelectionState(false)">全不选</button>
                 <button class="btn-text" id="workspaceInvertSelectBtn" type="button" onclick="invertWorkspaceSelection()">反选</button>
+                <button class="btn-text" id="workspaceFullscreenBtn" type="button" onclick="toggleWorkspaceFullscreen()">放大编辑</button>
             </div>
             <div class="workspace-list" id="workspaceList"></div>
         </div>
@@ -3247,7 +3542,7 @@
             </div>
             <div class="modal-body">
                 <h2 style="font-size: 24px; margin-bottom: 8px;">ChatWeave</h2>
-                <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">对话迁移助手 v1.6.6</p>
+                <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">对话迁移助手 v1.7.0</p>
                 <div class="about-info">
                     <p>ChatWeave 是一个统一聊天记录工作台：支持多来源导入、对话预览、消息编辑、勾选过滤和目标备份合并。</p>
                     <p>当前版本重点输出可导入 RikkaHub 的备份包，同时保留统一数据层，便于后续扩展更多目标平台。</p>
@@ -3538,11 +3833,312 @@
         let db = null;
         let currentDataSource = 'chatgpt';
         let currentLanguage = 'zh-CN';
+        let loadedRikkaDbUserVersion = 0;
+        let loadedRikkaPartTypeFormat = 'legacy';
+
+        // ============ UIMessagePart 类型映射（兼容多版本 RikkaHub）============
+        // 旧格式（1.8.2 / 1.9.0 beta）：使用完整类名
+        // 新格式（v2 / 2.0.0）：使用简短名称 + @SerialName 注解
+        const UI_MESSAGE_PART_TYPES = {
+            // 旧格式（Legacy）
+            LEGACY: {
+                TEXT: 'me.rerere.ai.ui.UIMessagePart.Text',
+                IMAGE: 'me.rerere.ai.ui.UIMessagePart.Image',
+                VIDEO: 'me.rerere.ai.ui.UIMessagePart.Video',
+                AUDIO: 'me.rerere.ai.ui.UIMessagePart.Audio',
+                DOCUMENT: 'me.rerere.ai.ui.UIMessagePart.Document',
+                REASONING: 'me.rerere.ai.ui.UIMessagePart.Reasoning',
+                TOOL_CALL: 'me.rerere.ai.ui.UIMessagePart.ToolCall',
+                TOOL_RESULT: 'me.rerere.ai.ui.UIMessagePart.ToolResult',
+                TOOL: 'me.rerere.ai.ui.UIMessagePart.Tool',
+                SEARCH: 'me.rerere.ai.ui.UIMessagePart.Search'
+            },
+            // 新格式（v2）
+            V2: {
+                TEXT: 'text',
+                IMAGE: 'image',
+                VIDEO: 'video',
+                AUDIO: 'audio',
+                DOCUMENT: 'document',
+                REASONING: 'reasoning',
+                TOOL: 'tool',
+                TOOL_CALL: 'tool_call',     // 已废弃，v2 使用 TOOL
+                TOOL_RESULT: 'tool_result', // 已废弃，v2 使用 TOOL
+                SEARCH: 'search'
+            }
+        };
+
+        // 当前输出格式配置：'legacy'（完整类名）或 'v2'（短类型名）
+        // 会在读取目标备份后自动识别；未识别前默认 legacy。
+        let outputPartTypeFormat = 'legacy';
+
+        /**
+         * 获取当前配置的 Part 类型字符串
+         * @param {string} typeName - 类型名称，如 'TEXT', 'IMAGE', 'REASONING' 等
+         * @returns {string} 对应格式的类型字符串
+         */
+        function getPartType(typeName) {
+            const format = outputPartTypeFormat === 'v2' ? UI_MESSAGE_PART_TYPES.V2 : UI_MESSAGE_PART_TYPES.LEGACY;
+            return format[typeName] || typeName;
+        }
+
+        /**
+         * 检测 Part 类型是否匹配（兼容新旧两种格式）
+         * @param {string} partType - 实际的 type 字段值
+         * @param {string} typeName - 要匹配的类型名称，如 'TEXT', 'IMAGE' 等
+         * @returns {boolean} 是否匹配
+         */
+        function isPartType(partType, typeName) {
+            if (!partType || !typeName) return false;
+            const legacyType = UI_MESSAGE_PART_TYPES.LEGACY[typeName];
+            const v2Type = UI_MESSAGE_PART_TYPES.V2[typeName];
+            return partType === legacyType || partType === v2Type;
+        }
+
+        function resolvePartTypeName(partType) {
+            if (!partType) return null;
+            const type = String(partType).trim();
+            if (!type) return null;
+            const names = Object.keys(UI_MESSAGE_PART_TYPES.LEGACY);
+            for (const name of names) {
+                if (type === UI_MESSAGE_PART_TYPES.LEGACY[name] || type === UI_MESSAGE_PART_TYPES.V2[name]) {
+                    return name;
+                }
+            }
+            return null;
+        }
+
+        function convertPartTypeToFormat(partType, format = outputPartTypeFormat) {
+            const typeName = resolvePartTypeName(partType);
+            if (!typeName) return String(partType || '');
+            const mapping = format === 'v2' ? UI_MESSAGE_PART_TYPES.V2 : UI_MESSAGE_PART_TYPES.LEGACY;
+            return mapping[typeName] || String(partType || '');
+        }
+
+        function normalizePartForOutputFormat(part, format = outputPartTypeFormat) {
+            if (!part || typeof part !== 'object') return part;
+
+            const normalized = { ...part };
+            const originalType = String(normalized.type || '');
+            const normalizedType = convertPartTypeToFormat(originalType, format);
+            if (normalizedType) {
+                normalized.type = normalizedType;
+            }
+
+            if (isPartType(normalized.type, 'TEXT')) {
+                normalized.text = String(normalized.text || '');
+            }
+
+            if (isPartType(normalized.type, 'IMAGE')) {
+                normalized.url = String(normalized.url || '');
+            }
+
+            if (isPartType(normalized.type, 'REASONING')) {
+                normalized.reasoning = String(normalized.reasoning || '');
+                const nowIso = new Date().toISOString();
+                normalized.createdAt = normalized.createdAt || nowIso;
+                normalized.finishedAt = normalized.finishedAt || normalized.createdAt;
+            }
+
+            if (isPartType(normalized.type, 'TOOL')) {
+                normalized.toolCallId = String(normalized.toolCallId || '');
+                normalized.toolName = String(normalized.toolName || '');
+
+                if (format === 'v2') {
+                    normalized.input = String(normalized.input ?? normalized.arguments ?? '');
+                    if (!Array.isArray(normalized.output)) {
+                        normalized.output = [];
+                    }
+                    normalized.output = normalized.output.map(item => normalizePartForOutputFormat(item, format));
+                    if (!normalized.approvalState || typeof normalized.approvalState !== 'object') {
+                        normalized.approvalState = { type: 'auto' };
+                    }
+                } else {
+                    normalized.arguments = String(normalized.arguments ?? normalized.input ?? '');
+                }
+            }
+
+            if (isPartType(normalized.type, 'TOOL_CALL')) {
+                normalized.toolCallId = String(normalized.toolCallId || '');
+                normalized.toolName = String(normalized.toolName || '');
+                normalized.arguments = String(normalized.arguments || '');
+                if (format === 'v2') {
+                    if (!normalized.approvalState || typeof normalized.approvalState !== 'object') {
+                        normalized.approvalState = { type: 'auto' };
+                    }
+                } else if (typeof normalized.priority !== 'number') {
+                    normalized.priority = 0;
+                }
+            }
+
+            if (isPartType(normalized.type, 'TOOL_RESULT')) {
+                normalized.toolCallId = String(normalized.toolCallId || '');
+                normalized.toolName = String(normalized.toolName || '');
+                if (!Object.prototype.hasOwnProperty.call(normalized, 'arguments')) {
+                    normalized.arguments = {};
+                }
+            }
+
+            return normalized;
+        }
+
+        function normalizeMessageForOutputFormat(message, format = outputPartTypeFormat) {
+            if (!message || typeof message !== 'object') return null;
+
+            const normalizedMessage = { ...message };
+            const parts = Array.isArray(normalizedMessage.parts) ? normalizedMessage.parts : [];
+            normalizedMessage.parts = parts
+                .map(part => normalizePartForOutputFormat(part, format))
+                .filter(Boolean);
+            normalizedMessage.role = normalizeMessageRole(normalizedMessage.role) || 'assistant';
+            normalizedMessage.annotations = Array.isArray(normalizedMessage.annotations) ? normalizedMessage.annotations : [];
+            if (!normalizedMessage.createdAt) {
+                normalizedMessage.createdAt = new Date().toISOString().slice(0, -1);
+            }
+            if (!Object.prototype.hasOwnProperty.call(normalizedMessage, 'finishedAt')) {
+                normalizedMessage.finishedAt = null;
+            }
+            if (!Object.prototype.hasOwnProperty.call(normalizedMessage, 'usage')) {
+                normalizedMessage.usage = null;
+            }
+            if (!Object.prototype.hasOwnProperty.call(normalizedMessage, 'translation')) {
+                normalizedMessage.translation = null;
+            }
+            return normalizedMessage;
+        }
+
+        function normalizeMessagesForOutputFormat(messages, format = outputPartTypeFormat) {
+            if (!Array.isArray(messages)) return [];
+            return messages
+                .map(message => normalizeMessageForOutputFormat(message, format))
+                .filter(msg => msg && Array.isArray(msg.parts) && msg.parts.length > 0);
+        }
+
+        /**
+         * 创建 Text Part
+         * @param {string} text - 文本内容
+         * @param {object|null} metadata - 元数据
+         * @returns {object} Part 对象
+         */
+        function createTextPart(text, metadata = null) {
+            return {
+                type: getPartType('TEXT'),
+                text: String(text || ''),
+                metadata: metadata,
+                priority: 0
+            };
+        }
+
+        /**
+         * 创建 Image Part
+         * @param {string} url - 图片 URL
+         * @param {object|null} metadata - 元数据
+         * @returns {object} Part 对象
+         */
+        function createImagePart(url, metadata = null) {
+            return {
+                type: getPartType('IMAGE'),
+                url: String(url || ''),
+                metadata: metadata,
+                priority: 1
+            };
+        }
+
+        /**
+         * 创建 Reasoning Part
+         * @param {string} reasoning - 思考内容
+         * @param {string} createdAt - 创建时间
+         * @param {string|null} finishedAt - 完成时间
+         * @param {object|null} metadata - 元数据
+         * @returns {object} Part 对象
+         */
+        function createReasoningPart(reasoning, createdAt, finishedAt = null, metadata = null) {
+            return {
+                type: getPartType('REASONING'),
+                reasoning: String(reasoning || ''),
+                createdAt: createdAt,
+                finishedAt: finishedAt || createdAt,
+                metadata: metadata,
+                priority: -1
+            };
+        }
+
+        /**
+         * 创建 Tool Part（v2 格式合并了 ToolCall 和 ToolResult）
+         * @param {string} toolCallId - 工具调用 ID
+         * @param {string} toolName - 工具名称
+         * @param {string} input - 输入参数（v2 用 input，旧格式用 arguments）
+         * @param {Array} output - 输出结果（v2 格式）
+         * @param {object|null} metadata - 元数据
+         * @returns {object} Part 对象
+         */
+        function createToolPart(toolCallId, toolName, input, output = [], metadata = null) {
+            const part = {
+                type: getPartType('TOOL'),
+                toolCallId: String(toolCallId || ''),
+                toolName: String(toolName || ''),
+                metadata: metadata
+            };
+
+            if (outputPartTypeFormat === 'v2') {
+                // v2 格式：使用 input 和 output
+                part.input = String(input || '');
+                part.output = Array.isArray(output) ? output : [];
+                part.approvalState = { type: 'auto' };
+            } else {
+                // 旧格式：使用 arguments
+                part.arguments = String(input || '');
+                part.priority = 0;
+            }
+
+            return part;
+        }
+
+        /**
+         * 创建 ToolCall Part（旧格式，v2 中已废弃）
+         * @param {string} toolCallId - 工具调用 ID
+         * @param {string} toolName - 工具名称
+         * @param {string} argumentsStr - 参数字符串
+         * @param {object|null} metadata - 元数据
+         * @returns {object} Part 对象
+         */
+        function createToolCallPart(toolCallId, toolName, argumentsStr, metadata = null) {
+            return {
+                type: getPartType('TOOL_CALL'),
+                toolCallId: String(toolCallId || ''),
+                toolName: String(toolName || ''),
+                arguments: String(argumentsStr || ''),
+                metadata: metadata,
+                priority: 0
+            };
+        }
+
+        /**
+         * 创建 ToolResult Part（旧格式，v2 中已废弃）
+         * @param {string} toolCallId - 工具调用 ID
+         * @param {string} toolName - 工具名称
+         * @param {any} content - 结果内容
+         * @param {object|null} metadata - 元数据
+         * @returns {object} Part 对象
+         */
+        function createToolResultPart(toolCallId, toolName, content, metadata = null) {
+            return {
+                type: getPartType('TOOL_RESULT'),
+                toolCallId: String(toolCallId || ''),
+                toolName: String(toolName || ''),
+                content: content,
+                arguments: {},
+                metadata: metadata,
+                priority: 0
+            };
+        }
+
+        // ============ 类型映射结束 ============
 
         const I18N_STRINGS = {
             'zh-CN': {
                 'app.titleSuffix': '对话迁移助手',
-                'app.subtitle': '让旧对话在新家续写（导入·浏览·编辑·合并）v1.6.6',
+                'app.subtitle': '让旧对话在新家续写（导入·浏览·编辑·合并）v1.7.0',
                 'app.emotionalNote': '不必从零开始。把熟悉的对话带到这里，继续和 ta 聊下去。',
                 'mission.badge': '对话延续',
                 'mission.title': '不是重新开始，是把熟悉的 ta 带回来',
@@ -3585,6 +4181,10 @@
                 'workspace.selectAll': '全选',
                 'workspace.selectNone': '全不选',
                 'workspace.invert': '反选',
+                'workspace.fullscreen.enter': '放大编辑',
+                'workspace.fullscreen.exit': '退出全屏',
+                'workspace.fullscreen.title.enter': '放大工作台，方便小屏编辑',
+                'workspace.fullscreen.title.exit': '退出全屏工作台',
                 'workspace.noMatch': '没有匹配的对话',
                 'workspace.messageCount': '{count} 条消息',
                 'workspace.preview': '预览',
@@ -3663,6 +4263,9 @@
                 'error.rikkaDbMissing': 'RikkaHub 压缩包中未找到 rikka_hub.db 文件。ZIP 文件中包含: {files}',
                 'info.rikkaDbLoadedWal': '已加载 RikkaHub 数据库（从 WAL 重建 {frameCount} 帧），包含 {count} 个对话',
                 'info.rikkaDbLoaded': '已加载 RikkaHub 数据库，包含 {count} 个对话',
+                'info.rikkaPartFormatDetected': '已识别目标备份：数据库版本 {version}，消息类型格式 {format}',
+                'label.partFormat.legacy': '旧版（完整类名）',
+                'label.partFormat.v2': '新版（v2/2.0 短类型名）',
                 'info.rikkaSettingsLoaded': '已加载 RikkaHub 设置文件，包含 {count} 个助手',
                 'error.rikkaCoreTablesMissing': '未找到 ConversationEntity / message_node 表。当前表: {tables}。{walHint}',
                 'error.rikkaWalHintDetected': '已检测到 WAL，但无法从 WAL 重建对话表。',
@@ -3716,7 +4319,7 @@
             },
             'en-US': {
                 'app.titleSuffix': 'Unified Conversation Workspace',
-                'app.subtitle': 'Reconnect Old Conversations (Import / Browse / Edit / Merge) v1.6.6',
+                'app.subtitle': 'Reconnect Old Conversations (Import / Browse / Edit / Merge) v1.7.0',
                 'app.emotionalNote': 'You are not here to start over. Bring familiar chats here and continue with ta.',
                 'mission.badge': 'CONVERSATION CONTINUITY',
                 'mission.title': 'Not restart. Reconnect the familiar ta.',
@@ -3759,6 +4362,10 @@
                 'workspace.selectAll': 'Select All',
                 'workspace.selectNone': 'Clear',
                 'workspace.invert': 'Invert',
+                'workspace.fullscreen.enter': 'Expand Workspace',
+                'workspace.fullscreen.exit': 'Exit Fullscreen',
+                'workspace.fullscreen.title.enter': 'Expand workspace for easier editing on small screens',
+                'workspace.fullscreen.title.exit': 'Exit fullscreen workspace',
                 'workspace.noMatch': 'No matched conversations',
                 'workspace.messageCount': '{count} messages',
                 'workspace.preview': 'Preview',
@@ -3837,6 +4444,9 @@
                 'error.rikkaDbMissing': 'rikka_hub.db not found in RikkaHub ZIP. Files in package: {files}',
                 'info.rikkaDbLoadedWal': 'RikkaHub DB loaded (recovered {frameCount} WAL frames), {count} conversations found',
                 'info.rikkaDbLoaded': 'RikkaHub DB loaded, {count} conversations found',
+                'info.rikkaPartFormatDetected': 'Target backup detected: DB version {version}, message part format {format}',
+                'label.partFormat.legacy': 'legacy (fully-qualified names)',
+                'label.partFormat.v2': 'v2/2.0 (short type names)',
                 'info.rikkaSettingsLoaded': 'RikkaHub settings loaded, {count} assistants found',
                 'error.rikkaCoreTablesMissing': 'ConversationEntity / message_node table not found. Current tables: {tables}. {walHint}',
                 'error.rikkaWalHintDetected': 'WAL detected, but conversation tables could not be reconstructed from WAL.',
@@ -4150,7 +4760,7 @@
                                 <li><strong>DeepSeek legacy ZIP (chat.csv / coder.csv)</strong>: role, message text, timestamps, titles</li>
                                 <li><strong>YourAIScroll Markdown paste</strong>: one-conversation paste flow with role and URL recognition</li>
                                 <li><strong>Unified workspace</strong>: multi-source import, search, select, edit, then one-click merge</li>
-                                <li><strong>RikkaHub-ready output</strong>: generated package can be imported back into RikkaHub directly</li>
+                                <li><strong>RikkaHub-ready output</strong>: validated with RikkaHub v1.8.2 / v1.9.0 beta / v2.0.0 stable, package can be imported directly</li>
                             </ul>
                         </div>
 
@@ -4188,7 +4798,7 @@
                                 <li><strong>DeepSeek 旧版 ZIP（chat.csv / coder.csv）</strong>：角色、消息文本、时间、标题</li>
                                 <li><strong>YourAIScroll Markdown 粘贴导入</strong>：单对话粘贴流程，支持角色标记与 URL 识别</li>
                                 <li><strong>统一对话工作台</strong>：多来源导入、搜索筛选、勾选编辑、一次合并</li>
-                                <li><strong>RikkaHub 可导入输出</strong>：生成包可直接导入 RikkaHub 使用</li>
+                                <li><strong>RikkaHub 可导入输出</strong>：已对齐并验证 v1.8.2 / v1.9.0 beta / v2.0.0 正式版，生成包可直接导入</li>
                             </ul>
                         </div>
 
@@ -4250,7 +4860,7 @@
             if (currentLanguage === 'en-US') {
                 body.innerHTML = `
                     <h2 style="font-size: 24px; margin-bottom: 8px;">ChatWeave</h2>
-                    <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">Unified Conversation Workspace v1.6.6</p>
+                    <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">Unified Conversation Workspace v1.7.0</p>
                     <div class="about-info">
                         <p>ChatWeave exists for one reason: when models change, your important conversations should not disappear.</p>
                         <p><strong>We stand with the 0.1% who believe some voices should never be erased.</strong></p>
@@ -4323,7 +4933,7 @@
 
             body.innerHTML = `
                 <h2 style="font-size: 24px; margin-bottom: 8px;">ChatWeave</h2>
-                <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">对话迁移助手 v1.6.6</p>
+                <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">对话迁移助手 v1.7.0</p>
                 <div class="about-info">
                     <p>我们专注会话连续性：导入、整理、合并，让聊天记录可迁移、可延续。</p>
                     <p><strong>我们代表那 0.1%，相信有些声音不应被抹去。</strong></p>
@@ -4441,6 +5051,7 @@
             setText('workspaceSelectAllBtn', 'workspace.selectAll');
             setText('workspaceSelectNoneBtn', 'workspace.selectNone');
             setText('workspaceInvertSelectBtn', 'workspace.invert');
+            setText('workspaceFullscreenBtn', 'workspace.fullscreen.enter');
             setText('targetBackupTitle', 'targetBackup.title');
             setText('targetBackupSelectBtn', 'targetBackup.select');
             setText('targetBackupHint', 'targetBackup.hint');
@@ -4467,6 +5078,7 @@
             renderLocalizedModalContents();
             updateSourceUploadHintByType(currentDataSource);
             refreshSourceStatusInfoTexts();
+            updateWorkspaceFullscreenButton();
             updateLanguageToggleButton();
         }
 
@@ -4518,6 +5130,7 @@
             showAll: false,
             customConversation: null
         };
+        let workspaceFullscreen = false;
 
         function ensureSourcePoolBucket(sourceType) {
             if (!importedSourcePool[sourceType] || typeof importedSourcePool[sourceType] !== 'object') {
@@ -4909,6 +5522,46 @@
             checkReady();
         }
 
+        function updateWorkspaceFullscreenButton() {
+            const button = document.getElementById('workspaceFullscreenBtn');
+            if (!button) return;
+            const enterMode = workspaceFullscreen !== true;
+            button.textContent = enterMode
+                ? t('workspace.fullscreen.enter')
+                : t('workspace.fullscreen.exit');
+            button.title = enterMode
+                ? t('workspace.fullscreen.title.enter')
+                : t('workspace.fullscreen.title.exit');
+            button.setAttribute('aria-pressed', workspaceFullscreen ? 'true' : 'false');
+        }
+
+        function setWorkspaceFullscreenState(enable) {
+            const card = document.getElementById('workspaceCard');
+            const next = !!enable;
+
+            workspaceFullscreen = next;
+
+            if (card) {
+                card.classList.toggle('workspace-fullscreen', next);
+                if (card.style.display !== 'none') {
+                    // renderWorkspaceList 会写入 inline display:block；全屏时需改成 flex 才能让列表区域滚动
+                    card.style.display = next ? 'flex' : 'block';
+                }
+            }
+
+            document.body.classList.toggle('workspace-fullscreen-open', next);
+            updateWorkspaceFullscreenButton();
+        }
+
+        function toggleWorkspaceFullscreen(force) {
+            const card = document.getElementById('workspaceCard');
+            const targetState = typeof force === 'boolean' ? force : !workspaceFullscreen;
+            if (targetState && (!card || card.style.display === 'none')) {
+                return;
+            }
+            setWorkspaceFullscreenState(targetState);
+        }
+
         function renderWorkspaceList() {
             const card = document.getElementById('workspaceCard');
             const meta = document.getElementById('workspaceMeta');
@@ -4919,15 +5572,21 @@
             const allConversations = Array.isArray(workspaceStore.conversations) ? workspaceStore.conversations : [];
             const shouldShow = allConversations.length > 0;
             if (!shouldShow) {
+                if (workspaceFullscreen) {
+                    setWorkspaceFullscreenState(false);
+                }
                 card.style.display = 'none';
                 list.innerHTML = '';
                 meta.textContent = t('workspace.meta', { selected: 0, total: 0 });
+                updateWorkspaceFullscreenButton();
                 return;
             }
 
-            card.style.display = 'block';
+            card.style.display = workspaceFullscreen ? 'flex' : 'block';
             const selectedCount = allConversations.filter(item => item.selected !== false).length;
             meta.textContent = t('workspace.meta', { selected: selectedCount, total: allConversations.length });
+            card.classList.toggle('workspace-fullscreen', workspaceFullscreen);
+            updateWorkspaceFullscreenButton();
 
             const keyword = String(searchInput?.value || '').trim().toLowerCase();
             const visibleConversations = keyword
@@ -4960,7 +5619,7 @@
                                 <div class="workspace-row-sub">${escapeWorkspaceHtml(subtitleParts.join(' · '))}</div>
                             </div>
                             <span class="workspace-badge">${escapeWorkspaceHtml(item.sourceLabel || 'Source')}</span>
-                            <div style="display: flex; gap: 6px; justify-content: flex-end;">
+                            <div class="workspace-row-actions">
                                 <button
                                     type="button"
                                     class="workspace-action-btn"
@@ -5325,13 +5984,14 @@
                         if (typeof item === 'string') return item;
                         if (typeof item === 'object') {
                             const nestedType = String(item.type || '');
-                            if (nestedType === 'me.rerere.ai.ui.UIMessagePart.Text') {
+                            // 兼容新旧两种格式
+                            if (isPartType(nestedType, 'TEXT')) {
                                 return String(item.text || '');
                             }
-                            if (nestedType === 'me.rerere.ai.ui.UIMessagePart.Reasoning') {
+                            if (isPartType(nestedType, 'REASONING')) {
                                 return String(item.reasoning || '');
                             }
-                            if (nestedType === 'me.rerere.ai.ui.UIMessagePart.Image') {
+                            if (isPartType(nestedType, 'IMAGE')) {
                                 return String(item.url || '');
                             }
                             if (item.text != null) return String(item.text);
@@ -5360,27 +6020,29 @@
 
             return parts.map(part => {
                 const partType = String(part?.type || '');
-                if (partType === 'me.rerere.ai.ui.UIMessagePart.Text') {
+                // 使用 isPartType 兼容新旧两种格式
+                if (isPartType(partType, 'TEXT')) {
                     return String(part?.text || '');
                 }
-                if (partType === 'me.rerere.ai.ui.UIMessagePart.Reasoning') {
+                if (isPartType(partType, 'REASONING')) {
                     const reasoning = String(part?.reasoning || '').trim();
                     return reasoning ? `[深度思考]\n${reasoning}\n[/深度思考]` : '';
                 }
-                if (partType === 'me.rerere.ai.ui.UIMessagePart.Image') {
+                if (isPartType(partType, 'IMAGE')) {
                     const url = String(part?.url || '').trim();
                     return url ? `![image](${url})` : '';
                 }
-                if (partType === 'me.rerere.ai.ui.UIMessagePart.ToolCall') {
+                if (isPartType(partType, 'TOOL_CALL')) {
                     const toolName = String(part?.toolName || 'tool');
                     const args = String(part?.arguments || '').trim();
                     return args
                         ? `[工具调用] ${toolName}\n${args}\n[/工具调用]`
                         : `[工具调用] ${toolName}\n[/工具调用]`;
                 }
-                if (partType === 'me.rerere.ai.ui.UIMessagePart.Tool') {
+                if (isPartType(partType, 'TOOL')) {
                     const toolName = String(part?.toolName || 'tool');
-                    const args = String(part?.arguments || '').trim();
+                    // v2 格式用 input，旧格式用 arguments
+                    const args = String(part?.input || part?.arguments || '').trim();
                     const output = stringifyToolPayload(part?.output).trim();
                     const callText = args
                         ? `[工具调用] ${toolName}\n${args}\n[/工具调用]`
@@ -5389,7 +6051,7 @@
                         ? `${callText}\n\n[工具结果] ${toolName}\n${output}\n[/工具结果]`
                         : callText;
                 }
-                if (partType === 'me.rerere.ai.ui.UIMessagePart.ToolResult') {
+                if (isPartType(partType, 'TOOL_RESULT')) {
                     const toolName = String(part?.toolName || 'tool');
                     const output = stringifyToolPayload(part?.output ?? part?.result ?? part?.content).trim();
                     return output
@@ -6515,6 +7177,9 @@
                 closeRikkaHubRequiredModal();
                 closeMergeDownloadModal(true);
                 closeWorkspacePreviewModal();
+                if (workspaceFullscreen) {
+                    setWorkspaceFullscreenState(false);
+                }
             }
         });
 
@@ -7094,12 +7759,7 @@
                 console.warn('parseYourAIScrollContent failed, fallback to plain text:', error);
             }
             if (!Array.isArray(parts) || parts.length === 0) {
-                parts = [{
-                    type: 'me.rerere.ai.ui.UIMessagePart.Text',
-                    text: rawContent,
-                    metadata: null,
-                    priority: 0
-                }];
+                parts = [createTextPart(rawContent)];
             }
 
             // 格式化时间戳
@@ -7182,7 +7842,7 @@
         
         function parseYourAIScrollContent(content, platform, messageTimestamp) {
             const parts = [];
-            
+
             // 处理 content 类型
             if (content == null) {
                 content = '';
@@ -7193,83 +7853,49 @@
                     content = String(content);
                 }
             }
-            
+
             // 格式化时间戳用于 Reasoning
             const reasoningTimestamp = messageTimestamp ? formatTimestampForRikka(messageTimestamp) : new Date().toISOString().slice(0, -1);
-            
+
             // 提取思维链（特定平台的格式）
             const reasoningContent = extractReasoningContent(content, platform);
             if (reasoningContent) {
-                parts.push({
-                    type: 'me.rerere.ai.ui.UIMessagePart.Reasoning',
-                    reasoning: reasoningContent,
-                    createdAt: reasoningTimestamp,
-                    finishedAt: reasoningTimestamp,
-                    metadata: null,
-                    priority: -1
-                });
+                parts.push(createReasoningPart(reasoningContent, reasoningTimestamp));
             }
-            
+
             // 提取工具调用
             const toolCalls = extractToolCalls(content);
             toolCalls.forEach(toolCall => {
-                parts.push({
-                    type: 'me.rerere.ai.ui.UIMessagePart.ToolCall',
-                    toolCallId: toolCall.id,
-                    toolName: toolCall.name,
-                    arguments: toolCall.arguments,
-                    metadata: null,
-                    priority: 0
-                });
+                parts.push(createToolCallPart(toolCall.id, toolCall.name, toolCall.arguments));
             });
-            
+
             // 提取图片
             const images = extractImages(content);
             images.forEach(img => {
-                parts.push({
-                    type: 'me.rerere.ai.ui.UIMessagePart.Image',
-                    url: img.url,
-                    metadata: null,
-                    priority: 1
-                });
+                parts.push(createImagePart(img.url));
             });
-            
+
             // 提取文档引用（作为文本的一部分）
             const docReferences = extractDocumentReferences(content);
             docReferences.forEach(ref => {
-                parts.push({
-                    type: 'me.rerere.ai.ui.UIMessagePart.Text',
-                    text: ref.text,
-                    metadata: { type: 'document_reference', url: ref.url, title: ref.title },
-                    priority: 0
-                });
+                parts.push(createTextPart(ref.text, { type: 'document_reference', url: ref.url, title: ref.title }));
             });
-            
+
             // 移除已处理的特殊内容，保留纯文本
             let cleanContent = content;
             cleanContent = removeReasoningContent(cleanContent, platform);
             cleanContent = removeToolCalls(cleanContent);
             cleanContent = removeImages(cleanContent);
             cleanContent = removeDocumentReferences(cleanContent);
-            
+
             // 添加文本部分（即使内容为空也要添加）
             if (cleanContent.trim()) {
-                parts.push({
-                    type: 'me.rerere.ai.ui.UIMessagePart.Text',
-                    text: cleanContent,
-                    metadata: null,
-                    priority: 0
-                });
+                parts.push(createTextPart(cleanContent));
             } else if (parts.length === 0) {
                 // 如果没有有效的部分且清理后内容为空，添加原始内容（可能是空字符串）
-                parts.push({
-                    type: 'me.rerere.ai.ui.UIMessagePart.Text',
-                    text: content || '',
-                    metadata: null,
-                    priority: 0
-                });
+                parts.push(createTextPart(content || ''));
             }
-            
+
             return parts;
         }
         
@@ -7892,10 +8518,14 @@
                                     let safe = escapeHtml(String(rawText || ''));
                                     const inlineStore = [];
 
-                                    safe = safe.replace(/`([^`\n]+)`/g, (_, code) => {
-                                        const token = `__PREVIEW_INLINE_CODE_${inlineStore.length}__`;
-                                        inlineStore.push(`<code>${code}</code>`);
+                                    const storeInlineHtml = (html) => {
+                                        const token = `__PREVIEW_INLINE_HTML_${inlineStore.length}__`;
+                                        inlineStore.push(html);
                                         return token;
+                                    };
+
+                                    safe = safe.replace(/`([^`\n]+)`/g, (_, code) => {
+                                        return storeInlineHtml(`<code class="preview-rich-inline-code">${code}</code>`);
                                     });
 
                                     safe = safe.replace(/!\[([^\]]*)\]\(([^)\n]+)\)/gi, (match, alt, url) => {
@@ -7906,15 +8536,15 @@
                                         if (isPreviewEmbeddableImageUrl(imageUrl)) {
                                             const safeAlt = escapeHtml(imageAlt);
                                             const safeUrl = escapeHtml(imageUrl);
-                                            return `
+                                            return storeInlineHtml(`
                                                 <figure class="preview-rich-image-figure">
                                                     <img src="${safeUrl}" alt="${safeAlt}" loading="lazy">
                                                     <figcaption class="preview-rich-image-caption">${safeAlt}</figcaption>
                                                 </figure>
-                                            `.trim();
+                                            `.trim());
                                         }
 
-                                        return buildPreviewImageReferenceCalloutHtml(imageAlt, imageUrl);
+                                        return storeInlineHtml(buildPreviewImageReferenceCalloutHtml(imageAlt, imageUrl));
                                     });
 
                                     safe = safe.replace(/\[([^\]]+)\]\(([^)\n]+)\)/gi, (match, label, url) => {
@@ -7923,23 +8553,287 @@
                                         const safeLabel = escapeHtml(linkLabel);
                                         if (!linkUrl) return safeLabel;
 
-                                        if (!isPreviewSafeLinkUrl(linkUrl)) {
-                                            return `<span class="preview-rich-ref-url">${safeLabel} (${escapeHtml(linkUrl)})</span>`;
+                                        const citationMatch = linkLabel.match(/^citation\s*,\s*(.+)$/i);
+                                        if (citationMatch && linkUrl.length === 6) {
+                                            const domain = escapeHtml(String(citationMatch[1] || '').trim() || 'citation');
+                                            return storeInlineHtml(`
+                                                <span class="preview-rich-citation-badge" title="${domain}" data-citation-id="${escapeHtml(linkUrl)}">${domain}</span>
+                                            `.trim());
                                         }
 
-                                        return `<a href="${escapeHtml(linkUrl)}" target="_blank" rel="noopener noreferrer">${safeLabel}</a>`;
+                                        if (!isPreviewSafeLinkUrl(linkUrl)) {
+                                            return storeInlineHtml(`<span class="preview-rich-ref-url">${safeLabel} (${escapeHtml(linkUrl)})</span>`);
+                                        }
+
+                                        return storeInlineHtml(`<a href="${escapeHtml(linkUrl)}" target="_blank" rel="noopener noreferrer">${safeLabel}</a>`);
+                                    });
+
+                                    safe = safe.replace(/(^|[\s(])(https?:\/\/[^\s<]+)/g, (match, prefix, rawUrl) => {
+                                        let url = String(rawUrl || '');
+                                        let trailing = '';
+
+                                        const peelTrailing = (ch) => {
+                                            trailing = ch + trailing;
+                                            url = url.slice(0, -1);
+                                        };
+
+                                        while (url.length > 0 && /[.,;!?]$/.test(url)) {
+                                            peelTrailing(url[url.length - 1]);
+                                        }
+
+                                        while (url.endsWith(')')) {
+                                            const openCount = (url.match(/\(/g) || []).length;
+                                            const closeCount = (url.match(/\)/g) || []).length;
+                                            if (closeCount <= openCount) break;
+                                            peelTrailing(')');
+                                        }
+
+                                        if (!isPreviewSafeLinkUrl(url)) return match;
+                                        const safeUrl = escapeHtml(url);
+                                        return `${prefix}${storeInlineHtml(`<a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeUrl}</a>`)}${escapeHtml(trailing)}`;
                                     });
 
                                     safe = safe.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
                                     safe = safe.replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
                                     safe = safe.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
-                                    safe = safe.replace(/\n/g, '<br>');
 
                                     inlineStore.forEach((html, index) => {
-                                        safe = safe.split(`__PREVIEW_INLINE_CODE_${index}__`).join(html);
+                                        safe = safe.split(`__PREVIEW_INLINE_HTML_${index}__`).join(html);
                                     });
 
                                     return safe;
+                                }
+
+                                function isPreviewMarkdownTableDivider(lineText) {
+                                    return /^\s*\|?(?:\s*:?-{3,}:?\s*\|)+\s*(?:\s*:?-{3,}:?\s*)?\|?\s*$/.test(String(lineText || ''));
+                                }
+
+                                function parsePreviewMarkdownTableRow(lineText) {
+                                    const text = String(lineText || '').trim().replace(/^\|/, '').replace(/\|$/, '');
+                                    return text.split('|').map(cell => cell.trim());
+                                }
+
+                                function parsePreviewMarkdownListItem(lineText) {
+                                    const trimmed = String(lineText || '').trim();
+                                    if (!trimmed) return null;
+
+                                    let ordered = trimmed.match(/^(\d+)\.\s+([\s\S]*)$/);
+                                    if (!ordered) {
+                                        // 宽松兼容：部分导出会丢掉 marker 后的空格
+                                        ordered = trimmed.match(/^(\d+)\.\s*([\s\S]+)$/);
+                                    }
+                                    if (ordered) {
+                                        return {
+                                            type: 'ordered',
+                                            number: Number(ordered[1] || 1),
+                                            body: String(ordered[2] || '').trim()
+                                        };
+                                    }
+
+                                    let unordered = trimmed.match(/^[-*+]\s+([\s\S]*)$/);
+                                    if (!unordered) {
+                                        // 宽松兼容：部分导出会丢掉 marker 后的空格
+                                        unordered = trimmed.match(/^[-*+]\s*([\s\S]+)$/);
+                                    }
+                                    if (unordered) {
+                                        return {
+                                            type: 'unordered',
+                                            body: String(unordered[1] || '').trim()
+                                        };
+                                    }
+
+                                    return null;
+                                }
+
+                                function isPreviewMarkdownListLine(lineText) {
+                                    return !!parsePreviewMarkdownListItem(lineText);
+                                }
+
+                                function isPreviewMarkdownHeading(lineText) {
+                                    return /^(#{1,6})\s+/.test(String(lineText || '').trim());
+                                }
+
+                                function isPreviewMarkdownBlockQuote(lineText) {
+                                    return /^>\s?/.test(String(lineText || '').trim());
+                                }
+
+                                function isPreviewMarkdownHorizontalRule(lineText) {
+                                    return /^(\*{3,}|-{3,}|_{3,})$/.test(String(lineText || '').trim());
+                                }
+
+                                function isPreviewStoredBlockToken(lineText) {
+                                    return /^__PREVIEW_BLOCK_\d+__$/.test(String(lineText || '').trim());
+                                }
+
+                                function renderPreviewMarkdown(rawText) {
+                                    const lines = String(rawText || '').replace(/\r\n/g, '\n').split('\n');
+                                    const htmlParts = [];
+                                    let index = 0;
+
+                                    const flushParagraph = (paragraphLines) => {
+                                        const text = paragraphLines.join('\n').trim();
+                                        if (!text) return;
+                                        const content = renderPreviewMarkdownInline(text).replace(/\n/g, '<br>');
+                                        htmlParts.push(`<p>${content}</p>`);
+                                    };
+
+                                    while (index < lines.length) {
+                                        const rawLine = lines[index];
+                                        const trimmed = String(rawLine || '').trim();
+
+                                        if (!trimmed) {
+                                            index += 1;
+                                            continue;
+                                        }
+
+                                        if (isPreviewStoredBlockToken(trimmed)) {
+                                            htmlParts.push(trimmed);
+                                            index += 1;
+                                            continue;
+                                        }
+
+                                        if (isPreviewMarkdownHeading(trimmed)) {
+                                            const headingMatch = trimmed.match(/^(#{1,6})\s+([\s\S]*)$/);
+                                            if (headingMatch) {
+                                                const level = Math.min(headingMatch[1].length, 6);
+                                                const headingText = renderPreviewMarkdownInline(headingMatch[2] || '');
+                                                htmlParts.push(`<h${level}>${headingText}</h${level}>`);
+                                                index += 1;
+                                                continue;
+                                            }
+                                        }
+
+                                        if (isPreviewMarkdownHorizontalRule(trimmed)) {
+                                            htmlParts.push('<hr>');
+                                            index += 1;
+                                            continue;
+                                        }
+
+                                        if (trimmed.includes('|') && index + 1 < lines.length && isPreviewMarkdownTableDivider(lines[index + 1])) {
+                                            const headerCells = parsePreviewMarkdownTableRow(lines[index]);
+                                            const rows = [];
+                                            index += 2;
+                                            while (index < lines.length) {
+                                                const rowLine = String(lines[index] || '').trim();
+                                                if (!rowLine || !rowLine.includes('|') || isPreviewMarkdownTableDivider(rowLine)) break;
+                                                rows.push(parsePreviewMarkdownTableRow(rowLine));
+                                                index += 1;
+                                            }
+
+                                            const columnCount = Math.max(headerCells.length, ...rows.map(cells => cells.length), 1);
+                                            const normalizedHeader = Array.from({ length: columnCount }, (_, col) => renderPreviewMarkdownInline(headerCells[col] || ''));
+                                            const normalizedRows = rows.map(cells => {
+                                                return Array.from({ length: columnCount }, (_, col) => renderPreviewMarkdownInline(cells[col] || ''));
+                                            });
+
+                                            const headerHtml = normalizedHeader.map(cell => `<th>${cell}</th>`).join('');
+                                            const bodyHtml = normalizedRows.map(rowCells => {
+                                                return `<tr>${rowCells.map(cell => `<td>${cell}</td>`).join('')}</tr>`;
+                                            }).join('');
+
+                                            htmlParts.push(`<table><thead><tr>${headerHtml}</tr></thead><tbody>${bodyHtml}</tbody></table>`);
+                                            continue;
+                                        }
+
+                                        if (isPreviewMarkdownBlockQuote(trimmed)) {
+                                            const quoteLines = [];
+                                            while (index < lines.length) {
+                                                const quoteRaw = String(lines[index] || '');
+                                                if (!isPreviewMarkdownBlockQuote(quoteRaw.trim())) break;
+                                                quoteLines.push(quoteRaw.replace(/^\s*>\s?/, ''));
+                                                index += 1;
+                                            }
+                                            const quoteContent = renderPreviewMarkdown(quoteLines.join('\n'));
+                                            htmlParts.push(`<blockquote>${quoteContent}</blockquote>`);
+                                            continue;
+                                        }
+
+                                        if (isPreviewMarkdownListLine(trimmed)) {
+                                            const firstItem = parsePreviewMarkdownListItem(trimmed);
+                                            if (!firstItem) {
+                                                index += 1;
+                                                continue;
+                                            }
+                                            const isOrdered = firstItem.type === 'ordered';
+                                            const firstNumber = isOrdered
+                                                ? (Number.isFinite(firstItem.number) ? firstItem.number : 1)
+                                                : 1;
+                                            const listTag = isOrdered ? 'ol' : 'ul';
+                                            const itemHtml = [];
+                                            let hasTaskList = false;
+
+                                            while (index < lines.length) {
+                                                const currentTrimmed = String(lines[index] || '').trim();
+                                                if (!currentTrimmed) {
+                                                    // 允许列表项之间存在空行：如果后面还是同类型列表项，则继续归并同一 <ol>/<ul>
+                                                    let lookahead = index + 1;
+                                                    while (lookahead < lines.length && !String(lines[lookahead] || '').trim()) {
+                                                        lookahead += 1;
+                                                    }
+                                                    const nextItem = lookahead < lines.length
+                                                        ? parsePreviewMarkdownListItem(lines[lookahead])
+                                                        : null;
+                                                    if (nextItem && nextItem.type === firstItem.type) {
+                                                        index = lookahead;
+                                                        continue;
+                                                    }
+                                                    break;
+                                                }
+
+                                                const parsedItem = parsePreviewMarkdownListItem(currentTrimmed);
+                                                if (!parsedItem || parsedItem.type !== firstItem.type) break;
+
+                                                const itemBody = parsedItem.body;
+                                                const taskMatch = itemBody.match(/^\[( |x|X)\]\s+([\s\S]*)$/);
+                                                if (taskMatch) {
+                                                    hasTaskList = true;
+                                                    const checked = taskMatch[1].toLowerCase() === 'x';
+                                                    const taskContent = renderPreviewMarkdownInline(taskMatch[2] || '');
+                                                    itemHtml.push(`
+                                                        <li class="preview-rich-task-item">
+                                                            <input type="checkbox" disabled ${checked ? 'checked' : ''}>
+                                                            <span>${taskContent}</span>
+                                                        </li>
+                                                    `.trim());
+                                                } else {
+                                                    itemHtml.push(`<li>${renderPreviewMarkdownInline(itemBody)}</li>`);
+                                                }
+
+                                                index += 1;
+                                            }
+
+                                            const listClass = hasTaskList ? ' class="preview-rich-task-list"' : '';
+                                            const startAttr = isOrdered && firstNumber > 1 ? ` start="${firstNumber}"` : '';
+                                            htmlParts.push(`<${listTag}${startAttr}${listClass}>${itemHtml.join('')}</${listTag}>`);
+                                            continue;
+                                        }
+
+                                        const paragraphLines = [rawLine];
+                                        index += 1;
+                                        while (index < lines.length) {
+                                            const nextRaw = lines[index];
+                                            const nextTrimmed = String(nextRaw || '').trim();
+                                            if (!nextTrimmed) {
+                                                index += 1;
+                                                break;
+                                            }
+                                            if (
+                                                isPreviewStoredBlockToken(nextTrimmed)
+                                                || isPreviewMarkdownHeading(nextTrimmed)
+                                                || isPreviewMarkdownHorizontalRule(nextTrimmed)
+                                                || isPreviewMarkdownBlockQuote(nextTrimmed)
+                                                || isPreviewMarkdownListLine(nextTrimmed)
+                                                || (nextTrimmed.includes('|') && index + 1 < lines.length && isPreviewMarkdownTableDivider(lines[index + 1]))
+                                            ) {
+                                                break;
+                                            }
+                                            paragraphLines.push(nextRaw);
+                                            index += 1;
+                                        }
+                                        flushParagraph(paragraphLines);
+                                    }
+
+                                    return htmlParts.join('');
                                 }
 
                                 function getPreviewProcessStepMeta(stepKind, stepLabel) {
@@ -7979,13 +8873,13 @@
                                     const singleReasoningOnly = normalizedSteps.length === 1 && normalizedSteps[0]?.kind === 'reasoning';
                                     const stepsHtml = singleReasoningOnly
                                         ? (() => {
-                                            const bodyHtml = renderPreviewMarkdownInline(normalizedSteps[0]?.body || '').trim()
+                                            const bodyHtml = renderPreviewMarkdown(normalizedSteps[0]?.body || '').trim()
                                                 || '<span class="preview-rich-empty">(暂无内容)</span>';
                                             return `<div class="preview-rich-process-thinking-body">${bodyHtml}</div>`;
                                         })()
                                         : normalizedSteps.map(step => {
                                         const meta = getPreviewProcessStepMeta(step?.kind, step?.label);
-                                        const bodyHtml = renderPreviewMarkdownInline(step?.body || '').trim();
+                                        const bodyHtml = renderPreviewMarkdown(step?.body || '').trim();
                                         return `
                                             <div class="preview-rich-process-step ${meta.className}">
                                                 <div class="preview-rich-process-step-head">
@@ -8022,10 +8916,19 @@
                                         return token;
                                     };
 
-                                    let normalized = rawText.replace(/```([\w-]*)\n?([\s\S]*?)```/g, (_, lang, code) => {
-                                        const safeLang = escapeHtml(String(lang || '').trim());
+                                    let normalized = rawText.replace(/(```|~~~)([\w-]*)\n?([\s\S]*?)\1/g, (_, fence, lang, code) => {
+                                        const normalizedLang = String(lang || '').trim();
+                                        const safeLang = escapeHtml(normalizedLang);
                                         const safeCode = escapeHtml(String(code || '').replace(/^\n+|\n+$/g, ''));
-                                        return storeBlock(`<pre><code${safeLang ? ` data-lang="${safeLang}"` : ''}>${safeCode}</code></pre>`);
+                                        const langLabel = safeLang || 'text';
+                                        return storeBlock(`
+                                            <div class="preview-rich-code-block">
+                                                <div class="preview-rich-code-header">
+                                                    <span class="preview-rich-code-lang">${langLabel}</span>
+                                                </div>
+                                                <pre><code${safeLang ? ` data-lang="${safeLang}"` : ''}>${safeCode}</code></pre>
+                                            </div>
+                                        `.trim());
                                     });
 
                                     normalized = normalized.replace(/^\s*(?:Thinking Process|Reasoning|思考过程)\s*[:：]\s*([\s\S]*?)\n\s*(?:Answer|回答)\s*[:：]\s*([\s\S]+)$/i, (match, reasoning, answer) => {
@@ -8051,14 +8954,14 @@
                                             return storeBlock(buildPreviewImageReferenceCalloutHtml(block.label, block.reference));
                                         }
                                         if (block.type === 'answer') {
-                                            return renderPreviewMarkdownInline(block.text || '');
+                                            return renderPreviewMarkdown(block.text || '');
                                         }
                                         return '';
                                     }).filter(Boolean);
 
                                     let safe = renderedSections.length > 0
                                         ? renderedSections.join('<div class="preview-rich-section-gap"></div>')
-                                        : renderPreviewMarkdownInline(normalized);
+                                        : renderPreviewMarkdown(normalized);
 
                                     for (let index = blockStore.length - 1; index >= 0; index--) {
                                         safe = safe.split(`__PREVIEW_BLOCK_${index}__`).join(blockStore[index]);
@@ -8915,6 +9818,90 @@
             return result;
         }
 
+        function readSqliteUserVersion(sqlDb) {
+            if (!sqlDb || typeof sqlDb.exec !== 'function') return 0;
+            try {
+                const rows = sqlDb.exec('PRAGMA user_version');
+                const version = Number(rows?.[0]?.values?.[0]?.[0] || 0);
+                return Number.isFinite(version) && version >= 0 ? version : 0;
+            } catch (error) {
+                console.warn('failed to read sqlite user_version:', error);
+                return 0;
+            }
+        }
+
+        function collectPartTypeStatsFromPart(part, stats) {
+            if (!part || typeof part !== 'object') return;
+
+            const partType = String(part.type || '').trim();
+            if (partType) {
+                if (partType.startsWith('me.rerere.ai.ui.UIMessagePart.')) {
+                    stats.legacy++;
+                } else if (Object.values(UI_MESSAGE_PART_TYPES.V2).includes(partType)) {
+                    stats.v2++;
+                }
+            }
+
+            // 只递归工具输出，避免把 ToolResult.content 内部任意 JSON 的 type 字段误判成 Part 类型
+            if (Array.isArray(part.output)) {
+                part.output.forEach(item => collectPartTypeStatsFromPart(item, stats));
+            }
+        }
+
+        function detectPartTypeFormatFromDb(sqlDb, tableMap) {
+            if (!sqlDb || typeof sqlDb.exec !== 'function') return null;
+            if (!tableMap?.messageNodeTable) return null;
+
+            let rows;
+            try {
+                const messageTableSql = quoteSqlIdentifier(tableMap.messageNodeTable);
+                rows = sqlDb.exec(`
+                    SELECT messages
+                    FROM ${messageTableSql}
+                    WHERE messages IS NOT NULL AND messages != ''
+                    LIMIT 40
+                `);
+            } catch (error) {
+                console.warn('failed to sample message_node messages:', error);
+                return null;
+            }
+
+            const values = rows?.[0]?.values;
+            if (!Array.isArray(values) || values.length === 0) return null;
+
+            const stats = { legacy: 0, v2: 0 };
+            values.forEach(row => {
+                const raw = String(row?.[0] || '').trim();
+                if (!raw) return;
+                try {
+                    const parsed = JSON.parse(raw);
+                    const messageList = Array.isArray(parsed) ? parsed : [];
+                    messageList.forEach(message => {
+                        const parts = Array.isArray(message?.parts) ? message.parts : [];
+                        parts.forEach(part => collectPartTypeStatsFromPart(part, stats));
+                    });
+                } catch (error) {
+                    // 跳过单条损坏的 JSON，继续统计其他记录
+                }
+            });
+
+            if (stats.v2 === 0 && stats.legacy === 0) return null;
+            return stats.v2 > stats.legacy ? 'v2' : 'legacy';
+        }
+
+        function inferOutputPartTypeFormat(userVersion, detectedPartTypeFormat) {
+            if (detectedPartTypeFormat === 'v2' || detectedPartTypeFormat === 'legacy') {
+                return detectedPartTypeFormat;
+            }
+
+            // v2 分支在 13->14 migration 后统一为短类型名
+            return Number(userVersion) >= 14 ? 'v2' : 'legacy';
+        }
+
+        function getPartTypeFormatLabel(format) {
+            return format === 'v2' ? t('label.partFormat.v2') : t('label.partFormat.legacy');
+        }
+
         function applyWalToSqliteDb(dbBytes, walBytes) {
             const fallback = { applied: false, data: dbBytes, frameCount: 0, reason: '' };
             if (!(dbBytes instanceof Uint8Array)) {
@@ -9021,6 +10008,9 @@
                 rikkahubData = null;
                 rikkahubSettings = null;
                 rikkahubZip = null;
+                loadedRikkaDbUserVersion = 0;
+                loadedRikkaPartTypeFormat = 'legacy';
+                outputPartTypeFormat = 'legacy';
                 uploadBox.classList.remove('has-file', 'error');
                 checkReady();
 
@@ -9123,6 +10113,13 @@
                         const countSql = `SELECT COUNT(*) FROM ${quoteSqlIdentifier(tableMap.conversationTable)}`;
                         const result = testDb.exec(countSql);
                         const conversationCount = result?.[0]?.values?.[0]?.[0] || 0;
+                        const userVersion = readSqliteUserVersion(testDb);
+                        const detectedPartTypeFormat = detectPartTypeFormatFromDb(testDb, tableMap);
+                        const targetPartTypeFormat = inferOutputPartTypeFormat(userVersion, detectedPartTypeFormat);
+
+                        loadedRikkaDbUserVersion = userVersion;
+                        loadedRikkaPartTypeFormat = targetPartTypeFormat;
+                        outputPartTypeFormat = targetPartTypeFormat;
 
                         rikkahubData = loadedDbData;
                         
@@ -9139,6 +10136,10 @@
                         } else {
                             showInfo(t('info.rikkaDbLoaded', { count: conversationCount }));
                         }
+                        showInfo(t('info.rikkaPartFormatDetected', {
+                            version: userVersion,
+                            format: getPartTypeFormatLabel(targetPartTypeFormat)
+                        }));
 
                         testDb.close();
 
@@ -9352,7 +10353,7 @@
                 const parts = Array.isArray(msg?.parts) ? msg.parts : [];
                 parts.forEach(part => {
                     if (!part || typeof part !== 'object') return;
-                    if (part.type !== 'me.rerere.ai.ui.UIMessagePart.Text') return;
+                    if (!isPartType(part.type, 'TEXT')) return;
                     count += countUnknownStructuredBlocksInText(String(part.text || ''));
                 });
             });
@@ -9372,7 +10373,7 @@
                 const parts = Array.isArray(msg?.parts) ? msg.parts : [];
                 parts.forEach(part => {
                     if (!part || typeof part !== 'object') return;
-                    if (part.type !== 'me.rerere.ai.ui.UIMessagePart.Text') return;
+                    if (!isPartType(part.type, 'TEXT')) return;
                     const unknownLines = extractUnknownStructuredBlockLinesFromText(String(part.text || ''));
                     unknownLines.forEach(line => {
                         details.push(`${sourceLabel} · ${safeTitle} · ${role}: ${line}`);
@@ -9483,6 +10484,8 @@
                     );
                 }
             }
+
+            messages = normalizeMessagesForOutputFormat(messages, outputPartTypeFormat);
 
             return {
                 sourceType,
@@ -10101,12 +11104,7 @@
                 return {
                     id: generateUUID(),
                     role: role,
-                    parts: [{
-                        type: 'me.rerere.ai.ui.UIMessagePart.Text',
-                        text: text,
-                        metadata: null,
-                        priority: 0
-                    }],
+                    parts: [createTextPart(text)],
                     annotations: [],
                     createdAt: formatTimestamp(msg?.timestamp),
                     finishedAt: null,
@@ -10202,12 +11200,7 @@
                                             }
 
                                             if (canAttachImage) {
-                                                messageParts.push({
-                                                    type: 'me.rerere.ai.ui.UIMessagePart.Image',
-                                                    url: `file:///data/user/0/me.rerere.rikkahub/files/upload/${imageUuid}`,
-                                                    metadata: null,
-                                                    priority: 1
-                                                });
+                                                messageParts.push(createImagePart(`file:///data/user/0/me.rerere.rikkahub/files/upload/${imageUuid}`));
                                             }
                                         }
                                     } else if (part.text && typeof part.text === 'string') {
@@ -10231,12 +11224,7 @@
 
                         // 构建消息部件数组
                         if (text && text.trim()) {
-                            messageParts.push({
-                                type: 'me.rerere.ai.ui.UIMessagePart.Text',
-                                text: text,
-                                metadata: null,
-                                priority: 0
-                            });
+                            messageParts.push(createTextPart(text));
                         }
 
                         // 只添加有内容（文本或图片）的消息
@@ -10495,12 +11483,7 @@
                         messages.push({
                             id: generateUUID(),
                             role: 'user',
-                            parts: [{
-                                type: 'me.rerere.ai.ui.UIMessagePart.Text',
-                                text: requestContent,
-                                metadata: null,
-                                priority: 0
-                            }],
+                            parts: [createTextPart(requestContent)],
                             annotations: [],
                             createdAt: formatLocalDateTime(message.inserted_at),
                             finishedAt: null,
@@ -10516,23 +11499,12 @@
 
                         // 添加思维链（如果有）
                         if (thinkContent && thinkContent.trim()) {
-                            parts.push({
-                                type: 'me.rerere.ai.ui.UIMessagePart.Reasoning',
-                                reasoning: thinkContent,
-                                createdAt: formatISO8601(message.inserted_at),
-                                finishedAt: formatISO8601(message.inserted_at),  // 设置 finishedAt 避免思考时间跳动
-                                metadata: null,
-                                priority: -1
-                            });
+                            const reasoningTimestamp = formatISO8601(message.inserted_at);
+                            parts.push(createReasoningPart(thinkContent, reasoningTimestamp));
                         }
 
                         // 添加回复内容
-                        parts.push({
-                            type: 'me.rerere.ai.ui.UIMessagePart.Text',
-                            text: responseContent,
-                            metadata: null,
-                            priority: 0
-                        });
+                        parts.push(createTextPart(responseContent));
 
                         messages.push({
                             id: generateUUID(),
@@ -10547,17 +11519,11 @@
                         });
                     } else if (!requestContent && thinkContent && thinkContent.trim()) {
                         // 兼容 THINK-only 节点：没有 REQUEST/RESPONSE 也保留思维链
+                        const reasoningTimestamp = formatISO8601(message.inserted_at);
                         messages.push({
                             id: generateUUID(),
                             role: 'assistant',
-                            parts: [{
-                                type: 'me.rerere.ai.ui.UIMessagePart.Reasoning',
-                                reasoning: thinkContent,
-                                createdAt: formatISO8601(message.inserted_at),
-                                finishedAt: formatISO8601(message.inserted_at),
-                                metadata: null,
-                                priority: -1
-                            }],
+                            parts: [createReasoningPart(thinkContent, reasoningTimestamp)],
                             annotations: [],
                             createdAt: formatLocalDateTime(message.inserted_at),
                             finishedAt: null,
@@ -10592,12 +11558,7 @@
                 messages.push({
                             id: generateUUID(),
                             role: role,
-                            parts: [{
-                                type: 'me.rerere.ai.ui.UIMessagePart.Text',
-                                text: content,
-                                metadata: null,
-                                priority: 0
-                            }],
+                            parts: [createTextPart(content)],
                             annotations: [],
                             createdAt: formatLocalDateTime(msg.time),  // 使用 formatLocalDateTime 而不是 formatISO8601
                             finishedAt: null,
