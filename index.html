@@ -3356,6 +3356,10 @@
                 <p id="mergeDownloadSummary" style="margin: 0 0 12px 0; color: var(--md-sys-color-on-surface); line-height: 1.6;">
                     合并包已准备完成，你可以先看一下结果摘要再下载。
                 </p>
+                <div class="merge-report-block" id="mergeDownloadFilenameBlock">
+                    <p class="merge-report-title" id="mergeDownloadFilenameTitle">导出文件名</p>
+                    <code id="mergeDownloadFilename" style="display: block; white-space: normal; word-break: break-all; line-height: 1.6; color: var(--md-sys-color-on-surface);"></code>
+                </div>
                 <p id="mergeDownloadRiskHint" style="display: none; margin: 0 0 12px 0; color: #D97706; font-size: 13px; line-height: 1.6;"></p>
                 <div class="merge-report-block" id="mergeDownloadDiffBlock" style="display: none;">
                     <p class="merge-report-title">按来源变更清单（实际执行）</p>
@@ -3826,7 +3830,8 @@
         let pendingMergeAfterRikkaUpload = false;
         let pendingMergedDownloadBlob = null;
         let pendingMergedDownloadUrl = null;
-        let pendingMergedDownloadFilename = 'rikka_hub_merged.zip';
+        const DEFAULT_MERGED_DOWNLOAD_FILENAME = 'ChatWeave_rikkahub_backup_merged.zip';
+        let pendingMergedDownloadFilename = DEFAULT_MERGED_DOWNLOAD_FILENAME;
         let pendingMergedDownloadSize = 0;
         let pendingMergedDownloadRisk = null;
         let pendingMergeDryRunResolver = null;
@@ -3835,10 +3840,11 @@
         let currentLanguage = 'zh-CN';
         let loadedRikkaDbUserVersion = 0;
         let loadedRikkaPartTypeFormat = 'legacy';
+        let loadedRikkaBackupFilename = '';
 
         // ============ UIMessagePart 类型映射（兼容多版本 RikkaHub）============
         // 旧格式（1.8.2 / 1.9.0 beta）：使用完整类名
-        // 新格式（v2 / 2.0.0）：使用简短名称 + @SerialName 注解
+        // 新格式（v2 / 2.x）：使用简短名称 + @SerialName 注解
         const UI_MESSAGE_PART_TYPES = {
             // 旧格式（Legacy）
             LEGACY: {
@@ -3915,8 +3921,27 @@
             return mapping[typeName] || String(partType || '');
         }
 
-        function normalizePartForOutputFormat(part, format = outputPartTypeFormat) {
+        function normalizePartForOutputFormat(part, format = outputPartTypeFormat, seen = null, depth = 0) {
             if (!part || typeof part !== 'object') return part;
+            if (!seen) {
+                seen = new WeakSet();
+            }
+            if (seen.has(part)) {
+                const cycleSafe = { ...part };
+                if (Array.isArray(cycleSafe.output)) {
+                    cycleSafe.output = [];
+                }
+                return cycleSafe;
+            }
+            if (depth > 128) {
+                const depthSafe = { ...part };
+                if (Array.isArray(depthSafe.output)) {
+                    depthSafe.output = [];
+                }
+                return depthSafe;
+            }
+
+            seen.add(part);
 
             const normalized = { ...part };
             const originalType = String(normalized.type || '');
@@ -3949,7 +3974,9 @@
                     if (!Array.isArray(normalized.output)) {
                         normalized.output = [];
                     }
-                    normalized.output = normalized.output.map(item => normalizePartForOutputFormat(item, format));
+                    normalized.output = normalized.output
+                        .map(item => normalizePartForOutputFormat(item, format, seen, depth + 1))
+                        .filter(item => item && typeof item === 'object');
                     if (!normalized.approvalState || typeof normalized.approvalState !== 'object') {
                         normalized.approvalState = { type: 'auto' };
                     }
@@ -3979,6 +4006,7 @@
                 }
             }
 
+            seen.delete(part);
             return normalized;
         }
 
@@ -4282,6 +4310,7 @@
                 'info.mergeCreateAssistant': '正在准备助手与归档信息...',
                 'info.mergePrepareImages': '正在整理 ChatGPT 图片引用...',
                 'info.mergeProcessSources': '正在整理已选对话...',
+                'info.mergeLowMemoryMode': '检测到移动端或大批量数据，已启用低内存合并模式（分阶段处理，速度会稍慢）。',
                 'info.mergeDryRunReady': '合并确认信息已生成，请确认...',
                 'info.mergeCancelled': '已取消合并：未写入任何数据。',
                 'info.mergeWritingDb': '正在写入合并结果...',
@@ -4463,6 +4492,7 @@
                 'info.mergeCreateAssistant': 'Preparing assistant/archive settings...',
                 'info.mergePrepareImages': 'Organizing ChatGPT image references...',
                 'info.mergeProcessSources': 'Organizing selected conversations...',
+                'info.mergeLowMemoryMode': 'Low-memory merge mode enabled for mobile/large batches (two-pass processing, slower but more stable).',
                 'info.mergeDryRunReady': 'Merge review is ready. Waiting for confirmation...',
                 'info.mergeCancelled': 'Merge cancelled. No data was written.',
                 'info.mergeWritingDb': 'Writing merged result...',
@@ -4760,7 +4790,7 @@
                                 <li><strong>DeepSeek legacy ZIP (chat.csv / coder.csv)</strong>: role, message text, timestamps, titles</li>
                                 <li><strong>YourAIScroll Markdown paste</strong>: one-conversation paste flow with role and URL recognition</li>
                                 <li><strong>Unified workspace</strong>: multi-source import, search, select, edit, then one-click merge</li>
-                                <li><strong>RikkaHub-ready output</strong>: validated with RikkaHub v1.8.2 / v1.9.0 beta / v2.0.0 stable, package can be imported directly</li>
+                                <li><strong>RikkaHub-ready output</strong>: validated with RikkaHub v1.8.2 / v1.9.0 beta / v2.0.2 / v2.1.0 stable, package can be imported directly</li>
                             </ul>
                         </div>
 
@@ -4798,7 +4828,7 @@
                                 <li><strong>DeepSeek 旧版 ZIP（chat.csv / coder.csv）</strong>：角色、消息文本、时间、标题</li>
                                 <li><strong>YourAIScroll Markdown 粘贴导入</strong>：单对话粘贴流程，支持角色标记与 URL 识别</li>
                                 <li><strong>统一对话工作台</strong>：多来源导入、搜索筛选、勾选编辑、一次合并</li>
-                                <li><strong>RikkaHub 可导入输出</strong>：已对齐并验证 v1.8.2 / v1.9.0 beta / v2.0.0 正式版，生成包可直接导入</li>
+                                <li><strong>RikkaHub 可导入输出</strong>：已对齐并验证 v1.8.2 / v1.9.0 beta / v2.0.2 / v2.1.0 正式版，生成包可直接导入</li>
                             </ul>
                         </div>
 
@@ -6791,6 +6821,25 @@
             };
         }
 
+        function shouldUseLowMemoryMergeMode(selectedConversationCount) {
+            const count = Number(selectedConversationCount || 0);
+            if (count <= 0) return false;
+
+            const ua = String(navigator.userAgent || '').toLowerCase();
+            const isMobile = /android|iphone|ipad|ipod|mobile/.test(ua);
+            const deviceMemory = Number(navigator.deviceMemory || 0);
+            const lowMemoryDevice = deviceMemory > 0 && deviceMemory <= 4;
+            const cpuCores = Number(navigator.hardwareConcurrency || 0);
+            const lowCpuDevice = cpuCores > 0 && cpuCores <= 4;
+
+            return (
+                lowMemoryDevice ||
+                (isMobile && lowCpuDevice && count >= 40) ||
+                (isMobile && count >= 80) ||
+                count >= 350
+            );
+        }
+
         function releaseLargeCachesBeforeDownload(riskInfo) {
             const released = [];
             const shouldCompact = !!(riskInfo && riskInfo.shouldCompactBeforeDownload);
@@ -6864,7 +6913,7 @@
             }
             pendingMergedDownloadUrl = null;
             pendingMergedDownloadBlob = null;
-            pendingMergedDownloadFilename = 'rikka_hub_merged.zip';
+            pendingMergedDownloadFilename = DEFAULT_MERGED_DOWNLOAD_FILENAME;
             pendingMergedDownloadSize = 0;
             pendingMergedDownloadRisk = null;
         }
@@ -6897,7 +6946,7 @@
         function prepareMergedZipDownload(blob, filename, summaryText, options = {}) {
             clearPendingMergedDownload();
             pendingMergedDownloadBlob = blob || null;
-            pendingMergedDownloadFilename = filename || 'rikka_hub_merged.zip';
+            pendingMergedDownloadFilename = filename || DEFAULT_MERGED_DOWNLOAD_FILENAME;
             pendingMergedDownloadSize = Number(pendingMergedDownloadBlob?.size || 0);
             pendingMergedDownloadRisk = detectDownloadRisk(pendingMergedDownloadSize);
             if (pendingMergedDownloadBlob) {
@@ -6909,6 +6958,16 @@
             const summaryElement = document.getElementById('mergeDownloadSummary');
             if (summaryElement) {
                 summaryElement.textContent = summaryText || (currentLanguage === 'en-US' ? 'Merged package is ready.' : '合并包已准备完成。');
+            }
+            const filenameTitleElement = document.getElementById('mergeDownloadFilenameTitle');
+            if (filenameTitleElement) {
+                filenameTitleElement.textContent = currentLanguage === 'en-US' ? 'Export Filename' : '导出文件名';
+            }
+            const filenameElement = document.getElementById('mergeDownloadFilename');
+            if (filenameElement) {
+                const filenameText = pendingMergedDownloadFilename || DEFAULT_MERGED_DOWNLOAD_FILENAME;
+                filenameElement.textContent = filenameText;
+                filenameElement.title = filenameText;
             }
             const riskHint = document.getElementById('mergeDownloadRiskHint');
             const downloadConfirmBtn = document.getElementById('mergeDownloadConfirmBtn');
@@ -6967,7 +7026,7 @@
             }
 
             const downloadUrl = pendingMergedDownloadUrl;
-            const downloadName = pendingMergedDownloadFilename || 'rikka_hub_merged.zip';
+            const downloadName = pendingMergedDownloadFilename || DEFAULT_MERGED_DOWNLOAD_FILENAME;
             const riskInfo = pendingMergedDownloadRisk || detectDownloadRisk(pendingMergedDownloadSize);
 
             // 在高风险移动端先释放大缓存，降低下载触发瞬时内存压力
@@ -7003,7 +7062,7 @@
 
             pendingMergedDownloadBlob = null;
             pendingMergedDownloadUrl = null;
-            pendingMergedDownloadFilename = 'rikka_hub_merged.zip';
+            pendingMergedDownloadFilename = DEFAULT_MERGED_DOWNLOAD_FILENAME;
             pendingMergedDownloadSize = 0;
             pendingMergedDownloadRisk = null;
             setTimeout(() => {
@@ -9818,6 +9877,36 @@
             return result;
         }
 
+        function getTableColumnInfo(sqlDb, tableName) {
+            const result = {
+                columns: [],
+                lowerColumns: new Set()
+            };
+            if (!sqlDb || typeof sqlDb.exec !== 'function' || !tableName) {
+                return result;
+            }
+
+            try {
+                const tableSql = quoteSqlIdentifier(tableName);
+                const rows = sqlDb.exec(`PRAGMA table_info(${tableSql})`);
+                const values = rows?.[0]?.values;
+                if (!Array.isArray(values)) {
+                    return result;
+                }
+
+                values.forEach(row => {
+                    const columnName = String(row?.[1] || '').trim();
+                    if (!columnName) return;
+                    result.columns.push(columnName);
+                    result.lowerColumns.add(columnName.toLowerCase());
+                });
+            } catch (error) {
+                console.warn('failed to read table column info:', tableName, error);
+            }
+
+            return result;
+        }
+
         function readSqliteUserVersion(sqlDb) {
             if (!sqlDb || typeof sqlDb.exec !== 'function') return 0;
             try {
@@ -9830,8 +9919,15 @@
             }
         }
 
-        function collectPartTypeStatsFromPart(part, stats) {
+        function collectPartTypeStatsFromPart(part, stats, seen = null, depth = 0) {
             if (!part || typeof part !== 'object') return;
+            if (!seen) {
+                seen = new WeakSet();
+            }
+            if (seen.has(part) || depth > 128) {
+                return;
+            }
+            seen.add(part);
 
             const partType = String(part.type || '').trim();
             if (partType) {
@@ -9844,8 +9940,9 @@
 
             // 只递归工具输出，避免把 ToolResult.content 内部任意 JSON 的 type 字段误判成 Part 类型
             if (Array.isArray(part.output)) {
-                part.output.forEach(item => collectPartTypeStatsFromPart(item, stats));
+                part.output.forEach(item => collectPartTypeStatsFromPart(item, stats, seen, depth + 1));
             }
+            seen.delete(part);
         }
 
         function detectPartTypeFormatFromDb(sqlDb, tableMap) {
@@ -10008,6 +10105,7 @@
                 rikkahubData = null;
                 rikkahubSettings = null;
                 rikkahubZip = null;
+                loadedRikkaBackupFilename = '';
                 loadedRikkaDbUserVersion = 0;
                 loadedRikkaPartTypeFormat = 'legacy';
                 outputPartTypeFormat = 'legacy';
@@ -10021,6 +10119,8 @@
                     uploadBox.classList.add('error');
                     return;
                 }
+
+                loadedRikkaBackupFilename = file.name || '';
 
                 fileInfo.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
                 
@@ -10240,6 +10340,40 @@
             const sizes = ['B', 'KB', 'MB', 'GB'];
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function formatFilenameTimestamp(date = new Date()) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            return `${year}${month}${day}_${hours}${minutes}${seconds}`;
+        }
+
+        function extractRikkaBackupTimestamp(fileName) {
+            if (typeof fileName !== 'string' || !fileName.trim()) return null;
+            const plainName = fileName.split(/[\\/]/).pop() || fileName;
+            const noExt = plainName.replace(/\.zip$/i, '');
+
+            const namedPattern = noExt.match(/(?:^|[_-])(?:rikkahub|rikka_hub)[_-]backup[_-](\d{8})[_-](\d{6})(?:$|[_-])/i);
+            if (namedPattern) {
+                return `${namedPattern[1]}_${namedPattern[2]}`;
+            }
+
+            const loosePattern = noExt.match(/(\d{8})[_-]?(\d{6})/);
+            if (loosePattern) {
+                return `${loosePattern[1]}_${loosePattern[2]}`;
+            }
+
+            return null;
+        }
+
+        function buildMergedBackupFilename(sourceBackupFilename) {
+            const sourceStamp = extractRikkaBackupTimestamp(sourceBackupFilename) || 'unknown';
+            const mergedStamp = formatFilenameTimestamp(new Date());
+            return `ChatWeave_rikkahub_backup_${sourceStamp}_merged_${mergedStamp}.zip`;
         }
 
         function showSuccess(message) {
@@ -10554,6 +10688,7 @@
             const mergeDataSelection = getMergeDataByWorkspaceSelection();
             const selectedBindings = Array.isArray(mergeDataSelection.selectedBindings) ? mergeDataSelection.selectedBindings : [];
             const selectedConversationCount = selectedBindings.length;
+            const useLowMemoryMergeMode = shouldUseLowMemoryMergeMode(selectedConversationCount);
 
             if (!hasAnyImportedSourceData()) {
                 showError(t('error.mergeNeedSource'));
@@ -10603,6 +10738,38 @@
                 }
                 const conversationTableSql = quoteSqlIdentifier(tableMap.conversationTable);
                 const messageNodeTableSql = quoteSqlIdentifier(tableMap.messageNodeTable);
+                const conversationColumnInfo = getTableColumnInfo(mergedDb, tableMap.conversationTable);
+                const hasConversationColumn = (columnName) => conversationColumnInfo.lowerColumns.has(String(columnName || '').toLowerCase());
+
+                const requiredConversationColumns = ['id', 'assistant_id', 'title', 'nodes', 'create_at', 'update_at'];
+                const missingRequiredColumns = requiredConversationColumns.filter(columnName => !hasConversationColumn(columnName));
+                if (missingRequiredColumns.length > 0) {
+                    throw new Error(`Unsupported ConversationEntity schema: missing columns [${missingRequiredColumns.join(', ')}]`);
+                }
+
+                const insertConversationColumns = [
+                    'id',
+                    'assistant_id',
+                    'title',
+                    'nodes',
+                    'create_at',
+                    'update_at'
+                ];
+                if (hasConversationColumn('truncate_index')) {
+                    insertConversationColumns.push('truncate_index');
+                }
+                if (hasConversationColumn('suggestions')) {
+                    insertConversationColumns.push('suggestions');
+                }
+                if (hasConversationColumn('is_pinned')) {
+                    insertConversationColumns.push('is_pinned');
+                }
+
+                const insertConversationSql = `
+                    INSERT OR REPLACE INTO ${conversationTableSql}
+                    (${insertConversationColumns.map(quoteSqlIdentifier).join(', ')})
+                    VALUES (${insertConversationColumns.map(() => '?').join(', ')})
+                `;
 
                 const existingConversationIds = new Set();
                 try {
@@ -10723,6 +10890,9 @@
 
                 updateProgress(20);
                 showInfo(t('info.mergeProcessSources'));
+                if (useLowMemoryMergeMode) {
+                    showInfo(t('info.mergeLowMemoryMode'));
+                }
 
                 const sourceStats = {
                     chatgpt: createMergeSourceStatsBucket(),
@@ -10737,6 +10907,7 @@
 
                 const simulatedConversationIds = new Set(existingConversationIds);
                 const preparedConversations = [];
+                const MAX_UNKNOWN_DETAIL_LINES = 400;
                 let duplicateCount = 0;
                 let keepBothCount = 0;
                 let insertedMessageCount = 0;
@@ -10801,7 +10972,10 @@
                             payload.title
                         );
                         if (Array.isArray(detailResult?.lines) && detailResult.lines.length > 0) {
-                            unknownBlockDetailLines.push(...detailResult.lines);
+                            const remain = MAX_UNKNOWN_DETAIL_LINES - unknownBlockDetailLines.length;
+                            if (remain > 0) {
+                                unknownBlockDetailLines.push(...detailResult.lines.slice(0, remain));
+                            }
                         }
                     }
 
@@ -10817,7 +10991,9 @@
                         title: payload.title,
                         createTime: payload.createTime,
                         updateTime: payload.updateTime,
-                        messages: messages
+                        bindingIndex: idx,
+                        expectedMessageCount: messages.length,
+                        messages: useLowMemoryMergeMode ? null : messages
                     });
 
                     if (idx % 10 === 0) {
@@ -10879,18 +11055,41 @@
                 transactionStarted = true;
 
                 let convertedCount = 0;
+                let actualInsertedMessageCount = 0;
+                let writePhaseSkippedCount = 0;
                 const insertTotal = Math.max(preparedConversations.length, 1);
 
                 for (let idx = 0; idx < preparedConversations.length; idx++) {
                     const prepared = preparedConversations[idx];
+                    if (!prepared) continue;
                     const convId = prepared.convId;
-                    const messages = prepared.messages;
+                    let messages = Array.isArray(prepared.messages) ? prepared.messages : null;
 
-                    mergedDb.run(`
-                        INSERT OR REPLACE INTO ${conversationTableSql}
-                        (id, assistant_id, title, nodes, create_at, update_at, truncate_index, suggestions, is_pinned)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    `, [convId, prepared.assistantId, prepared.title, '[]', prepared.createTime, prepared.updateTime, -1, '[]', 0]);
+                    if ((!messages || messages.length === 0) && typeof prepared.bindingIndex === 'number') {
+                        const reboundBinding = selectedBindings[prepared.bindingIndex];
+                        const reboundPayload = buildMergeConversationPayload(reboundBinding, assistantInfoBySource, imageFiles);
+                        const reboundMessages = Array.isArray(reboundPayload?.messages) ? reboundPayload.messages : [];
+                        messages = normalizeMessagesForOutputFormat(reboundMessages, outputPartTypeFormat);
+                    }
+
+                    if (!Array.isArray(messages) || messages.length === 0) {
+                        writePhaseSkippedCount++;
+                        continue;
+                    }
+
+                    const conversationInsertValueMap = {
+                        id: convId,
+                        assistant_id: prepared.assistantId,
+                        title: prepared.title,
+                        nodes: '[]',
+                        create_at: prepared.createTime,
+                        update_at: prepared.updateTime,
+                        truncate_index: -1,
+                        suggestions: '[]',
+                        is_pinned: 0
+                    };
+                    const conversationInsertValues = insertConversationColumns.map(columnName => conversationInsertValueMap[columnName]);
+                    mergedDb.run(insertConversationSql, conversationInsertValues);
 
                     for (let i = 0; i < messages.length; i++) {
                         const nodeId = generateUUID();
@@ -10904,6 +11103,12 @@
 
                     existingConversationIds.add(convId);
                     convertedCount++;
+                    actualInsertedMessageCount += messages.length;
+
+                    if (useLowMemoryMergeMode) {
+                        prepared.messages = null;
+                        preparedConversations[idx] = null;
+                    }
 
                     if (idx % 10 === 0) {
                         updateProgress(50 + ((idx + 1) / insertTotal) * 30);
@@ -11013,7 +11218,8 @@
                 const duplicateText = duplicateCount > 0 ? t('success.mergeDuplicate', { count: duplicateCount }) : '';
                 const keepBothText = keepBothCount > 0 ? t('success.mergeKeepBoth', { count: keepBothCount }) : '';
                 const emptySkipText = emptyConversationCount > 0 ? t('success.mergeEmptySkip', { count: emptyConversationCount }) : '';
-                const warningText = warningCount > 0 ? t('success.mergeWarning', { count: warningCount }) : '';
+                const finalWarningCount = warningCount + writePhaseSkippedCount;
+                const warningText = finalWarningCount > 0 ? t('success.mergeWarning', { count: finalWarningCount }) : '';
                 const sourceTypeSet = new Set(selectedBindings.map(binding => binding?.item?.dataSource || currentDataSource));
                 const sourceSummary = [];
                 if (sourceStats.chatgpt.added > 0) sourceSummary.push(t('summary.sourceItem', { source: 'ChatGPT', count: sourceStats.chatgpt.added }));
@@ -11037,18 +11243,22 @@
                 const mergeSummaryForModal = t('summary.mergeModal', {
                     selected: selectedConversationCount,
                     added: actualAddedConversationCount,
-                    messages: insertedMessageCount,
+                    messages: actualInsertedMessageCount,
                     skipped: duplicateCount + emptyConversationCount
                 });
-                prepareMergedZipDownload(content, 'rikka_hub_merged.zip', mergeSummaryForModal, {
+                const mergedDownloadFilename = buildMergedBackupFilename(loadedRikkaBackupFilename);
+                prepareMergedZipDownload(content, mergedDownloadFilename, mergeSummaryForModal, {
                     diffLines: dryRunDiffLines,
                     warningLines: dryRunWarningLines,
                     unknownLines: unknownDetailPreviewLines,
                     unknownTotal: unknownBlockCount
                 });
+                if (writePhaseSkippedCount > 0) {
+                    console.warn('write phase skipped conversations after rebuild', { writePhaseSkippedCount });
+                }
                 showSuccess(t('success.mergeCompleted', {
                     convCount: actualAddedConversationCount,
-                    msgCount: insertedMessageCount,
+                    msgCount: actualInsertedMessageCount,
                     duplicateText,
                     keepBothText,
                     emptySkipText,
@@ -11129,9 +11339,15 @@
 
         function extractMessages(mapping, currentNodeId, chatgptModelId, imageFiles = null) {
             const messages = [];
+            const visitedNodeIds = new Set();
+            let nodeId = currentNodeId;
+            const mappingSize = mapping && typeof mapping === 'object' ? Object.keys(mapping).length : 0;
+            const maxTraversal = Math.max(mappingSize + 8, 10000);
+            let traversedCount = 0;
 
-            function traceMessages(nodeId) {
-                if (!nodeId || !mapping[nodeId]) return;
+            while (nodeId && mapping[nodeId] && !visitedNodeIds.has(nodeId) && traversedCount < maxTraversal) {
+                visitedNodeIds.add(nodeId);
+                traversedCount++;
 
                 const nodeData = mapping[nodeId];
                 const msg = nodeData.message;
@@ -11144,11 +11360,8 @@
 
                     if (role === 'user' || role === 'assistant' || role === 'system') {
                         if (shouldSkipChatGPTMessage(msg, contentType)) {
-                            const parentId = nodeData.parent;
-                            if (parentId) {
-                                traceMessages(parentId);
-                            }
-                            return;
+                            nodeId = nodeData.parent;
+                            continue;
                         }
 
                         let text = '';
@@ -11178,13 +11391,14 @@
                             }
 
                             // 遍历 parts 查找图片和文本
-                            for (const part of parts) {
+                            for (let partIndex = 0; partIndex < parts.length; partIndex++) {
+                                const part = parts[partIndex];
                                 if (typeof part === 'object') {
                                     // 检查是否是图片引用
                                     if (part.content_type === 'image_asset_pointer' && part.asset_pointer) {
                                         const imageRecord = resolveChatGPTImageRecord(part.asset_pointer);
                                         if (imageRecord) {
-                                            const imageUuid = generateUUID();
+                                            const imageUuid = deterministicUuidFromString(`chatgpt-image|${msg.id || nodeId || ''}|${part.asset_pointer || ''}|${partIndex}|${imageRecord.zipPath || ''}`);
                                             let canAttachImage = !imageFiles;
 
                                             if (imageFiles) {
@@ -11242,15 +11456,17 @@
                             });
                         }
                     }
-
-                    const parentId = nodeData.parent;
-                    if (parentId) {
-                        traceMessages(parentId);
-                    }
                 }
+
+                nodeId = nodeData.parent;
             }
 
-            traceMessages(currentNodeId);
+            if (traversedCount >= maxTraversal) {
+                console.warn('chatgpt node traversal reached safety limit, possible deep or cyclic chain', {
+                    maxTraversal,
+                    startNode: currentNodeId
+                });
+            }
             return messages;
         }
 
@@ -11453,9 +11669,21 @@
             const rootId = Object.keys(mapping).find(id => mapping[id].id === 'root');
             if (!rootId) return messages;
 
-            // 从根节点开始遍历
-            function traverse(nodeId) {
-                if (!nodeId || !mapping[nodeId]) return;
+            // 从根节点开始迭代遍历（避免超长链导致递归栈溢出）
+            const stack = [rootId];
+            const visitedNodeIds = new Set();
+            const mappingSize = mapping && typeof mapping === 'object' ? Object.keys(mapping).length : 0;
+            const maxTraversal = Math.max(mappingSize + 8, 10000);
+            let traversedCount = 0;
+
+            while (stack.length > 0 && traversedCount < maxTraversal) {
+                const nodeId = stack.pop();
+                if (!nodeId || !mapping[nodeId] || visitedNodeIds.has(nodeId)) {
+                    continue;
+                }
+
+                visitedNodeIds.add(nodeId);
+                traversedCount++;
 
                 const nodeData = mapping[nodeId];
                 const message = nodeData.message;
@@ -11534,14 +11762,19 @@
                     }
                 }
 
-                // 递归遍历子节点
-                const children = nodeData.children || [];
-                for (const childId of children) {
-                    traverse(childId);
+                // 保持原 children 顺序：逆序入栈
+                const children = Array.isArray(nodeData.children) ? nodeData.children : [];
+                for (let i = children.length - 1; i >= 0; i--) {
+                    stack.push(children[i]);
                 }
             }
 
-            traverse(rootId);
+            if (traversedCount >= maxTraversal) {
+                console.warn('deepseek node traversal reached safety limit, possible deep or cyclic chain', {
+                    maxTraversal,
+                    rootId
+                });
+            }
             return messages;
         }
 
