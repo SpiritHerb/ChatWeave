@@ -3119,7 +3119,7 @@
 
     <div class="container">
         <h1>ChatWeave</h1>
-        <p class="subtitle" id="appSubtitle">让旧对话在新家续写（导入·浏览·编辑·合并）v1.7.1</p>
+        <p class="subtitle" id="appSubtitle">让旧对话在新家续写（导入·浏览·编辑·合并）v1.7.2-beta.1</p>
         <p class="subtitle-note" id="appEmotionalNote">不必从零开始。把熟悉的对话带到这里，继续和 ta 聊下去。</p>
 
         <div class="card mission-card">
@@ -3167,7 +3167,9 @@
                 <div class="select-dropdown" id="selectDropdown">
                     <div class="select-option selected" id="sourceOptionChatgpt" data-value="chatgpt" onclick="selectOption('chatgpt')">ChatGPT 数据</div>
                     <div class="select-option" id="sourceOptionDeepseek" data-value="deepseek" onclick="selectOption('deepseek')">DeepSeek 数据（新旧两个版本）</div>
-                    <div class="select-option" id="sourceOptionYouraiscroll" data-value="youraiscroll" onclick="selectOption('youraiscroll')">YourAIScroll 数据（支持 12 个平台）</div>
+                    <div class="select-option" id="sourceOptionGrok" data-value="grok" onclick="selectOption('grok')">Grok 数据（官方导出 ZIP）</div>
+                    <div class="select-option" id="sourceOptionYouraiscroll" data-value="youraiscroll" onclick="selectOption('youraiscroll')">导出 JSON（YourAIScroll / ChatWeave）</div>
+                    <div class="select-option" id="sourceOptionQwen" data-value="qwen" onclick="selectOption('qwen')">Qwen 官方导出 JSON（仅 chat.qwen.ai）</div>
                                 </div>            </div>
         </div>
 
@@ -3472,16 +3474,24 @@
                     <li>上传 RikkaHub 原始备份 ZIP，点击合并并下载，最后导入 RikkaHub。</li>
                 </ol>
 
-                <p style="margin-top: 16px;"><strong>YourAIScroll Markdown → RikkaHub</strong></p>
+                <p style="margin-top: 16px;"><strong>导出 JSON（YourAIScroll / ChatWeave）+ Markdown 粘贴 → RikkaHub</strong></p>
                 <ol style="margin-left: 20px; line-height: 1.8;">
-                    <li>来源切到 “YourAIScroll 数据”，点击“粘贴 Markdown 文本”。</li>
-                    <li>每次粘贴一个对话，建议包含 <code>Original URL</code>、<code>[USER]</code>、<code>[ASSISTANT]</code> 标记。</li>
+                    <li>JSON：可直接上传 YourAIScroll / ChatWeave Exporter 导出的 JSON。</li>
+                    <li>Markdown：点击“粘贴 Markdown 文本”，每次粘贴一个对话。</li>
+                    <li>建议保留 <code>Original URL</code>、<code>[USER]</code>、<code>[ASSISTANT]</code> 标记，便于识别。</li>
                     <li>保存后会进入对话工作台，可继续追加粘贴多个对话，再统一合并。</li>
+                </ol>
+                <p style="margin-top: 16px;"><strong>Qwen 官方导出 JSON（仅 chat.qwen.ai）→ RikkaHub</strong></p>
+                <ol style="margin-left: 20px; line-height: 1.8;">
+                    <li>先打开 <code>https://chat.qwen.ai/settings/chats</code>，在 Qwen 设置页导出对话并下载 <code>chat-export-*.json</code>。</li>
+                    <li>回到本工具，来源选“Qwen 官方导出 JSON（仅 chat.qwen.ai）”。</li>
+                    <li>上传刚下载的 JSON，进入对话工作台预览、编辑，再按需和其他来源一起合并。</li>
+                    <li><strong>当前不在范围内：</strong>国内版通义千问站点 <code>www.qianwen.com</code> 目前没有对应的官方对话导出入口，因此这里没有可直接导入的官方 JSON。</li>
                 </ol>
 
                 <p style="margin-top: 16px;"><strong>多来源混合合并（推荐）</strong></p>
                 <ol style="margin-left: 20px; line-height: 1.8;">
-                    <li>分别导入 ChatGPT / DeepSeek / YourAIScroll 数据到同一个对话工作台。</li>
+                    <li>分别导入 ChatGPT / DeepSeek / Grok / 导出 JSON / Qwen 官方 JSON 到同一个对话工作台。</li>
                     <li>按标题搜索、筛选、编辑后，一次勾选你要的对话。</li>
                     <li>一次合并到同一个 RikkaHub 备份，便于统一归档。</li>
                 </ol>
@@ -3512,7 +3522,9 @@
                             <li><strong>ChatGPT 官方导出 ZIP</strong>：对话文本、图片（用户上传 + 生成图）、标题与创建/更新时间（按 v1.5 稳定口径，不单独写入 thoughts/reasoning_recap）</li>
                             <li><strong>DeepSeek 新版 ZIP（conversations.json）</strong>：REQUEST/THINK/RESPONSE 片段（含 THINK-only 节点）、标题与时间</li>
                             <li><strong>DeepSeek 旧版 ZIP（chat.csv / coder.csv）</strong>：角色、文本、消息时间与标题</li>
-                            <li><strong>YourAIScroll Markdown 粘贴导入</strong>：每次一个对话，支持 URL 平台识别、角色标记、Markdown 图片/链接、常见深度思考标记</li>
+                            <li><strong>Grok 官方导出 ZIP（prod-grok-backend.json）</strong>：会话标题、消息内容、时间与角色（human/assistant）</li>
+                            <li><strong>导出 JSON 导入（YourAIScroll / ChatWeave + Markdown 粘贴）</strong>：支持 URL 平台识别、角色标记、Markdown 图片/链接、常见深度思考标记；JSON 可保留消息时间戳</li>
+                            <li><strong>Qwen 官方导出 JSON（仅 chat.qwen.ai）</strong>：从 <code>https://chat.qwen.ai/settings/chats</code> 导出的 <code>chat-export-*.json</code>，支持标题、时间戳、回答正文、深度思考摘要、联网搜索摘要与本地工具调用信息</li>
                             <li><strong>YourAIScroll 工具/文档标记</strong>：支持显式语法 <code>Function: name(args)</code> 与文档链接提取（非显式格式不保证识别）</li>
                             <li><strong>统一对话工作台</strong>：多来源并存导入、对话级与消息级勾选、逐条编辑后再合并</li>
                             <li><strong>RikkaHub 兼容口径</strong>：输出可直接导入 RikkaHub 的备份包，兼容性持续跟进</li>
@@ -3528,7 +3540,8 @@
                         <ul class="support-list">
                             <li>ChatGPT：账号信息（邮箱、手机号）、收藏/归档状态、插件数据、自定义助手（Gizmo）、群聊记录、消息反馈、Sora 视频、购物相关数据</li>
                             <li>DeepSeek：语音消息、文件附件</li>
-                            <li>YourAIScroll：文件上传导入（仅支持粘贴 Markdown）；原始精确时间戳（Markdown 通常不含）；外链图片不会自动下载入包</li>
+                            <li>YourAIScroll / ChatWeave：文件上传仅支持 JSON；Markdown 走粘贴导入；Markdown 通常不含原始精确时间戳，JSON 可保留；外链图片不会自动下载入包</li>
+                            <li>Qwen：国内版通义千问站点 <code>www.qianwen.com</code> 目前没有对应的官方对话导出入口，因此暂不在这次适配范围内</li>
                             <li>所有平台：消息编辑历史、已删除消息、完整分支状态、实时对话状态、精确 token 使用量</li>
                         </ul>
                     </div>
@@ -3546,7 +3559,7 @@
             </div>
             <div class="modal-body">
                 <h2 style="font-size: 24px; margin-bottom: 8px;">ChatWeave</h2>
-                <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">对话迁移助手 v1.7.1</p>
+                <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">对话迁移助手 v1.7.2-beta.1</p>
                 <div class="about-info">
                     <p>ChatWeave 是一个统一聊天记录工作台：支持多来源导入、对话预览、消息编辑、勾选过滤和目标备份合并。</p>
                     <p>当前版本重点输出可导入 RikkaHub 的备份包，同时保留统一数据层，便于后续扩展更多目标平台。</p>
@@ -3622,7 +3635,7 @@
                 <div style="margin-top: 24px; padding: 16px; background: var(--md-sys-color-surface-container-low); border-radius: var(--md-sys-shape-corner-medium);">
                     <h4 style="margin-bottom: 8px; font-size: 14px; font-weight: 600;">📝 说明与条款</h4>
                     <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 0;">
-                        本工具为社区项目，与 ChatGPT、DeepSeek、YourAIScroll、RikkaHub 均无官方从属关系。
+                        本工具为社区项目，与 ChatGPT、DeepSeek、Grok、YourAIScroll、RikkaHub 均无官方从属关系。
                     </p>
                     <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 8px 0 0 0;">
                         数据转换在本地浏览器完成；请自行保管源文件与备份文件，确认可用前不要删除原始备份。
@@ -3653,7 +3666,7 @@
             </div>
             <div class="modal-body">
                 <p id="pasteModalHint" style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 16px;">
-                    请粘贴 YourAIScroll 复制的 Markdown 内容（每次一个对话，确认后会追加到对话工作台）：
+                    请粘贴 YourAIScroll 或 ChatWeave Exporter 复制的 Markdown 内容（每次一个对话，确认后会追加到对话工作台）。建议优先使用本扩展下载 JSON 导入，结构和时间戳保留更完整、导入更稳；Markdown 更适合临时补录。
                 </p>
                 <textarea id="pasteTextArea" class="paste-textarea" placeholder="在此粘贴内容..."></textarea>
                 <div style="display: flex; gap: var(--md-sys-spacing-md); margin-top: var(--md-sys-spacing-lg); justify-content: flex-end;">
@@ -3921,6 +3934,32 @@
             return mapping[typeName] || String(partType || '');
         }
 
+        function normalizeInstantTimestampForRikka(value, fallbackIso = null) {
+            const fallback = fallbackIso || new Date().toISOString();
+            if (value == null || value === '') return fallback;
+
+            let date = null;
+            if (typeof value === 'number') {
+                // 兼容秒级/毫秒级时间戳
+                date = new Date(value < 1e10 ? value * 1000 : value);
+            } else {
+                let text = String(value).trim();
+                if (!text) return fallback;
+                // RikkaHub 2.x 的 Reasoning 时间使用 Instant，必须带时区偏移
+                // 对无偏移的 ISO 时间，按 UTC 解释，避免被浏览器当成本地时区偏移
+                const isoNoOffset = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?$/;
+                if (isoNoOffset.test(text)) {
+                    text = `${text}Z`;
+                }
+                date = new Date(text);
+            }
+
+            if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
+                return fallback;
+            }
+            return date.toISOString();
+        }
+
         function normalizePartForOutputFormat(part, format = outputPartTypeFormat, seen = null, depth = 0) {
             if (!part || typeof part !== 'object') return part;
             if (!seen) {
@@ -3961,8 +4000,11 @@
             if (isPartType(normalized.type, 'REASONING')) {
                 normalized.reasoning = String(normalized.reasoning || '');
                 const nowIso = new Date().toISOString();
-                normalized.createdAt = normalized.createdAt || nowIso;
-                normalized.finishedAt = normalized.finishedAt || normalized.createdAt;
+                normalized.createdAt = normalizeInstantTimestampForRikka(normalized.createdAt, nowIso);
+                normalized.finishedAt = normalizeInstantTimestampForRikka(
+                    normalized.finishedAt || normalized.createdAt,
+                    normalized.createdAt
+                );
             }
 
             if (isPartType(normalized.type, 'TOOL')) {
@@ -4010,14 +4052,172 @@
             return normalized;
         }
 
+        function normalizeToolResultTextForV2(value) {
+            if (value == null) return '';
+
+            if (typeof value === 'string') {
+                const trimmed = value.trim();
+                if (!trimmed) return '';
+
+                // 兼容被 JSON.stringify 二次包裹的字符串
+                if ((trimmed.startsWith('"') && trimmed.endsWith('"')) || (trimmed.startsWith("'") && trimmed.endsWith("'"))) {
+                    try {
+                        const parsed = JSON.parse(trimmed);
+                        if (typeof parsed === 'string' && parsed.trim()) {
+                            return parsed.trim();
+                        }
+                    } catch (error) {
+                        // ignore parse failure and keep raw string
+                    }
+                }
+                return trimmed;
+            }
+
+            if (Array.isArray(value)) {
+                const lines = value.map(item => normalizeToolResultTextForV2(item)).filter(Boolean);
+                return lines.join('\n').trim();
+            }
+
+            if (typeof value === 'object') {
+                if (typeof value.text === 'string' && value.text.trim()) return value.text.trim();
+                if (typeof value.content === 'string' && value.content.trim()) return value.content.trim();
+                try {
+                    return JSON.stringify(value, null, 2).trim();
+                } catch (error) {
+                    return String(value).trim();
+                }
+            }
+
+            return String(value).trim();
+        }
+
+        function coalesceToolCallAndResultPartsForV2(parts) {
+            if (!Array.isArray(parts) || parts.length === 0) return [];
+
+            const output = [];
+            const pendingById = new Map();
+            const pendingByName = new Map();
+
+            const normalizeNameKey = (name) => String(name || '').trim().toLowerCase();
+
+            const registerPending = (toolPart) => {
+                const toolCallId = String(toolPart?.toolCallId || '').trim();
+                const toolNameKey = normalizeNameKey(toolPart?.toolName);
+
+                if (toolCallId) {
+                    pendingById.set(toolCallId, toolPart);
+                }
+                if (toolNameKey) {
+                    if (!pendingByName.has(toolNameKey)) {
+                        pendingByName.set(toolNameKey, []);
+                    }
+                    const queue = pendingByName.get(toolNameKey);
+                    if (Array.isArray(queue) && !queue.includes(toolPart)) {
+                        queue.push(toolPart);
+                    }
+                }
+            };
+
+            const resolvePending = (toolCallId, toolName) => {
+                const id = String(toolCallId || '').trim();
+                if (id && pendingById.has(id)) {
+                    return pendingById.get(id);
+                }
+                const nameKey = normalizeNameKey(toolName);
+                if (!nameKey) return null;
+                const queue = pendingByName.get(nameKey);
+                if (Array.isArray(queue) && queue.length > 0) {
+                    return queue[0];
+                }
+                return null;
+            };
+
+            const ensureToolOutputArray = (toolPart) => {
+                if (!Array.isArray(toolPart.output)) {
+                    toolPart.output = [];
+                }
+                return toolPart.output;
+            };
+
+            parts.forEach(part => {
+                if (!part || typeof part !== 'object') return;
+
+                if (isPartType(part.type, 'TOOL')) {
+                    const toolPart = normalizePartForOutputFormat(part, 'v2');
+                    if (!toolPart) return;
+                    ensureToolOutputArray(toolPart);
+                    output.push(toolPart);
+                    registerPending(toolPart);
+                    return;
+                }
+
+                if (isPartType(part.type, 'TOOL_CALL')) {
+                    const toolCallId = String(part.toolCallId || generateUUID());
+                    const toolName = String(part.toolName || 'tool').trim() || 'tool';
+                    const input = String(part.arguments ?? part.input ?? '').trim();
+                    const metadata = part.metadata ?? null;
+                    const toolPart = normalizePartForOutputFormat(
+                        createToolPart(toolCallId, toolName, input, [], metadata),
+                        'v2'
+                    );
+                    if (!toolPart) return;
+                    ensureToolOutputArray(toolPart);
+                    output.push(toolPart);
+                    registerPending(toolPart);
+                    return;
+                }
+
+                if (isPartType(part.type, 'TOOL_RESULT')) {
+                    const outputText = normalizeToolResultTextForV2(
+                        part.output ?? part.result ?? part.content
+                    );
+                    const pending = resolvePending(part.toolCallId, part.toolName);
+                    if (pending) {
+                        if (outputText) {
+                            ensureToolOutputArray(pending).push(normalizePartForOutputFormat(createTextPart(outputText), 'v2'));
+                        }
+                        return;
+                    }
+
+                    const toolCallId = String(part.toolCallId || generateUUID());
+                    const toolName = String(part.toolName || 'tool').trim() || 'tool';
+                    const metadata = part.metadata ?? null;
+                    const outputParts = outputText
+                        ? [normalizePartForOutputFormat(createTextPart(outputText), 'v2')]
+                        : [];
+                    const toolPart = normalizePartForOutputFormat(
+                        createToolPart(toolCallId, toolName, '', outputParts, metadata),
+                        'v2'
+                    );
+                    if (!toolPart) return;
+                    ensureToolOutputArray(toolPart);
+                    output.push(toolPart);
+                    registerPending(toolPart);
+                    return;
+                }
+
+                output.push(part);
+            });
+
+            return output;
+        }
+
         function normalizeMessageForOutputFormat(message, format = outputPartTypeFormat) {
             if (!message || typeof message !== 'object') return null;
 
             const normalizedMessage = { ...message };
+            const normalizedMessageId = normalizeRikkaUuidOrNull(normalizedMessage.id);
+            normalizedMessage.id = normalizedMessageId || generateUUID();
             const parts = Array.isArray(normalizedMessage.parts) ? normalizedMessage.parts : [];
-            normalizedMessage.parts = parts
+            let normalizedParts = parts
                 .map(part => normalizePartForOutputFormat(part, format))
                 .filter(Boolean);
+            if (format === 'v2') {
+                normalizedParts = coalesceToolCallAndResultPartsForV2(normalizedParts)
+                    .map(part => normalizePartForOutputFormat(part, format))
+                    .filter(Boolean);
+            }
+            normalizedMessage.parts = normalizedParts;
             normalizedMessage.role = normalizeMessageRole(normalizedMessage.role) || 'assistant';
             normalizedMessage.annotations = Array.isArray(normalizedMessage.annotations) ? normalizedMessage.annotations : [];
             if (!normalizedMessage.createdAt) {
@@ -4032,6 +4232,7 @@
             if (!Object.prototype.hasOwnProperty.call(normalizedMessage, 'translation')) {
                 normalizedMessage.translation = null;
             }
+            normalizedMessage.modelId = normalizeRikkaUuidOrNull(normalizedMessage.modelId);
             return normalizedMessage;
         }
 
@@ -4081,11 +4282,13 @@
          * @returns {object} Part 对象
          */
         function createReasoningPart(reasoning, createdAt, finishedAt = null, metadata = null) {
+            const safeCreatedAt = normalizeInstantTimestampForRikka(createdAt);
+            const safeFinishedAt = normalizeInstantTimestampForRikka(finishedAt || safeCreatedAt, safeCreatedAt);
             return {
                 type: getPartType('REASONING'),
                 reasoning: String(reasoning || ''),
-                createdAt: createdAt,
-                finishedAt: finishedAt || createdAt,
+                createdAt: safeCreatedAt,
+                finishedAt: safeFinishedAt,
                 metadata: metadata,
                 priority: -1
             };
@@ -4161,12 +4364,37 @@
             };
         }
 
+        function appendToolRecordParts(parts, toolCallId, toolName, inputText, outputText, metadata = null, options = {}) {
+            if (!Array.isArray(parts)) return;
+
+            const safeToolCallId = String(toolCallId || generateUUID());
+            const safeToolName = String(toolName || 'tool').trim() || 'tool';
+            const safeInputText = String(inputText || '').trim();
+            const safeOutputText = String(outputText || '').trim();
+            const includeCallWithoutOutput = options.includeCallWithoutOutput !== false;
+            const shouldIncludeCall = !!safeOutputText || !!safeInputText || includeCallWithoutOutput;
+
+            if (outputPartTypeFormat === 'v2') {
+                if (!shouldIncludeCall) return;
+                const outputParts = safeOutputText ? [createTextPart(safeOutputText)] : [];
+                parts.push(createToolPart(safeToolCallId, safeToolName, safeInputText, outputParts, metadata));
+                return;
+            }
+
+            if (shouldIncludeCall) {
+                parts.push(createToolCallPart(safeToolCallId, safeToolName, safeInputText, metadata));
+            }
+            if (safeOutputText) {
+                parts.push(createToolResultPart(safeToolCallId, safeToolName, safeOutputText, metadata));
+            }
+        }
+
         // ============ 类型映射结束 ============
 
         const I18N_STRINGS = {
             'zh-CN': {
                 'app.titleSuffix': '对话迁移助手',
-                'app.subtitle': '让旧对话在新家续写（导入·浏览·编辑·合并）v1.7.1',
+                'app.subtitle': '让旧对话在新家续写（导入·浏览·编辑·合并）v1.7.2-beta.1',
                 'app.emotionalNote': '不必从零开始。把熟悉的对话带到这里，继续和 ta 聊下去。',
                 'mission.badge': '对话延续',
                 'mission.title': '不是重新开始，是把熟悉的 ta 带回来',
@@ -4193,11 +4421,15 @@
                 'modal.about.title': 'ℹ️ 关于',
                 'source.option.chatgpt': 'ChatGPT 数据',
                 'source.option.deepseek': 'DeepSeek 数据（新旧两个版本）',
-                'source.option.youraiscroll': 'YourAIScroll 数据（支持 12 个平台）',
+                'source.option.grok': 'Grok 数据（官方导出 ZIP）',
+                'source.option.youraiscroll': '导出 JSON（YourAIScroll / ChatWeave）',
+                'source.option.qwen': 'Qwen 官方导出 JSON（仅 chat.qwen.ai）',
                 'source.upload.title': '上传要迁移的对话',
                 'source.upload.chatgpt': '点击或拖拽上传 ChatGPT 官方导出 ZIP',
                 'source.upload.deepseek': '点击或拖拽上传 DeepSeek 新版压缩包（包含 conversations.json）',
-                'source.upload.youraiscroll': '粘贴 YourAIScroll 复制的 Markdown 内容',
+                'source.upload.grok': '点击或拖拽上传 Grok 官方导出 ZIP（含 prod-grok-backend.json）',
+                'source.upload.youraiscroll': '点击或拖拽上传 JSON：YourAIScroll / ChatWeave Exporter（Markdown 请用下方粘贴）',
+                'source.upload.qwen': '点击或拖拽上传从 https://chat.qwen.ai/settings/chats 导出的 chat-export-*.json',
                 'source.upload.deepseekOld.title': '（可选）上传 DeepSeek 旧版数据',
                 'source.upload.deepseekOld': '点击或拖拽上传 DeepSeek 旧版 ZIP（如果你有）',
                 'source.upload.paste': '📝 粘贴 Markdown 文本',
@@ -4253,9 +4485,9 @@
                 'info.downloadStarted': '已开始下载合并包。',
                 'error.downloadFailed': '下载启动失败，请改用桌面浏览器或分批合并后重试。',
                 'error.fileMustJson': '文件必须是 .json 格式',
-                'error.yasNoFileUpload': 'YourAIScroll 数据源不支持文件上传，请使用粘贴 Markdown 功能',
+                'error.yasNoFileUpload': '该数据源仅支持上传 JSON 文件，Markdown 请使用粘贴功能',
                 'error.fileMustZipCsv': '文件必须是 .zip 或 .csv 格式',
-                'error.yasRemoved': 'YourAIScroll 数据源已移除，请使用粘贴 Markdown 功能',
+                'error.yasRemoved': '该导出文件入口仅支持 JSON，请上传正确文件或改用 Markdown 粘贴',
                 'error.readFileFailed': '读取文件失败: {message}',
                 'error.readFileGeneral': '读取文件时发生错误',
                 'error.zipTooSmall': '文件太小，不是有效的 ZIP 文件',
@@ -4275,6 +4507,8 @@
                 'info.previewMessageUpdated': '消息已更新',
                 'error.deepseekNoConversationsJson': '压缩包中未找到 conversations.json 文件。请确保上传的是正确的 DeepSeek 导出文件。',
                 'info.deepseekLoaded': '已加载 {count} 个 DeepSeek 对话',
+                'error.grokNoBackendJson': '压缩包中未找到 prod-grok-backend.json。请确保上传的是 Grok 官方导出 ZIP。',
+                'info.grokLoaded': '已加载 {count} 个 Grok 对话',
                 'error.csvEmpty': 'CSV 文件为空或格式不正确',
                 'error.csvMissingColumns': 'CSV 文件格式不正确，缺少必要的列（id, time, role, content）',
                 'info.deepseekLoadedFromMessages': '已加载 {count} 个 DeepSeek 对话（从 {msgCount} 条消息）',
@@ -4328,7 +4562,8 @@
                 'success.titleHint.default': '对话标题保持导入来源的默认策略。',
                 'success.titleHint.chatgpt': 'ChatGPT 对话标题会自动添加 [ChatGPT] 前缀，方便识别。',
                 'success.titleHint.deepseek': 'DeepSeek 新版对话标题会自动添加 [DeepSeek] 前缀，旧版对话保留原标题。',
-                'success.titleHint.youraiscroll': 'YourAIScroll 对话保留原标题。',
+                'success.titleHint.youraiscroll': '导出 JSON 对话会尽量保留原标题。',
+                'success.titleHint.qwen': 'Qwen 官方导出 JSON 会尽量保留原标题与时间。',
                 'success.titleHint.multi': '多来源合并完成：{summary}。',
                 'success.assistant.single': '助手策略：统一到单一助手。',
                 'success.assistant.bySource': '助手策略：按来源分配助手。',
@@ -4343,12 +4578,13 @@
                 'report.warning.duplicatesSkipped': '检测到 {count} 个重复对话 ID：按策略“跳过已存在对话”。',
                 'report.warning.keepBoth': '检测到 {count} 个对话 ID 冲突：已按策略“保留并另存”。',
                 'report.warning.none': '未发现结构风险。',
-                'fallback.youraiscrollConversationTitle': 'YourAIScroll 对话',
+                'fallback.youraiscrollConversationTitle': '导出对话',
+                'fallback.qwenConversationTitle': 'Qwen 对话',
                 'error.mergeFailed': '合并失败: {message}\\n\\n详细信息: {detail}'
             },
             'en-US': {
                 'app.titleSuffix': 'Unified Conversation Workspace',
-                'app.subtitle': 'Reconnect Old Conversations (Import / Browse / Edit / Merge) v1.7.1',
+                'app.subtitle': 'Reconnect Old Conversations (Import / Browse / Edit / Merge) v1.7.2-beta.1',
                 'app.emotionalNote': 'You are not here to start over. Bring familiar chats here and continue with ta.',
                 'mission.badge': 'CONVERSATION CONTINUITY',
                 'mission.title': 'Not restart. Reconnect the familiar ta.',
@@ -4375,11 +4611,15 @@
                 'modal.about.title': 'ℹ️ About',
                 'source.option.chatgpt': 'ChatGPT Data',
                 'source.option.deepseek': 'DeepSeek Data (new + legacy)',
-                'source.option.youraiscroll': 'YourAIScroll Data (12 platforms)',
+                'source.option.grok': 'Grok Data (official export ZIP)',
+                'source.option.youraiscroll': 'Exported JSON (YourAIScroll / ChatWeave)',
+                'source.option.qwen': 'Qwen Official Export JSON (chat.qwen.ai only)',
                 'source.upload.title': 'Upload Conversations to Migrate',
                 'source.upload.chatgpt': 'Click or drag to upload ChatGPT official export ZIP',
                 'source.upload.deepseek': 'Click or drag to upload DeepSeek new ZIP (with conversations.json)',
-                'source.upload.youraiscroll': 'Paste YourAIScroll copied Markdown content',
+                'source.upload.grok': 'Click or drag to upload Grok official export ZIP (with prod-grok-backend.json)',
+                'source.upload.youraiscroll': 'Click or drag to upload JSON from YourAIScroll / ChatWeave Exporter (use paste for Markdown)',
+                'source.upload.qwen': 'Click or drag to upload chat-export-*.json exported from https://chat.qwen.ai/settings/chats',
                 'source.upload.deepseekOld.title': '(Optional) Upload DeepSeek Legacy Data',
                 'source.upload.deepseekOld': 'Click or drag to upload DeepSeek legacy ZIP (if you have one)',
                 'source.upload.paste': '📝 Paste Markdown',
@@ -4435,9 +4675,9 @@
                 'info.downloadStarted': 'Merged package download started.',
                 'error.downloadFailed': 'Failed to start download. Try desktop browser or merge in smaller batches.',
                 'error.fileMustJson': 'File must be in .json format.',
-                'error.yasNoFileUpload': 'YourAIScroll source does not support file upload. Use Paste Markdown instead.',
+                'error.yasNoFileUpload': 'This source accepts JSON file upload only. Use Paste Markdown for Markdown text.',
                 'error.fileMustZipCsv': 'File must be .zip or .csv.',
-                'error.yasRemoved': 'YourAIScroll file upload is removed. Use Paste Markdown instead.',
+                'error.yasRemoved': 'This import channel supports JSON only. Upload a JSON file or use Paste Markdown.',
                 'error.readFileFailed': 'Failed to read file: {message}',
                 'error.readFileGeneral': 'An error occurred while reading file.',
                 'error.zipTooSmall': 'File is too small to be a valid ZIP.',
@@ -4457,6 +4697,8 @@
                 'info.previewMessageUpdated': 'Message updated.',
                 'error.deepseekNoConversationsJson': 'conversations.json not found in ZIP. Please upload a valid DeepSeek export package.',
                 'info.deepseekLoaded': '{count} DeepSeek conversations loaded',
+                'error.grokNoBackendJson': 'prod-grok-backend.json not found in ZIP. Please upload an official Grok export ZIP.',
+                'info.grokLoaded': '{count} Grok conversations loaded',
                 'error.csvEmpty': 'CSV is empty or invalid.',
                 'error.csvMissingColumns': 'CSV is invalid, required columns missing (id, time, role, content).',
                 'info.deepseekLoadedFromMessages': '{count} DeepSeek conversations loaded (from {msgCount} messages)',
@@ -4510,7 +4752,8 @@
                 'success.titleHint.default': 'Conversation titles follow source default strategy.',
                 'success.titleHint.chatgpt': 'ChatGPT titles are prefixed with [ChatGPT] for easier recognition.',
                 'success.titleHint.deepseek': 'DeepSeek new titles are prefixed with [DeepSeek], legacy titles stay original.',
-                'success.titleHint.youraiscroll': 'YourAIScroll titles stay original.',
+                'success.titleHint.youraiscroll': 'Exported JSON keeps original titles whenever possible.',
+                'success.titleHint.qwen': 'Official Qwen JSON keeps original titles and timestamps whenever possible.',
                 'success.titleHint.multi': 'Multi-source merge completed: {summary}.',
                 'success.assistant.single': 'Assistant strategy: merge into single assistant.',
                 'success.assistant.bySource': 'Assistant strategy: split assistants by source.',
@@ -4525,7 +4768,8 @@
                 'report.warning.duplicatesSkipped': 'Detected {count} duplicate conversation IDs: applied "skip existing" strategy.',
                 'report.warning.keepBoth': 'Detected {count} conversation ID conflicts: applied "keep both" strategy.',
                 'report.warning.none': 'No structure risk found.',
-                'fallback.youraiscrollConversationTitle': 'YourAIScroll Conversation',
+                'fallback.youraiscrollConversationTitle': 'Exported Conversation',
+                'fallback.qwenConversationTitle': 'Qwen Conversation',
                 'error.mergeFailed': 'Merge failed: {message}\\n\\nDetails: {detail}'
             }
         };
@@ -4546,7 +4790,9 @@
 
         function getDataSourceLabel(sourceType) {
             if (sourceType === 'deepseek') return t('source.option.deepseek');
+            if (sourceType === 'grok') return t('source.option.grok');
             if (sourceType === 'youraiscroll') return t('source.option.youraiscroll');
+            if (sourceType === 'qwen') return t('source.option.qwen');
             return t('source.option.chatgpt');
         }
 
@@ -4715,16 +4961,24 @@
                         <li>Upload original RikkaHub backup ZIP, merge, download, then import back into RikkaHub.</li>
                     </ol>
 
-                    <p style="margin-top: 16px;"><strong>YourAIScroll Markdown → RikkaHub</strong></p>
+                    <p style="margin-top: 16px;"><strong>Exported JSON (YourAIScroll / ChatWeave) + Markdown paste → RikkaHub</strong></p>
                     <ol style="margin-left: 20px; line-height: 1.8;">
-                        <li>Switch source to "YourAIScroll Data", click "Paste Markdown".</li>
-                        <li>Paste one conversation each time; keep <code>Original URL</code>, <code>[USER]</code>, <code>[ASSISTANT]</code> markers when possible.</li>
+                        <li>For JSON: upload a JSON exported by YourAIScroll / ChatWeave Exporter.</li>
+                        <li>For Markdown: click "Paste Markdown", one conversation each time.</li>
+                        <li>Keep <code>Original URL</code>, <code>[USER]</code>, <code>[ASSISTANT]</code> markers when possible.</li>
                         <li>Save to workspace, then continue adding more conversations before one batch merge.</li>
+                    </ol>
+                    <p style="margin-top: 16px;"><strong>Qwen official export JSON (chat.qwen.ai only) → RikkaHub</strong></p>
+                    <ol style="margin-left: 20px; line-height: 1.8;">
+                        <li>Open <code>https://chat.qwen.ai/settings/chats</code>, export your chats there, and download <code>chat-export-*.json</code>.</li>
+                        <li>Back in ChatWeave, choose the dedicated source for official Qwen JSON.</li>
+                        <li>Upload the downloaded JSON, review/edit it in workspace, then merge with other sources if needed.</li>
+                        <li><strong>Not covered here:</strong> the domestic CN site <code>www.qianwen.com</code> currently has no equivalent official chat export entry.</li>
                     </ol>
 
                     <p style="margin-top: 16px;"><strong>Mixed-source merge (recommended)</strong></p>
                     <ol style="margin-left: 20px; line-height: 1.8;">
-                        <li>Import ChatGPT / DeepSeek / YourAIScroll into the same workspace.</li>
+                        <li>Import ChatGPT / DeepSeek / Grok / exported JSON / Qwen official JSON into the same workspace.</li>
                         <li>Search, filter, edit, and select only the conversations you really want.</li>
                         <li>Merge once into one RikkaHub backup for a single archive.</li>
                     </ol>
@@ -4749,16 +5003,20 @@
                     <li>上传 RikkaHub 原始备份 ZIP，合并下载后再导入 RikkaHub。</li>
                 </ol>
 
-                <p style="margin-top: 16px;"><strong>YourAIScroll Markdown → RikkaHub</strong></p>
+                <p style="margin-top: 16px;"><strong>导出 JSON（YourAIScroll / ChatWeave）+ Markdown 粘贴 → RikkaHub</strong></p>
                 <ol style="margin-left: 20px; line-height: 1.8;">
-                    <li>来源切到 “YourAIScroll 数据”，点击“粘贴 Markdown 文本”。</li>
-                    <li>每次粘贴一个对话，建议保留 <code>Original URL</code>、<code>[USER]</code>、<code>[ASSISTANT]</code> 标记。</li>
+                    <li>JSON：可直接上传 YourAIScroll / ChatWeave Exporter 导出的 JSON。</li>
+                    <li>Markdown：点击“粘贴 Markdown 文本”，每次粘贴一个对话。</li>
+                    <li>建议保留 <code>Original URL</code>、<code>[USER]</code>、<code>[ASSISTANT]</code> 标记。</li>
                     <li>保存后会进入对话工作台，可继续追加多个对话，再统一合并。</li>
                 </ol>
+                <p style="margin-top: 10px; color: var(--md-sys-color-on-surface-variant); line-height: 1.7;">
+                    <strong>注意：</strong>千问官方 JSON 请使用单独的 Qwen 来源；当前只适配 <code>chat.qwen.ai</code>。国内版通义千问 <code>www.qianwen.com</code> 目前没有对应的官方对话导出入口，因此不在这次适配范围内。
+                </p>
 
                 <p style="margin-top: 16px;"><strong>多来源混合合并（推荐）</strong></p>
                 <ol style="margin-left: 20px; line-height: 1.8;">
-                    <li>分别导入 ChatGPT / DeepSeek / YourAIScroll 数据到同一个对话工作台。</li>
+                    <li>分别导入 ChatGPT / DeepSeek / Grok / 导出 JSON / Qwen 官方 JSON 到同一个对话工作台。</li>
                     <li>按标题搜索、筛选、编辑后，勾选你真正要保留的对话。</li>
                     <li>一次合并到同一个 RikkaHub 备份，便于统一归档。</li>
                 </ol>
@@ -4788,9 +5046,11 @@
                                 <li><strong>ChatGPT official ZIP</strong>: titles, message text, timestamps, image references</li>
                                 <li><strong>DeepSeek new ZIP (conversations.json)</strong>: REQUEST / THINK / RESPONSE structure and metadata</li>
                                 <li><strong>DeepSeek legacy ZIP (chat.csv / coder.csv)</strong>: role, message text, timestamps, titles</li>
-                                <li><strong>YourAIScroll Markdown paste</strong>: one-conversation paste flow with role and URL recognition</li>
+                                <li><strong>Grok official ZIP (prod-grok-backend.json)</strong>: conversation title, message content, sender role and timestamps</li>
+                                <li><strong>Exported JSON import (YourAIScroll / ChatWeave + Markdown paste)</strong>: role and URL recognition; JSON preserves message timestamps</li>
+                                <li><strong>Qwen official JSON (chat.qwen.ai only)</strong>: <code>chat-export-*.json</code> exported from <code>https://chat.qwen.ai/settings/chats</code>, including titles, timestamps, answer text, thinking summaries, web-search summaries, and local tool-call info</li>
                                 <li><strong>Unified workspace</strong>: multi-source import, search, select, edit, then one-click merge</li>
-                                <li><strong>RikkaHub-ready output</strong>: validated with RikkaHub v1.8.2 / v1.9.0 beta / v2.0.2 / v2.1.0 stable, package can be imported directly</li>
+                                <li><strong>RikkaHub-ready output</strong>: validated with RikkaHub v1.8.2 / v1.9.0 beta / v2.0.2 / v2.1.0 / v2.1.1 stable, package can be imported directly</li>
                             </ul>
                         </div>
 
@@ -4802,7 +5062,8 @@
                             <ul class="support-list">
                                 <li>Account-level settings and profile data (email, phone, favorite/archive state, etc.)</li>
                                 <li>Voice/file attachments that are not in export package</li>
-                                <li>YourAIScroll file upload mode (paste-only), exact original timestamps, auto-downloading external image URLs</li>
+                                <li>Exported JSON: file upload supports JSON only; Markdown uses paste mode; Markdown usually lacks exact timestamps (JSON can keep them); no auto-downloading for external image URLs</li>
+                                <li>The domestic CN site <code>www.qianwen.com</code> is outside this Qwen support scope because it currently has no equivalent official chat export entry</li>
                                 <li>Edit history, deleted messages, live branch runtime state, exact token accounting</li>
                             </ul>
                         </div>
@@ -4826,9 +5087,11 @@
                                 <li><strong>ChatGPT 官方导出 ZIP</strong>：标题、消息文本、时间、图片引用</li>
                                 <li><strong>DeepSeek 新版 ZIP（conversations.json）</strong>：REQUEST / THINK / RESPONSE 结构与元信息</li>
                                 <li><strong>DeepSeek 旧版 ZIP（chat.csv / coder.csv）</strong>：角色、消息文本、时间、标题</li>
-                                <li><strong>YourAIScroll Markdown 粘贴导入</strong>：单对话粘贴流程，支持角色标记与 URL 识别</li>
+                                <li><strong>Grok 官方导出 ZIP（prod-grok-backend.json）</strong>：会话标题、消息内容、角色与时间</li>
+                                <li><strong>导出 JSON 导入（YourAIScroll / ChatWeave + Markdown 粘贴）</strong>：支持角色标记与 URL 识别；JSON 可保留消息时间戳</li>
+                                <li><strong>chat.qwen.ai 官方导出 JSON</strong>：从 <code>https://chat.qwen.ai/settings/chats</code> 导出的 <code>chat-export-*.json</code>，支持标题、时间戳、回答正文、深度思考摘要、联网搜索摘要与本地工具调用信息</li>
                                 <li><strong>统一对话工作台</strong>：多来源导入、搜索筛选、勾选编辑、一次合并</li>
-                                <li><strong>RikkaHub 可导入输出</strong>：已对齐并验证 v1.8.2 / v1.9.0 beta / v2.0.2 / v2.1.0 正式版，生成包可直接导入</li>
+                                <li><strong>RikkaHub 可导入输出</strong>：已对齐并验证 v1.8.2 / v1.9.0 beta / v2.0.2 / v2.1.0 / v2.1.1 正式版，生成包可直接导入</li>
                             </ul>
                         </div>
 
@@ -4840,7 +5103,8 @@
                             <ul class="support-list">
                                 <li>账号级设置与资料（邮箱、手机号、收藏/归档状态等）</li>
                                 <li>导出包里不存在的语音消息、文件附件</li>
-                                <li>YourAIScroll 文件上传模式（仅支持粘贴 Markdown）、精确原始时间戳、外链图片自动入包</li>
+                                <li>导出 / 官方 JSON 文件上传仅支持 JSON、Markdown 走粘贴；Markdown 通常不含原始精确时间戳（JSON 可保留）、外链图片不会自动入包</li>
+                                <li>国内版通义千问站点 <code>www.qianwen.com</code> 目前没有对应的官方对话导出入口，因此暂不在这次 Qwen 兼容范围内</li>
                                 <li>消息编辑历史、已删除消息、实时分支状态、精确 token 统计</li>
                             </ul>
                         </div>
@@ -4890,7 +5154,7 @@
             if (currentLanguage === 'en-US') {
                 body.innerHTML = `
                     <h2 style="font-size: 24px; margin-bottom: 8px;">ChatWeave</h2>
-                    <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">Unified Conversation Workspace v1.7.1</p>
+                    <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">Unified Conversation Workspace v1.7.2-beta.1</p>
                     <div class="about-info">
                         <p>ChatWeave exists for one reason: when models change, your important conversations should not disappear.</p>
                         <p><strong>We stand with the 0.1% who believe some voices should never be erased.</strong></p>
@@ -4936,7 +5200,7 @@
                     <div style="margin-top: 24px; padding: 16px; background: var(--md-sys-color-surface-container-low); border-radius: var(--md-sys-shape-corner-medium);">
                         <h4 style="margin-bottom: 8px; font-size: 14px; font-weight: 600;">📝 Notes & Terms</h4>
                         <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 0;">
-                            This is a community project and is not officially affiliated with ChatGPT, DeepSeek, YourAIScroll, or RikkaHub.
+                            This is a community project and is not officially affiliated with ChatGPT, DeepSeek, Grok, YourAIScroll, or RikkaHub.
                         </p>
                         <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 8px 0 0 0;">
                             Conversion runs locally in your browser. Keep source exports and backups until validation is complete.
@@ -4963,7 +5227,7 @@
 
             body.innerHTML = `
                 <h2 style="font-size: 24px; margin-bottom: 8px;">ChatWeave</h2>
-                <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">对话迁移助手 v1.7.1</p>
+                <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 24px;">对话迁移助手 v1.7.2-beta.1</p>
                 <div class="about-info">
                     <p>我们专注会话连续性：导入、整理、合并，让聊天记录可迁移、可延续。</p>
                     <p><strong>我们代表那 0.1%，相信有些声音不应被抹去。</strong></p>
@@ -5009,7 +5273,7 @@
                 <div style="margin-top: 24px; padding: 16px; background: var(--md-sys-color-surface-container-low); border-radius: var(--md-sys-shape-corner-medium);">
                     <h4 style="margin-bottom: 8px; font-size: 14px; font-weight: 600;">📝 说明与条款</h4>
                     <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 0;">
-                        本工具为社区项目，与 ChatGPT、DeepSeek、YourAIScroll、RikkaHub 均无官方从属关系。
+                        本工具为社区项目，与 ChatGPT、DeepSeek、Grok、YourAIScroll、RikkaHub 均无官方从属关系。
                     </p>
                     <p style="font-size: 13px; line-height: 1.6; color: var(--md-sys-color-on-surface-variant); margin: 8px 0 0 0;">
                         数据转换在本地浏览器完成；请自行保管源文件与备份文件，确认可用前不要删除原始备份。
@@ -5072,7 +5336,9 @@
             setText('aboutModalTitle', 'modal.about.title');
             setText('sourceOptionChatgpt', 'source.option.chatgpt');
             setText('sourceOptionDeepseek', 'source.option.deepseek');
+            setText('sourceOptionGrok', 'source.option.grok');
             setText('sourceOptionYouraiscroll', 'source.option.youraiscroll');
+            setText('sourceOptionQwen', 'source.option.qwen');
             setText('sourceUploadCardTitle', 'source.upload.title');
             setText('deepseekOldUploadCardTitle', 'source.upload.deepseekOld.title');
             setText('deepseekSecondUploadText', 'source.upload.deepseekOld');
@@ -5140,7 +5406,9 @@
         let importedSourcePool = {
             chatgpt: { sourceData: null, secondSourceData: null },
             deepseek: { sourceData: null, secondSourceData: null },
-            youraiscroll: { sourceData: null, secondSourceData: null }
+            grok: { sourceData: null, secondSourceData: null },
+            youraiscroll: { sourceData: null, secondSourceData: null },
+            qwen: { sourceData: null, secondSourceData: null }
         };
 
         // 统一会话工作区（第一阶段）
@@ -5152,7 +5420,9 @@
         let pendingRikkaCompatSettings = {
             chatgpt: { userNickname: null, assistantName: null },
             deepseek: { userNickname: null, assistantName: null },
-            youraiscroll: { userNickname: null, assistantName: null }
+            grok: { userNickname: null, assistantName: null },
+            youraiscroll: { userNickname: null, assistantName: null },
+            qwen: { userNickname: null, assistantName: null }
         };
         let workspaceEditContext = null;
         let workspacePreviewState = {
@@ -5188,7 +5458,7 @@
                 return true;
             }
 
-            const sourceTypes = ['chatgpt', 'deepseek', 'youraiscroll'];
+            const sourceTypes = ['chatgpt', 'deepseek', 'grok', 'youraiscroll', 'qwen'];
             return sourceTypes.some(type => {
                 const bucket = ensureSourcePoolBucket(type);
                 const primaryCount = Array.isArray(bucket.sourceData)
@@ -5205,7 +5475,9 @@
             pendingRikkaCompatSettings = {
                 chatgpt: { userNickname: null, assistantName: null },
                 deepseek: { userNickname: null, assistantName: null },
-                youraiscroll: { userNickname: null, assistantName: null }
+                grok: { userNickname: null, assistantName: null },
+                youraiscroll: { userNickname: null, assistantName: null },
+                qwen: { userNickname: null, assistantName: null }
             };
         }
 
@@ -5303,7 +5575,9 @@
             importedSourcePool = {
                 chatgpt: { sourceData: null, secondSourceData: null },
                 deepseek: { sourceData: null, secondSourceData: null },
-                youraiscroll: { sourceData: null, secondSourceData: null }
+                grok: { sourceData: null, secondSourceData: null },
+                youraiscroll: { sourceData: null, secondSourceData: null },
+                qwen: { sourceData: null, secondSourceData: null }
             };
             sourceData = null;
             secondSourceData = null;
@@ -5436,6 +5710,24 @@
             return 0;
         }
 
+        function estimateGrokConversationMessageCount(conv) {
+            if (conv && Array.isArray(conv._editedMessages)) {
+                return conv._editedMessages.filter(msg => String(msg?.content || '').trim()).length;
+            }
+            if (conv && Array.isArray(conv._rawMessages)) {
+                return conv._rawMessages.filter(msg => {
+                    const role = typeof normalizeMessageRole === 'function'
+                        ? normalizeMessageRole(msg?.role)
+                        : String(msg?.role || '').toLowerCase();
+                    return msg && Array.isArray(msg.parts) && msg.parts.length > 0 && !!role;
+                }).length;
+            }
+            if (conv && Array.isArray(conv.messages)) {
+                return conv.messages.filter(msg => String(msg?.content || '').trim()).length;
+            }
+            return 0;
+        }
+
         function rebuildWorkspaceFromCurrentSource() {
             const searchInput = document.getElementById('workspaceSearchInput');
             const previousSelection = new Map((workspaceStore.conversations || []).map(item => [item.id, item.selected !== false]));
@@ -5525,15 +5817,64 @@
                     const workspaceId = deterministicUuidFromString(`workspace|youraiscroll|${normalizedConvId}`);
                     const platform = conv?.platform ? String(conv.platform) : 'unknown';
                     const platformLabel = getPlatformName(platform) || platform;
+                    const exporterLabel = getImportedExporterLabel(conv?._importExporter) || 'Exported JSON';
                     conversations.push({
                         id: workspaceId,
                         dataSource: 'youraiscroll',
                         normalizedConvId: normalizedConvId,
                         title: conv?.title || 'Untitled',
-                        sourceLabel: `YourAIScroll · ${platformLabel}`,
+                        sourceLabel: `${exporterLabel} · ${platformLabel}`,
                         bucket: 'sourceData',
                         rawIndex: index,
                         messageCount: estimateYourAIScrollConversationMessageCount(conv),
+                        createdAtMs: normalizeTimestampToMs(conv?.create_at),
+                        updatedAtMs: normalizeTimestampToMs(conv?.update_at),
+                        selected: previousSelection.has(workspaceId) ? previousSelection.get(workspaceId) : true,
+                        previewMessages: null
+                    });
+                });
+            }
+
+            const qwenBucket = ensureSourcePoolBucket('qwen');
+            if (Array.isArray(qwenBucket.sourceData)) {
+                qwenBucket.sourceData.forEach((conv, index) => {
+                    const sourceConversationId = conv?.id || `qwen-${index}`;
+                    const fallbackKey = `${conv?.title || ''}|${conv?.create_at || ''}|${conv?.update_at || ''}`;
+                    const normalizedConvId = normalizeConversationId(sourceConversationId, 'qwen', fallbackKey);
+                    const workspaceId = deterministicUuidFromString(`workspace|qwen|${normalizedConvId}`);
+                    conversations.push({
+                        id: workspaceId,
+                        dataSource: 'qwen',
+                        normalizedConvId: normalizedConvId,
+                        title: conv?.title || 'Untitled',
+                        sourceLabel: 'Qwen 官方导出',
+                        bucket: 'sourceData',
+                        rawIndex: index,
+                        messageCount: estimateYourAIScrollConversationMessageCount(conv),
+                        createdAtMs: normalizeTimestampToMs(conv?.create_at),
+                        updatedAtMs: normalizeTimestampToMs(conv?.update_at),
+                        selected: previousSelection.has(workspaceId) ? previousSelection.get(workspaceId) : true,
+                        previewMessages: null
+                    });
+                });
+            }
+
+            const grokBucket = ensureSourcePoolBucket('grok');
+            if (Array.isArray(grokBucket.sourceData)) {
+                grokBucket.sourceData.forEach((conv, index) => {
+                    const sourceConversationId = conv?.id || `grok-${index}`;
+                    const fallbackKey = `${conv?.title || ''}|${conv?.create_at || ''}|${conv?.update_at || ''}`;
+                    const normalizedConvId = normalizeConversationId(sourceConversationId, 'grok', fallbackKey);
+                    const workspaceId = deterministicUuidFromString(`workspace|grok|${normalizedConvId}`);
+                    conversations.push({
+                        id: workspaceId,
+                        dataSource: 'grok',
+                        normalizedConvId: normalizedConvId,
+                        title: conv?.title || 'Untitled',
+                        sourceLabel: 'Grok 官方导出',
+                        bucket: 'sourceData',
+                        rawIndex: index,
+                        messageCount: estimateGrokConversationMessageCount(conv),
                         createdAtMs: normalizeTimestampToMs(conv?.create_at),
                         updatedAtMs: normalizeTimestampToMs(conv?.update_at),
                         selected: previousSelection.has(workspaceId) ? previousSelection.get(workspaceId) : true,
@@ -5777,7 +6118,14 @@
                             return { role, content, timestamp };
                         })
                         .filter(msg => msg.content);
-                } else if (sourceType === 'youraiscroll') {
+                } else if (sourceType === 'youraiscroll' || sourceType === 'qwen') {
+                    const editableMessages = buildPreviewEditableMessages(conversation);
+                    previewMessages = editableMessages.map(msg => ({
+                        role: normalizeMessageRole(msg?.role) || 'assistant',
+                        content: String(msg?.content || '').trim(),
+                        timestamp: normalizeIsoString(msg?.timestamp, baseMs)
+                    })).filter(msg => msg.content);
+                } else if (sourceType === 'grok') {
                     const editableMessages = buildPreviewEditableMessages(conversation);
                     previewMessages = editableMessages.map(msg => ({
                         role: normalizeMessageRole(msg?.role) || 'assistant',
@@ -5799,7 +6147,9 @@
             if (!normalized) return 'Source';
             if (normalized === 'chatgpt') return 'ChatGPT';
             if (normalized === 'deepseek') return 'DeepSeek';
-            if (normalized === 'youraiscroll') return 'YourAIScroll';
+            if (normalized === 'youraiscroll') return 'Exported JSON';
+            if (normalized === 'qwen') return 'Qwen';
+            if (normalized === 'grok') return 'Grok';
             return getPlatformName(normalized) || sourceType;
         }
 
@@ -6150,7 +6500,12 @@
                     }, baseMs + (index * 1000))).filter(msg => String(msg.content || '').trim());
                 }
 
-                if (sourceType === 'youraiscroll') {
+                if (sourceType === 'youraiscroll' || sourceType === 'qwen') {
+                    ensureYourAIScrollConversationEditable(conversation);
+                    return buildPreviewEditableMessages(conversation);
+                }
+
+                if (sourceType === 'grok') {
                     ensureYourAIScrollConversationEditable(conversation);
                     return buildPreviewEditableMessages(conversation);
                 }
@@ -6166,7 +6521,7 @@
             const createMs = item?.createdAtMs || Date.now();
             const updateMs = item?.updatedAtMs || createMs;
             const sourceType = item?.dataSource || currentDataSource;
-            const platform = sourceType === 'youraiscroll'
+            const platform = (sourceType === 'youraiscroll' || sourceType === 'qwen' || sourceType === 'grok')
                 ? (conversation?.platform || 'unknown')
                 : sourceType;
             const assistantName = getPlatformName(platform) || item?.sourceLabel || 'AI Assistant';
@@ -6228,13 +6583,14 @@
             const createMs = parseDateTimeInputToMs(createInput?.value, fallbackCreateMs);
             const updateMs = parseDateTimeInputToMs(updateInput?.value, Math.max(createMs, fallbackUpdateMs));
             const selected = !!selectedInput?.checked;
+            const sourceType = item?.dataSource || currentDataSource;
 
             conversation.title = title;
 
-            if (currentDataSource === 'chatgpt') {
+            if (sourceType === 'chatgpt') {
                 conversation.create_time = Math.floor(createMs / 1000);
                 conversation.update_time = Math.floor(updateMs / 1000);
-            } else if (currentDataSource === 'deepseek') {
+            } else if (sourceType === 'deepseek') {
                 if (item.bucket === 'sourceData') {
                     conversation.inserted_at = new Date(createMs).toISOString();
                     conversation.updated_at = new Date(updateMs).toISOString();
@@ -6242,7 +6598,7 @@
                     conversation.created_at = createMs;
                     conversation.updated_at = updateMs;
                 }
-            } else if (currentDataSource === 'youraiscroll') {
+            } else if (sourceType === 'youraiscroll' || sourceType === 'qwen' || sourceType === 'grok') {
                 conversation.create_at = Math.floor(createMs / 1000);
                 conversation.update_at = Math.floor(updateMs / 1000);
             }
@@ -6264,7 +6620,9 @@
                 const fallbackBySource = {
                     chatgpt: { sourceData: [], secondSourceData: [] },
                     deepseek: { sourceData: [], secondSourceData: [] },
-                    youraiscroll: { sourceData: [], secondSourceData: [] }
+                    grok: { sourceData: [], secondSourceData: [] },
+                    youraiscroll: { sourceData: [], secondSourceData: [] },
+                    qwen: { sourceData: [], secondSourceData: [] }
                 };
                 const fallbackBindings = [];
                 const currentSourceType = currentDataSource || 'chatgpt';
@@ -6326,7 +6684,9 @@
             const bySource = {
                 chatgpt: { sourceData: [], secondSourceData: [] },
                 deepseek: { sourceData: [], secondSourceData: [] },
-                youraiscroll: { sourceData: [], secondSourceData: [] }
+                grok: { sourceData: [], secondSourceData: [] },
+                youraiscroll: { sourceData: [], secondSourceData: [] },
+                qwen: { sourceData: [], secondSourceData: [] }
             };
 
             selectedBindings.forEach(binding => {
@@ -7305,6 +7665,10 @@
             if (!sourceText) return;
             if (dataSource === 'deepseek') {
                 sourceText.textContent = t('source.upload.deepseek');
+            } else if (dataSource === 'grok') {
+                sourceText.textContent = t('source.upload.grok');
+            } else if (dataSource === 'qwen') {
+                sourceText.textContent = t('source.upload.qwen');
             } else if (dataSource === 'youraiscroll') {
                 sourceText.textContent = t('source.upload.youraiscroll');
             } else {
@@ -7366,13 +7730,25 @@
                 sourceFileInput.disabled = false;  // 启用文件输入
                 sourceUploadBox.style.display = 'block';  // 显示上传框
                 if (deepseekSecondCard) deepseekSecondCard.style.display = 'none';
+            } else if (dataSource === 'grok') {
+                sourceText.textContent = t('source.upload.grok');
+                sourceFileInput.accept = '.zip';
+                sourceFileInput.disabled = false;  // 启用文件输入
+                sourceUploadBox.style.display = 'block';  // 显示上传框
+                if (deepseekSecondCard) deepseekSecondCard.style.display = 'none';
+            } else if (dataSource === 'qwen') {
+                sourceText.textContent = t('source.upload.qwen');
+                sourceFileInput.accept = '.json';
+                sourceFileInput.disabled = false;
+                sourceUploadBox.style.display = 'block';
+                if (deepseekSecondCard) deepseekSecondCard.style.display = 'none';
             } else if (dataSource === 'youraiscroll') {
                 sourceText.textContent = t('source.upload.youraiscroll');
-                sourceFileInput.accept = '';
-                sourceFileInput.disabled = true;  // 禁用文件输入
-                sourceUploadBox.style.display = 'none';  // 隐藏上传框
+                sourceFileInput.accept = '.json';
+                sourceFileInput.disabled = false;  // 启用文件输入（JSON）
+                sourceUploadBox.style.display = 'block';  // 显示上传框
                 if (deepseekSecondCard) deepseekSecondCard.style.display = 'none';
-                // 显示粘贴按钮
+                // 显示粘贴按钮（Markdown）
                 if (pasteButtons) pasteButtons.style.display = 'flex';
             } else if (dataSource === 'deepseek') {
                 sourceText.textContent = t('source.upload.deepseek');
@@ -7392,32 +7768,36 @@
             const fileInfo = document.getElementById('sourceFileInfo');
 
             if (file) {
-                // 清空当前来源之前的导入状态（不影响其他来源）
-                sourceData = null;
-                secondSourceData = null;
-                if (currentDataSource === 'chatgpt') {
-                    chatgptZip = null;
-                    chatgptImages.clear();
-                    chatgptIndexedImageKeys.clear();
+                // 清空当前来源之前的导入状态（YourAIScroll 允许连续追加文件，不在此处清空）
+                if (currentDataSource !== 'youraiscroll' && currentDataSource !== 'qwen') {
+                    sourceData = null;
+                    secondSourceData = null;
+                    if (currentDataSource === 'chatgpt') {
+                        chatgptZip = null;
+                        chatgptImages.clear();
+                        chatgptIndexedImageKeys.clear();
+                    }
+                    saveCurrentSourceBuffersToPool();
+                    rebuildWorkspaceFromCurrentSource();
                 }
-                saveCurrentSourceBuffersToPool();
-                rebuildWorkspaceFromCurrentSource();
                 uploadBox.classList.remove('has-file', 'error');
                 checkReady();
 
                 // 验证文件类型
-                if (currentDataSource === 'youraiscroll') {
-                    if (!file.name.endsWith('.json')) {
+                if (currentDataSource === 'youraiscroll' || currentDataSource === 'qwen') {
+                    if (!file.name.toLowerCase().endsWith('.json')) {
                         showError(t('error.fileMustJson'));
                         uploadBox.classList.add('error');
                         return;
                     }
-                } else {
-                    if (currentDataSource === 'youraiscroll') {
-                        showError(t('error.yasNoFileUpload'));
+                } else if (currentDataSource === 'grok') {
+                    if (!file.name.toLowerCase().endsWith('.zip')) {
+                        showError(t('error.fileMustZipCsv'));
                         uploadBox.classList.add('error');
                         return;
-                    } else if (!file.name.endsWith('.zip') && !file.name.endsWith('.csv')) {
+                    }
+                } else {
+                    if (!file.name.toLowerCase().endsWith('.zip') && !file.name.toLowerCase().endsWith('.csv')) {
                         showError(t('error.fileMustZipCsv'));
                         uploadBox.classList.add('error');
                         return;
@@ -7435,14 +7815,14 @@
                     try {
                         if (currentDataSource === 'chatgpt') {
                             await handleChatGPTFileInternal(e.target.result, uploadBox, fileInfo, file.name);
+                        } else if (currentDataSource === 'grok') {
+                            await handleGrokFile(e.target.result, uploadBox, fileInfo, file.name);
                         } else if (currentDataSource === 'deepseek') {
                             await handleDeepSeekNewFile(e.target.result, uploadBox, fileInfo, file.name);
                         } else if (currentDataSource === 'youraiscroll') {
-                            showError(t('error.yasRemoved'));
-                            uploadBox.classList.remove('loading', 'has-wave');
-                            fileInfo.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
-                            uploadBox.classList.add('error');
-                            return;
+                            await handleYourAIScrollJsonFile(e.target.result, uploadBox, fileInfo, file.name, file.size);
+                        } else if (currentDataSource === 'qwen') {
+                            await handleQwenOfficialJsonFile(e.target.result, uploadBox, fileInfo, file.name, file.size);
                         }
                     } catch (error) {
                         console.error('文件处理错误:', error);
@@ -7473,7 +7853,540 @@
                 };
 
                 // 根据数据源类型使用不同的读取方法
-                reader.readAsArrayBuffer(file);
+                if (currentDataSource === 'youraiscroll' || currentDataSource === 'qwen') {
+                    reader.readAsText(file, 'utf-8');
+                } else {
+                    reader.readAsArrayBuffer(file);
+                }
+            }
+        }
+
+        async function importPortableJsonConversations(parsedConversations, uploadBox, fileInfo, fileName, fileSize, options = {}) {
+            const targetSourceType = options?.sourceType || currentDataSource || 'youraiscroll';
+            const invalidMessage = options?.invalidMessage || (currentLanguage === 'en-US'
+                ? 'Invalid exported JSON file format.'
+                : '导出 JSON 文件格式不正确。');
+
+            if (!Array.isArray(parsedConversations) || parsedConversations.length === 0) {
+                throw new Error(invalidMessage);
+            }
+
+            if (!Array.isArray(sourceData)) {
+                sourceData = [];
+            }
+
+            let appendedCount = 0;
+            let replacedCount = 0;
+            let totalMessageCount = 0;
+            let firstParsedConversation = null;
+            let firstDuplicateIndex = -1;
+
+            parsedConversations.forEach(parsedConversation => {
+                const convertedBatch = convertYourAIScrollToRikkaHub(parsedConversation);
+                const convertedConversation = Array.isArray(convertedBatch) ? convertedBatch[0] : null;
+                if (!convertedConversation) return;
+
+                convertedConversation.original_data = parsedConversation;
+                convertedConversation.messages = Array.isArray(parsedConversation.messages) ? parsedConversation.messages : [];
+                convertedConversation._importExporter = parsedConversation.exporterId || '';
+
+                totalMessageCount += convertedConversation.messages.length;
+                if (!firstParsedConversation) {
+                    firstParsedConversation = parsedConversation;
+                }
+
+                const duplicateIndex = sourceData.findIndex(item => {
+                    if (!item || typeof item !== 'object') return false;
+                    const sourceKeyMatched = item._sourceKey && convertedConversation._sourceKey && item._sourceKey === convertedConversation._sourceKey;
+                    const idMatched = item.id && convertedConversation.id && String(item.id) === String(convertedConversation.id);
+                    return !!(sourceKeyMatched || idMatched);
+                });
+
+                if (duplicateIndex >= 0) {
+                    sourceData[duplicateIndex] = convertedConversation;
+                    replacedCount++;
+                    if (firstDuplicateIndex < 0) {
+                        firstDuplicateIndex = duplicateIndex;
+                    }
+                } else {
+                    sourceData.push(convertedConversation);
+                    appendedCount++;
+                }
+            });
+
+            if (!firstParsedConversation || (appendedCount + replacedCount) === 0) {
+                throw new Error(currentLanguage === 'en-US'
+                    ? 'No valid conversation found in this JSON file.'
+                    : 'JSON 文件中未找到可转换的对话。');
+            }
+
+            uploadBox.classList.remove('loading', 'has-wave');
+            uploadBox.classList.remove('error');
+            uploadBox.classList.add('has-file');
+            fileInfo.textContent = `${fileName} (${formatFileSize(fileSize)})`;
+
+            if (parsedConversations.length === 1) {
+                const platform = firstParsedConversation.platform || extractPlatformFromUrl(firstParsedConversation.url) || 'Unknown';
+                const platformLabel = getPlatformName(platform) || platform;
+                const dedupeHint = firstDuplicateIndex >= 0 ? t('info.pasteDedupeHint') : '';
+                showInfo(t('info.pasteAppended', {
+                    platform: platformLabel,
+                    msgCount: totalMessageCount,
+                    total: sourceData.length,
+                    dedupeHint: dedupeHint
+                }));
+            } else {
+                showInfo(currentLanguage === 'en-US'
+                    ? `Imported ${parsedConversations.length} conversations into ${getMergeSourceLabel(targetSourceType)} (${appendedCount} added, ${replacedCount} replaced, ${totalMessageCount} messages).`
+                    : `已导入 ${parsedConversations.length} 个${getMergeSourceLabel(targetSourceType)}对话（新增 ${appendedCount}，覆盖 ${replacedCount}，共 ${totalMessageCount} 条消息）。`);
+            }
+
+            saveCurrentSourceBuffersToPool();
+            rebuildWorkspaceFromCurrentSource();
+            checkReady();
+        }
+
+        async function handleYourAIScrollJsonFile(fileText, uploadBox, fileInfo, fileName, fileSize) {
+            const parsedConversations = parsePastedYourAIScrollJson(typeof fileText === 'string' ? fileText : '')
+                .filter(item => item && item.exporterId !== 'qwen-official');
+            await importPortableJsonConversations(parsedConversations, uploadBox, fileInfo, fileName, fileSize, {
+                sourceType: 'youraiscroll',
+                invalidMessage: currentLanguage === 'en-US'
+                    ? 'This source only accepts YourAIScroll / ChatWeave Exporter JSON. For official Qwen JSON, choose the dedicated Qwen source.'
+                    : '该来源只接受 YourAIScroll / ChatWeave Exporter JSON。chat.qwen.ai 官方导出 JSON 请改用单独的 Qwen 来源。'
+            });
+        }
+
+        async function handleQwenOfficialJsonFile(fileText, uploadBox, fileInfo, fileName, fileSize) {
+            const parsedConversations = parsePastedYourAIScrollJson(typeof fileText === 'string' ? fileText : '')
+                .filter(item => item && item.platform === 'qwen' && item.exporterId === 'qwen-official');
+
+            await importPortableJsonConversations(parsedConversations, uploadBox, fileInfo, fileName, fileSize, {
+                sourceType: 'qwen',
+                invalidMessage: currentLanguage === 'en-US'
+                    ? 'Invalid Qwen export JSON. This source only accepts chat-export-*.json exported from chat.qwen.ai/settings/chats. The domestic CN site www.qianwen.com currently has no equivalent official chat export entry.'
+                    : 'Qwen 导出 JSON 格式不正确。该来源只接受从 chat.qwen.ai/settings/chats 导出的 chat-export-*.json。国内版 www.qianwen.com 目前没有对应的官方对话导出入口。'
+            });
+        }
+
+        function parseGrokTimestamp(value, fallbackMs = Date.now()) {
+            if (value == null) return fallbackMs;
+
+            if (typeof value === 'object') {
+                if (Object.prototype.hasOwnProperty.call(value, '$date')) {
+                    const dateValue = value.$date;
+                    if (dateValue && typeof dateValue === 'object' && Object.prototype.hasOwnProperty.call(dateValue, '$numberLong')) {
+                        const numeric = Number(dateValue.$numberLong);
+                        if (Number.isFinite(numeric) && numeric > 0) return numeric;
+                    }
+                    const fromDate = normalizeTimestampToMs(dateValue);
+                    if (Number.isFinite(fromDate) && fromDate > 0) return fromDate;
+                }
+                if (Object.prototype.hasOwnProperty.call(value, '$numberLong')) {
+                    const numeric = Number(value.$numberLong);
+                    if (Number.isFinite(numeric) && numeric > 0) return numeric;
+                }
+            }
+
+            const normalized = normalizeTimestampToMs(value);
+            if (Number.isFinite(normalized) && normalized > 0) return normalized;
+            return fallbackMs;
+        }
+
+        function normalizeGrokSenderRole(sender) {
+            const value = String(sender || '').trim().toLowerCase();
+            if (value === 'human' || value === 'user') return 'user';
+            if (value === 'assistant' || value === 'model' || value === 'bot') return 'assistant';
+            if (value === 'system') return 'system';
+            if (value === 'tool') return 'tool';
+            return 'assistant';
+        }
+
+        function extractGrokMessageText(responseItem) {
+            if (!responseItem || typeof responseItem !== 'object') return '';
+            const message = responseItem.message;
+            if (typeof message === 'string') {
+                return String(message).trim();
+            }
+            if (Array.isArray(message)) {
+                return message.map(item => String(item || '')).join('\n').trim();
+            }
+            if (message && typeof message === 'object') {
+                if (typeof message.text === 'string') return message.text.trim();
+                if (typeof message.content === 'string') return message.content.trim();
+                if (Array.isArray(message.content)) {
+                    return message.content.map(item => String(item || '')).join('\n').trim();
+                }
+            }
+            if (typeof responseItem.content === 'string') return responseItem.content.trim();
+            if (typeof responseItem.response === 'string') return responseItem.response.trim();
+            return '';
+        }
+
+        function normalizeGrokToolName(name) {
+            const raw = String(name || 'tool').trim();
+            if (!raw) return 'tool';
+            return raw
+                .replace(/([a-z0-9])([A-Z])/g, '$1_$2')
+                .replace(/[^\w]+/g, '_')
+                .replace(/^_+|_+$/g, '')
+                .toLowerCase() || 'tool';
+        }
+
+        function stringifyGrokValue(value, maxChars = 4000) {
+            if (value == null) return '';
+            let text = '';
+            if (typeof value === 'string') {
+                text = value;
+            } else {
+                try {
+                    text = JSON.stringify(value, null, 2);
+                } catch (error) {
+                    text = String(value);
+                }
+            }
+            text = String(text || '').trim();
+            if (!text) return '';
+            if (text.length > maxChars) {
+                return `${text.slice(0, maxChars)}\n... (truncated)`;
+            }
+            return text;
+        }
+
+        function normalizeRikkaUuidOrNull(value) {
+            const text = String(value || '').trim();
+            if (!text) return null;
+            // RikkaHub v2.x 使用 Kotlin UUID 反序列化：仅接受 36 位标准 UUID 或 32 位十六进制字符串
+            const isUuid36 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(text);
+            const isUuid32 = /^[0-9a-f]{32}$/i.test(text);
+            return (isUuid36 || isUuid32) ? text : null;
+        }
+
+        function decodeGrokXmlText(text) {
+            return String(text || '')
+                .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
+                .replace(/&quot;/g, '"')
+                .replace(/&apos;/g, "'")
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&amp;/g, '&')
+                .trim();
+        }
+
+        function extractGrokToolCardsFromTrace(traceText) {
+            const text = String(traceText || '');
+            if (!text) return [];
+
+            const cards = [];
+            const cardRegex = /<xai:tool_usage_card>([\s\S]*?)<\/xai:tool_usage_card>/gi;
+            let match = null;
+
+            while ((match = cardRegex.exec(text)) !== null) {
+                const block = String(match[1] || '');
+                const idMatch = block.match(/<xai:tool_usage_card_id>([\s\S]*?)<\/xai:tool_usage_card_id>/i);
+                const nameMatch = block.match(/<xai:tool_name>([\s\S]*?)<\/xai:tool_name>/i);
+                const argsMatch = block.match(/<xai:tool_args>([\s\S]*?)<\/xai:tool_args>/i);
+
+                const toolCallId = decodeGrokXmlText(idMatch?.[1] || '');
+                const toolName = normalizeGrokToolName(decodeGrokXmlText(nameMatch?.[1] || 'tool'));
+                const rawArgs = decodeGrokXmlText(argsMatch?.[1] || '');
+
+                let argsValue = rawArgs;
+                if (rawArgs && /^[\[{]/.test(rawArgs.trim())) {
+                    try {
+                        argsValue = JSON.parse(rawArgs);
+                    } catch (error) {
+                        argsValue = rawArgs;
+                    }
+                }
+
+                cards.push({
+                    toolCallId,
+                    toolName,
+                    input: stringifyGrokValue(argsValue, 2000)
+                });
+            }
+
+            return cards;
+        }
+
+        function summarizeGrokThinkingTrace(traceText) {
+            const text = String(traceText || '').trim();
+            if (!text) return '';
+
+            // 仅保留原始思考文本，不把工具调用卡片“改写”为总结文案
+            const withoutToolCards = text.replace(/<xai:tool_usage_card>[\s\S]*?<\/xai:tool_usage_card>/gi, ' ');
+            const stripped = decodeGrokXmlText(withoutToolCards)
+                .replace(/<xai:[^>]+>/g, ' ')
+                .replace(/<\/xai:[^>]+>/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+            return stripped.length > 800 ? `${stripped.slice(0, 800)}...` : stripped;
+        }
+
+        function summarizeGrokThinkingTraces(traces) {
+            const traceList = Array.isArray(traces) ? traces : [];
+            if (traceList.length === 0) return '';
+            return traceList
+                .map(trace => summarizeGrokThinkingTrace(trace?.thinking_trace))
+                .filter(Boolean)
+                .join('\n\n')
+                .trim();
+        }
+
+        function collectGrokToolRecords(responseItem) {
+            const response = responseItem && typeof responseItem === 'object' ? responseItem : {};
+            const steps = Array.isArray(response.steps) ? response.steps : [];
+            const traces = Array.isArray(response.agent_thinking_traces) ? response.agent_thinking_traces : [];
+            const recordOrder = [];
+            const recordMap = new Map();
+
+            const ensureRecord = (toolCallId) => {
+                const normalizedId = String(toolCallId || '').trim() || generateUUID();
+                if (!recordMap.has(normalizedId)) {
+                    recordMap.set(normalizedId, {
+                        toolCallId: normalizedId,
+                        toolName: 'tool',
+                        input: '',
+                        output: ''
+                    });
+                    recordOrder.push(normalizedId);
+                }
+                return recordMap.get(normalizedId);
+            };
+
+            traces.forEach(trace => {
+                const traceCards = extractGrokToolCardsFromTrace(trace?.thinking_trace);
+                traceCards.forEach(card => {
+                    const record = ensureRecord(card?.toolCallId);
+                    if (card?.toolName) {
+                        record.toolName = normalizeGrokToolName(card.toolName);
+                    }
+                    if (card?.input) {
+                        record.input = String(card.input);
+                    }
+                });
+            });
+
+            steps.forEach(step => {
+                const cards = Array.isArray(step?.tool_usage_cards) ? step.tool_usage_cards : [];
+                cards.forEach(card => {
+                    const record = ensureRecord(card?.tool_usage_card_id);
+                    const tool = card?.tool && typeof card.tool === 'object' ? card.tool : {};
+                    const toolEntries = Object.entries(tool);
+                    if (toolEntries.length > 0) {
+                        const [rawName, payload] = toolEntries[0];
+                        record.toolName = normalizeGrokToolName(rawName);
+                        const argsValue = payload && typeof payload === 'object'
+                            ? (payload.args ?? payload.arguments ?? payload.input ?? payload.query ?? payload)
+                            : payload;
+                        const formattedInput = stringifyGrokValue(argsValue, 2000);
+                        if (formattedInput) {
+                            record.input = formattedInput;
+                        }
+                    }
+                });
+
+                const results = Array.isArray(step?.tool_usage_results) ? step.tool_usage_results : [];
+                results.forEach(resultItem => {
+                    const record = ensureRecord(resultItem?.tool_usage_card_id);
+                    const resultValue = resultItem?.result ?? resultItem?.output ?? resultItem;
+                    const formatted = stringifyGrokValue(resultValue, 3000);
+                    if (formatted) {
+                        record.output = formatted;
+                    }
+                });
+            });
+
+            // 仅保留有返回结果的工具调用，避免把“只有调用参数、没有返回”的记录写入消息
+            return recordOrder
+                .map(id => recordMap.get(id))
+                .filter(record => record && String(record.output || '').trim());
+        }
+
+        function convertGrokResponseToRikkaMessage(responseItem, fallbackMs) {
+            const response = responseItem && typeof responseItem === 'object' ? responseItem : {};
+            const role = normalizeGrokSenderRole(response.sender);
+            const responseMs = parseGrokTimestamp(
+                response.create_time || response.created_at || response.timestamp,
+                fallbackMs
+            );
+            const responseIso = new Date(responseMs).toISOString();
+            const createdAt = formatTimestampForRikka(responseIso);
+            const parts = [];
+
+            if (role === 'assistant') {
+                const thinkingStartMs = parseGrokTimestamp(response.thinking_start_time, responseMs);
+                const thinkingEndMs = parseGrokTimestamp(response.thinking_end_time, thinkingStartMs);
+                const traces = Array.isArray(response.agent_thinking_traces) ? response.agent_thinking_traces : [];
+                const traceSummary = summarizeGrokThinkingTraces(traces);
+                const reasoningText = traceSummary;
+
+                if (reasoningText) {
+                    parts.push(createReasoningPart(
+                        reasoningText,
+                        formatTimestampForRikka(new Date(thinkingStartMs).toISOString()),
+                        formatTimestampForRikka(new Date(thinkingEndMs).toISOString())
+                    ));
+                }
+
+                const toolRecords = collectGrokToolRecords(response);
+                toolRecords.forEach(record => {
+                    const toolCallId = String(record.toolCallId || generateUUID());
+                    const toolName = String(record.toolName || 'tool');
+                    const inputText = String(record.input || '');
+                    const outputText = String(record.output || '');
+                    if (outputPartTypeFormat === 'v2') {
+                        const outputParts = outputText ? [createTextPart(outputText)] : [];
+                        parts.push(createToolPart(toolCallId, toolName, inputText, outputParts));
+                    } else {
+                        parts.push(createToolCallPart(toolCallId, toolName, inputText));
+                        if (outputText) {
+                            parts.push(createToolResultPart(toolCallId, toolName, outputText));
+                        }
+                    }
+                });
+            }
+
+            const messageText = extractGrokMessageText(response);
+            if (messageText) {
+                parts.push(createTextPart(messageText));
+            } else if (parts.length === 0) {
+                parts.push(createTextPart(''));
+            }
+
+            return {
+                id: generateUUID(),
+                role,
+                parts,
+                annotations: [],
+                createdAt,
+                finishedAt: null,
+                modelId: normalizeRikkaUuidOrNull(response.model),
+                usage: null,
+                translation: null
+            };
+        }
+
+        function parseGrokConversationsFromBackendJson(content) {
+            const payload = JSON.parse(String(content || '{}'));
+            const conversations = Array.isArray(payload?.conversations) ? payload.conversations : [];
+            const parsedConversations = [];
+
+            conversations.forEach((item, index) => {
+                const conversationMeta = item?.conversation && typeof item.conversation === 'object'
+                    ? item.conversation
+                    : {};
+                const sourceResponses = Array.isArray(item?.responses) ? item.responses : [];
+                const fallbackCreateMs = Date.now() + (index * 1000);
+                const createMs = parseGrokTimestamp(conversationMeta.create_time, fallbackCreateMs);
+                const updateMs = parseGrokTimestamp(conversationMeta.modify_time || conversationMeta.update_time, createMs);
+                const conversationTimestamp = new Date(createMs).toISOString();
+
+                const editableMessages = sourceResponses.map((wrapped, responseIndex) => {
+                    const response = wrapped?.response && typeof wrapped.response === 'object'
+                        ? wrapped.response
+                        : (wrapped && typeof wrapped === 'object' ? wrapped : {});
+                    const role = normalizeGrokSenderRole(response.sender);
+                    const messageText = extractGrokMessageText(response);
+                    if (!messageText) return null;
+                    const responseMs = parseGrokTimestamp(
+                        response.create_time || response.created_at || response.timestamp,
+                        createMs + (responseIndex * 1000)
+                    );
+                    return {
+                        role,
+                        content: messageText,
+                        timestamp: new Date(responseMs).toISOString()
+                    };
+                }).filter(Boolean);
+
+                if (editableMessages.length === 0) {
+                    return;
+                }
+
+                const sourceConversationId = String(conversationMeta.id || '').trim() || `grok-${index + 1}`;
+                const title = String(conversationMeta.title || '').trim() || '[Grok] Imported Conversation';
+                const rawMessages = sourceResponses
+                    .map((wrapped, responseIndex) => {
+                        const response = wrapped?.response && typeof wrapped.response === 'object'
+                            ? wrapped.response
+                            : (wrapped && typeof wrapped === 'object' ? wrapped : {});
+                        return convertGrokResponseToRikkaMessage(response, createMs + (responseIndex * 1000));
+                    })
+                    .filter(Boolean);
+                const nodes = [{
+                    id: generateUUID(),
+                    conversation_id: sourceConversationId,
+                    node_index: 0,
+                    messages: rawMessages,
+                    select_index: 0
+                }];
+
+                parsedConversations.push({
+                    id: sourceConversationId,
+                    title,
+                    platform: 'grok',
+                    create_at: Math.floor(createMs / 1000),
+                    update_at: Math.floor(updateMs / 1000),
+                    messages: editableMessages,
+                    _rawMessages: rawMessages,
+                    nodes: JSON.stringify(nodes),
+                    original_data: {
+                        platform: 'grok',
+                        url: 'https://grok.com/',
+                        timestamp: conversationTimestamp,
+                        responses: sourceResponses
+                    }
+                });
+            });
+
+            return parsedConversations;
+        }
+
+        async function handleGrokFile(arrayBuffer, uploadBox, fileInfo, fileName) {
+            const data = new Uint8Array(arrayBuffer);
+            if (data.length < 4) {
+                uploadBox.classList.remove('loading', 'has-wave');
+                fileInfo.textContent = fileName + ' (' + formatFileSize(arrayBuffer.byteLength) + ')';
+                showError(t('error.zipTooSmall'));
+                uploadBox.classList.add('error');
+                return;
+            }
+
+            const signature = String.fromCharCode(data[0], data[1]);
+            if (signature !== 'PK') {
+                uploadBox.classList.remove('loading', 'has-wave');
+                fileInfo.textContent = fileName + ' (' + formatFileSize(arrayBuffer.byteLength) + ')';
+                showError(t('error.zipInvalid'));
+                uploadBox.classList.add('error');
+                return;
+            }
+
+            const zip = await JSZip.loadAsync(arrayBuffer);
+            const files = Object.keys(zip.files);
+            const backendFile = files.find(file => /(?:^|\/)prod-grok-backend\.json$/i.test(file));
+            if (!backendFile) {
+                uploadBox.classList.remove('loading', 'has-wave');
+                fileInfo.textContent = fileName + ' (' + formatFileSize(arrayBuffer.byteLength) + ')';
+                showError(t('error.grokNoBackendJson'));
+                uploadBox.classList.add('error');
+                return;
+            }
+
+            const content = await zip.file(backendFile).async('string');
+            sourceData = parseGrokConversationsFromBackendJson(content);
+
+            uploadBox.classList.remove('loading', 'has-wave');
+            fileInfo.textContent = fileName + ' (' + formatFileSize(arrayBuffer.byteLength) + ')';
+            showInfo(t('info.grokLoaded', { count: sourceData.length }));
+            saveCurrentSourceBuffersToPool();
+            rebuildWorkspaceFromCurrentSource();
+            checkReady();
+
+            const mergeButton = document.getElementById('mergeButton');
+            if (rikkahubData) {
+                mergeButton.textContent = t('merge.button.ready');
             }
         }
 
@@ -7810,12 +8723,17 @@
                 }
             }
 
-            // 启用结构化解析，避免“UI 声称支持但实际未生效”
             let parts = [];
-            try {
-                parts = parseYourAIScrollContent(rawContent, platform, messageTimestamp);
-            } catch (error) {
-                console.warn('parseYourAIScrollContent failed, fallback to plain text:', error);
+            if (Array.isArray(safeMsg.structuredParts) && safeMsg.structuredParts.length > 0) {
+                parts = safeMsg.structuredParts
+                    .map(part => normalizePartForOutputFormat(part, outputPartTypeFormat))
+                    .filter(Boolean);
+            } else {
+                try {
+                    parts = parseYourAIScrollContent(rawContent, platform, messageTimestamp);
+                } catch (error) {
+                    console.warn('parseYourAIScrollContent failed, fallback to plain text:', error);
+                }
             }
             if (!Array.isArray(parts) || parts.length === 0) {
                 parts = [createTextPart(rawContent)];
@@ -7916,6 +8834,139 @@
             // 格式化时间戳用于 Reasoning
             const reasoningTimestamp = messageTimestamp ? formatTimestampForRikka(messageTimestamp) : new Date().toISOString().slice(0, -1);
 
+            const appendPlainContentParts = (targetParts, rawText) => {
+                if (!Array.isArray(targetParts)) return;
+                const sourceText = typeof rawText === 'string' ? rawText : String(rawText || '');
+                if (!sourceText) return;
+
+                const images = extractImages(sourceText);
+                images.forEach(img => {
+                    targetParts.push(createImagePart(img.url));
+                });
+
+                const docReferences = extractDocumentReferences(sourceText);
+                docReferences.forEach(ref => {
+                    targetParts.push(createTextPart(ref.text, { type: 'document_reference', url: ref.url, title: ref.title }));
+                });
+
+                let cleanText = sourceText;
+                cleanText = removeImages(cleanText);
+                cleanText = removeDocumentReferences(cleanText);
+
+                if (cleanText.trim()) {
+                    targetParts.push(createTextPart(cleanText));
+                }
+            };
+
+            const parseExplicitStructuredBlocks = () => {
+                const sourceText = String(content || '');
+                const lowerText = sourceText.toLowerCase();
+                const hasStructuredBlockHint =
+                    sourceText.includes('[深度思考]') ||
+                    sourceText.includes('[工具调用]') ||
+                    sourceText.includes('[工具结果]') ||
+                    lowerText.includes('[thinking]') ||
+                    lowerText.includes('[reasoning]') ||
+                    lowerText.includes('[tool call]') ||
+                    lowerText.includes('[tool result]');
+                if (!hasStructuredBlockHint) {
+                    return false;
+                }
+
+                const explicitParts = [];
+                const pendingToolCalls = [];
+                const blockPattern = /\[(深度思考|工具调用|工具结果|thinking|reasoning|tool\s*call|tool\s*result)\](?:\s*([^\n]*))?\n?([\s\S]*?)\[\/\1\]/gi;
+                let lastIndex = 0;
+                let matched = false;
+                let match;
+
+                while ((match = blockPattern.exec(sourceText)) !== null) {
+                    matched = true;
+                    const [fullMatch, kindToken, rawLabel, rawBody] = match;
+                    const kindText = String(kindToken || '').trim();
+                    const kindLower = kindText.toLowerCase();
+                    const isReasoningKind = kindText === '深度思考' || kindLower === 'thinking' || kindLower === 'reasoning';
+                    const isToolCallKind = kindText === '工具调用' || (kindLower.includes('tool') && kindLower.includes('call'));
+                    const isToolResultKind = kindText === '工具结果' || (kindLower.includes('tool') && kindLower.includes('result'));
+                    const plainText = sourceText.slice(lastIndex, match.index);
+                    if (plainText) {
+                        appendPlainContentParts(explicitParts, plainText);
+                    }
+
+                    const label = String(rawLabel || '').trim();
+                    const body = String(rawBody || '').trim();
+
+                    if (isReasoningKind) {
+                        const reasoningText = [label, body].filter(Boolean).join('\n').trim();
+                        if (reasoningText) {
+                            explicitParts.push(createReasoningPart(reasoningText, reasoningTimestamp));
+                        }
+                    } else if (isToolCallKind) {
+                        pendingToolCalls.push({
+                            toolCallId: generateUUID(),
+                            toolName: label || 'tool',
+                            input: body
+                        });
+                    } else if (isToolResultKind) {
+                        let pendingIndex = -1;
+                        if (label) {
+                            pendingIndex = pendingToolCalls.findIndex(record => record.toolName === label);
+                        }
+                        if (pendingIndex < 0 && pendingToolCalls.length > 0) {
+                            pendingIndex = 0;
+                        }
+
+                        const pending = pendingIndex >= 0
+                            ? pendingToolCalls.splice(pendingIndex, 1)[0]
+                            : { toolCallId: generateUUID(), toolName: label || 'tool', input: '' };
+
+                        appendToolRecordParts(
+                            explicitParts,
+                            pending.toolCallId,
+                            label || pending.toolName || 'tool',
+                            pending.input,
+                            body,
+                            null,
+                            { includeCallWithoutOutput: false }
+                        );
+                    }
+
+                    lastIndex = match.index + fullMatch.length;
+                }
+
+                if (!matched) {
+                    return false;
+                }
+
+                const trailingText = sourceText.slice(lastIndex);
+                if (trailingText) {
+                    appendPlainContentParts(explicitParts, trailingText);
+                }
+
+                pendingToolCalls.forEach(record => {
+                    appendToolRecordParts(
+                        explicitParts,
+                        record.toolCallId,
+                        record.toolName,
+                        record.input,
+                        '',
+                        null,
+                        { includeCallWithoutOutput: true }
+                    );
+                });
+
+                if (explicitParts.length > 0) {
+                    explicitParts.forEach(part => parts.push(part));
+                    return true;
+                }
+
+                return false;
+            };
+
+            if (parseExplicitStructuredBlocks()) {
+                return parts;
+            }
+
             // 提取思维链（特定平台的格式）
             const reasoningContent = extractReasoningContent(content, platform);
             if (reasoningContent) {
@@ -7929,29 +8980,12 @@
             });
 
             // 提取图片
-            const images = extractImages(content);
-            images.forEach(img => {
-                parts.push(createImagePart(img.url));
-            });
-
-            // 提取文档引用（作为文本的一部分）
-            const docReferences = extractDocumentReferences(content);
-            docReferences.forEach(ref => {
-                parts.push(createTextPart(ref.text, { type: 'document_reference', url: ref.url, title: ref.title }));
-            });
-
             // 移除已处理的特殊内容，保留纯文本
             let cleanContent = content;
             cleanContent = removeReasoningContent(cleanContent, platform);
             cleanContent = removeToolCalls(cleanContent);
-            cleanContent = removeImages(cleanContent);
-            cleanContent = removeDocumentReferences(cleanContent);
-
-            // 添加文本部分（即使内容为空也要添加）
-            if (cleanContent.trim()) {
-                parts.push(createTextPart(cleanContent));
-            } else if (parts.length === 0) {
-                // 如果没有有效的部分且清理后内容为空，添加原始内容（可能是空字符串）
+            appendPlainContentParts(parts, cleanContent);
+            if (parts.length === 0) {
                 parts.push(createTextPart(content || ''));
             }
 
@@ -8078,10 +9112,12 @@
 
         function extractPlatformFromUrl(url) {
             if (!url) return 'unknown';
+            url = String(url).toLowerCase();
             if (url.includes('chatgpt.com')) return 'chatgpt';
             if (url.includes('chat.openai.com')) return 'chatgpt';
             if (url.includes('claude.ai')) return 'claude';
             if (url.includes('deepseek.com')) return 'deepseek';
+            if (url.includes('chat.qwen.ai')) return 'qwen';
             if (url.includes('gemini.google.com')) return 'gemini';
             if (url.includes('aistudio.google.com')) return 'google-aistudio';
             if (url.includes('grok.com')) return 'grok';
@@ -8099,8 +9135,10 @@
                 'chatgpt': 'ChatGPT',
                 'claude': 'Claude',
                 'deepseek': 'DeepSeek',
+                'qwen': 'Qwen',
                 'gemini': 'Gemini',
                 'google-aistudio': 'Google AI Studio',
+                'google-ai-studio': 'Google AI Studio',
                 'grok': 'Grok',
                 'kimi': 'Kimi',
                 'mistral': 'Mistral',
@@ -8111,6 +9149,53 @@
             };
                         return platformNames[platform] || platform;
                     }
+
+        function normalizeImportedExporterId(value) {
+            const normalized = String(value || '').trim().toLowerCase();
+            if (!normalized) return '';
+            if (normalized === 'chatweave-exporter' || normalized === 'chatweave conversation exporter') {
+                return 'chatweave-exporter';
+            }
+            if (
+                normalized === 'qwen-official' ||
+                normalized === 'qwen official export' ||
+                normalized === 'chat.qwen.ai export'
+            ) {
+                return 'qwen-official';
+            }
+            if (normalized === 'youraiscroll' || normalized === 'youraiscroll-exporter') {
+                return 'youraiscroll';
+            }
+            return normalized;
+        }
+
+        function detectImportedExporterId(payload) {
+            if (!payload || typeof payload !== 'object') return '';
+            return normalizeImportedExporterId(
+                payload.exportedBy ||
+                payload.exporter ||
+                payload.exportMeta?.tool ||
+                payload.exportMeta?.exportedBy ||
+                payload.exportMeta?.name ||
+                payload.meta?.exportedBy ||
+                payload.meta?.tool
+            );
+        }
+
+        function getImportedExporterLabel(value) {
+            const normalized = normalizeImportedExporterId(value);
+            if (normalized === 'chatweave-exporter') return 'ChatWeave Exporter';
+            if (normalized === 'qwen-official') return 'Qwen Official Export';
+            if (normalized === 'youraiscroll') return 'YourAIScroll';
+            return '';
+        }
+
+        function normalizeImportedPlatformName(value, url = '') {
+            const normalized = String(value || '').trim().toLowerCase().replace(/_/g, '-');
+            if (normalized === 'google-ai-studio') return 'google-aistudio';
+            if (normalized) return normalized;
+            return extractPlatformFromUrl(url);
+        }
             
                     // 粘贴功能相关变量
                     // 打开粘贴对话框
@@ -8126,8 +9211,8 @@
                         // 设置标题和提示
                         title.textContent = t('source.upload.paste');
                         hint.textContent = currentLanguage === 'en-US'
-                            ? 'Paste Markdown copied from YourAIScroll (one conversation each time; it will be appended to workspace after confirmation):'
-                            : '请粘贴 YourAIScroll 复制的 Markdown 内容（每次一个对话，确认后会追加到对话工作台）：';
+                            ? 'Paste Markdown copied from YourAIScroll or ChatWeave Exporter (one conversation each time; it will be appended to workspace after confirmation). Recommended: use this extension to download JSON when possible, because structure and timestamps are preserved more completely and imports are more stable. Markdown is better used as a fallback or quick add.'
+                            : '请粘贴 YourAIScroll 或 ChatWeave Exporter 复制的 Markdown 内容（每次一个对话，确认后会追加到对话工作台）。更推荐使用本扩展下载 JSON 再导入，因为结构与时间戳保留更完整、导入更稳；Markdown 更适合兜底补录或快速追加。';
             
                         // 显示对话框
                         modal.classList.add('active');
@@ -8190,8 +9275,8 @@
                             // 移除加载状态
                             uploadBox.classList.remove('loading', 'has-wave');
                             fileInfo.textContent = currentLanguage === 'en-US'
-                                ? `Markdown pasted (total ${sourceData.length} conversations)`
-                                : `已粘贴 Markdown 内容（累计 ${sourceData.length} 个对话）`;
+                                ? `Content pasted (total ${sourceData.length} conversations)`
+                                : `已粘贴内容（累计 ${sourceData.length} 个对话）`;
 
                             const platform = result.platform || extractPlatformFromUrl(result.url) || 'Unknown';
                             const msgCount = result.messages ? result.messages.length : 0;
@@ -8230,8 +9315,636 @@
                         }
                     }
             
-                    // 解析粘贴的 JSON
-                    // 解析粘贴的 Markdown
+                    // 解析 YourAIScroll JSON（文件导入）
+                    function parsePastedYourAIScrollJson(rawText) {
+                        if (typeof rawText !== 'string') return [];
+                        const trimmed = rawText.trim();
+                        if (!trimmed || (trimmed[0] !== '{' && trimmed[0] !== '[')) {
+                            return [];
+                        }
+
+                        let parsed;
+                        try {
+                            parsed = JSON.parse(trimmed);
+                        } catch (error) {
+                            return [];
+                        }
+
+                        const candidates = collectYourAIScrollConversationCandidates(parsed);
+                        if (!Array.isArray(candidates) || candidates.length === 0) {
+                            return [];
+                        }
+
+                        const nowMs = Date.now();
+                        return candidates
+                            .map((candidate, index) => normalizeYourAIScrollConversationPayload(candidate, nowMs + (index * 1000)))
+                            .filter(Boolean);
+                    }
+
+                    function collectYourAIScrollConversationCandidates(parsed) {
+                        if (Array.isArray(parsed)) return parsed;
+                        if (!parsed || typeof parsed !== 'object') return [];
+
+                        if (Array.isArray(parsed.conversations)) return parsed.conversations;
+                        if (Array.isArray(parsed.data)) return parsed.data;
+                        if (parsed.conversation && typeof parsed.conversation === 'object') return [parsed.conversation];
+
+                        return [parsed];
+                    }
+
+                    function isQwenOfficialConversationPayload(payload) {
+                        if (!payload || typeof payload !== 'object') return false;
+                        if (Array.isArray(payload.chat?.messages) && payload.chat.messages.length > 0) {
+                            return true;
+                        }
+                        if (payload.chat?.history?.messages && typeof payload.chat.history.messages === 'object') {
+                            return true;
+                        }
+                        return false;
+                    }
+
+                    function extractQwenOfficialMessages(payload) {
+                        if (!payload || typeof payload !== 'object') return [];
+                        if (Array.isArray(payload.chat?.messages) && payload.chat.messages.length > 0) {
+                            return payload.chat.messages;
+                        }
+
+                        const mapping = payload.chat?.history?.messages;
+                        if (!mapping || typeof mapping !== 'object') {
+                            return [];
+                        }
+
+                        const currentId = payload.chat?.history?.currentId || payload.currentId || '';
+                        const visited = new Set();
+                        const branch = [];
+                        let cursor = currentId;
+
+                        while (cursor && mapping[cursor] && !visited.has(cursor)) {
+                            visited.add(cursor);
+                            branch.push(mapping[cursor]);
+                            cursor = mapping[cursor]?.parentId || '';
+                        }
+
+                        if (branch.length > 0) {
+                            return branch.reverse();
+                        }
+
+                        return Object.values(mapping).sort((a, b) => {
+                            const aTs = normalizeTimestampToMs(a?.timestamp || a?.updated_at || a?.created_at) || 0;
+                            const bTs = normalizeTimestampToMs(b?.timestamp || b?.updated_at || b?.created_at) || 0;
+                            return aTs - bTs;
+                        });
+                    }
+
+                    function extractQwenOfficialWebSearchLines(item) {
+                        const safeItem = item && typeof item === 'object' ? item : {};
+                        return Array.isArray(safeItem.extra?.web_search_info)
+                            ? safeItem.extra.web_search_info
+                                .map(ref => {
+                                    const url = String(ref?.url || '').trim();
+                                    const title = String(ref?.title || ref?.hostname || url).trim();
+                                    if (!url || !title) return '';
+                                    const date = String(ref?.date || '').trim();
+                                    return `- [${title}](${url})${date ? ` ${date}` : ''}`;
+                                })
+                                .filter(Boolean)
+                            : [];
+                    }
+
+                    function normalizeQwenToolNameForMatch(name) {
+                        return String(name || '')
+                            .trim()
+                            .toLowerCase()
+                            .replace(/\s+/g, ' ');
+                    }
+
+                    function sanitizeQwenReasoningText(raw) {
+                        const text = String(raw || '').replace(/\r\n/g, '\n').trim();
+                        if (!text) return '';
+                        return text
+                            .replace(/\[(?:工具调用|tool\s*call)\][\s\S]*?\[\/(?:工具调用|tool\s*call)\]/gi, '')
+                            .replace(/\[(?:工具结果|tool\s*result)\][\s\S]*?\[\/(?:工具结果|tool\s*result)\]/gi, '')
+                            .trim();
+                    }
+
+                    function extractQwenOfficialToolResultText(item, options = {}) {
+                        const safeItem = item && typeof item === 'object' ? item : {};
+                        const candidates = [
+                            safeItem.extra?.tool_result?.tool_observation,
+                            safeItem.extra?.tool_result,
+                            safeItem.tool_result
+                        ];
+                        if (options.includeContentFallback) {
+                            candidates.push(safeItem.content);
+                        }
+
+                        for (let i = 0; i < candidates.length; i++) {
+                            const text = flattenYourAIScrollContent(candidates[i]);
+                            if (text) return text;
+                        }
+                        return '';
+                    }
+
+                    function extractQwenOfficialLocalToolCalls(item) {
+                        const safeItem = item && typeof item === 'object' ? item : {};
+                        const records = [];
+                        const localMcp = safeItem.extra?.local_mcp;
+
+                        if (localMcp && typeof localMcp === 'object') {
+                            Object.entries(localMcp).forEach(([mcpName, toolEntries]) => {
+                                (Array.isArray(toolEntries) ? toolEntries : []).forEach(entry => {
+                                    const toolName = String(entry?.tool_name || safeItem.tool_name || safeItem.name || mcpName || 'tool').trim() || 'tool';
+                                    const params = entry?.params != null
+                                        ? entry.params
+                                        : (safeItem.extra?.params != null ? safeItem.extra.params : {});
+                                    records.push({
+                                        toolName,
+                                        input: safeStringifyYourAIScrollContent(params) || '{}'
+                                    });
+                                });
+                            });
+                        }
+
+                        if (records.length === 0 && (safeItem.tool_name || safeItem.name)) {
+                            const toolName = String(safeItem.tool_name || safeItem.name).trim() || 'tool';
+                            const params = safeItem.extra?.params || safeItem.function_call?.arguments || {};
+                            records.push({
+                                toolName,
+                                input: safeStringifyYourAIScrollContent(params) || '{}'
+                            });
+                        }
+
+                        return records;
+                    }
+
+                    function extractQwenOfficialLocalToolResults(item) {
+                        const safeItem = item && typeof item === 'object' ? item : {};
+                        const records = [];
+                        const resultMapping = safeItem.mcp_results || safeItem.extra?.mcp_results;
+
+                        if (resultMapping && typeof resultMapping === 'object') {
+                            Object.entries(resultMapping).forEach(([mcpName, entries]) => {
+                                const entryList = Array.isArray(entries) ? entries : [entries];
+                                entryList.forEach(entry => {
+                                    if (entry && typeof entry === 'object' && !Array.isArray(entry)) {
+                                        Object.entries(entry).forEach(([toolName, resultValue]) => {
+                                            const output = safeStringifyYourAIScrollContent(resultValue);
+                                            if (!output) return;
+                                            records.push({
+                                                toolName: String(toolName || safeItem.tool_name || safeItem.name || mcpName || 'tool').trim() || 'tool',
+                                                output
+                                            });
+                                        });
+                                        return;
+                                    }
+
+                                    const output = safeStringifyYourAIScrollContent(entry);
+                                    if (!output) return;
+                                    records.push({
+                                        toolName: String(safeItem.tool_name || safeItem.name || mcpName || 'tool').trim() || 'tool',
+                                        output
+                                    });
+                                });
+                            });
+                        }
+
+                        if (records.length === 0) {
+                            const directResult = extractQwenOfficialToolResultText(safeItem);
+                            if (directResult) {
+                                records.push({
+                                    toolName: String(safeItem.tool_name || safeItem.name || 'tool').trim() || 'tool',
+                                    output: directResult
+                                });
+                            }
+                        }
+
+                        return records;
+                    }
+
+                    function buildQwenOfficialMessageParts(message, messageTimestamp) {
+                        const safeMessage = message && typeof message === 'object' ? message : {};
+                        const parts = [];
+                        const reasoningSections = [];
+                        const answerSections = [];
+                        const pendingToolCalls = [];
+                        const completedToolRecords = [];
+
+                        const baseTimestampMs = normalizeTimestampToMs(
+                            messageTimestamp || safeMessage.timestamp || safeMessage.updated_at || safeMessage.created_at
+                        ) || Date.now();
+                        let reasoningStartMs = baseTimestampMs;
+                        let reasoningEndMs = baseTimestampMs;
+                        let hasReasoningTimestamp = false;
+
+                        const inlineReasoning = sanitizeQwenReasoningText(
+                            flattenYourAIScrollContent(safeMessage.reasoning_content)
+                        );
+                        if (inlineReasoning) {
+                            reasoningSections.push(inlineReasoning);
+                        }
+
+                        const contentList = Array.isArray(safeMessage.content_list) ? safeMessage.content_list : [];
+                        contentList.forEach(item => {
+                            const safeItem = item && typeof item === 'object' ? item : {};
+                            const phase = String(safeItem.phase || safeItem.type || '').trim().toLowerCase();
+                            const itemTimestampMs = normalizeTimestampToMs(
+                                safeItem.timestamp || safeItem.updated_at || safeItem.created_at
+                            );
+
+                            if (phase === 'thinking_summary') {
+                                const title = flattenYourAIScrollContent(safeItem.extra?.summary_title?.content || safeItem.extra?.summary_title);
+                                const thought = flattenYourAIScrollContent(safeItem.extra?.summary_thought?.content || safeItem.extra?.summary_thought || safeItem.content);
+                                const block = sanitizeQwenReasoningText(
+                                    [title, thought].filter(Boolean).join('\n').trim()
+                                );
+                                if (block) {
+                                    reasoningSections.push(block);
+                                    if (Number.isFinite(itemTimestampMs)) {
+                                        if (!hasReasoningTimestamp) {
+                                            reasoningStartMs = itemTimestampMs;
+                                            reasoningEndMs = itemTimestampMs;
+                                            hasReasoningTimestamp = true;
+                                        } else {
+                                            reasoningStartMs = Math.min(reasoningStartMs, itemTimestampMs);
+                                            reasoningEndMs = Math.max(reasoningEndMs, itemTimestampMs);
+                                        }
+                                    }
+                                }
+                                return;
+                            }
+
+                            if (phase === 'web_search') {
+                                const refs = extractQwenOfficialWebSearchLines(safeItem);
+                                const toolResultText = extractQwenOfficialToolResultText(safeItem);
+                                const output = refs.length > 0
+                                    ? refs.join('\n')
+                                    : toolResultText;
+                                if (output) {
+                                    completedToolRecords.push({
+                                        toolCallId: generateUUID(),
+                                        toolName: 'web_search',
+                                        input: '',
+                                        output
+                                    });
+                                }
+                                return;
+                            }
+
+                            if (phase === 'web_extractor') {
+                                const observation = extractQwenOfficialToolResultText(safeItem, {
+                                    includeContentFallback: false
+                                });
+                                if (observation) {
+                                    completedToolRecords.push({
+                                        toolCallId: generateUUID(),
+                                        toolName: 'web_extractor',
+                                        input: '',
+                                        output: observation
+                                    });
+                                }
+                                return;
+                            }
+
+                            if (phase === 'local_tool') {
+                                extractQwenOfficialLocalToolCalls(safeItem).forEach(record => {
+                                    pendingToolCalls.push({
+                                        toolCallId: generateUUID(),
+                                        toolName: String(record?.toolName || 'tool').trim() || 'tool',
+                                        toolNameKey: normalizeQwenToolNameForMatch(record?.toolName),
+                                        input: String(record?.input || '').trim(),
+                                        output: ''
+                                    });
+                                });
+
+                                extractQwenOfficialLocalToolResults(safeItem).forEach(resultRecord => {
+                                    const toolName = String(resultRecord?.toolName || '').trim();
+                                    const output = String(resultRecord?.output || '').trim();
+                                    if (!output) return;
+                                    const toolNameKey = normalizeQwenToolNameForMatch(toolName);
+
+                                    let pendingIndex = -1;
+                                    if (toolNameKey) {
+                                        pendingIndex = pendingToolCalls.findIndex(record => record.toolNameKey === toolNameKey);
+                                    }
+                                    if (pendingIndex < 0) {
+                                        pendingIndex = pendingToolCalls.findIndex(record => !String(record.output || '').trim());
+                                    }
+
+                                    const baseRecord = pendingIndex >= 0
+                                        ? pendingToolCalls.splice(pendingIndex, 1)[0]
+                                        : {
+                                            toolCallId: generateUUID(),
+                                            toolName: toolName || 'tool',
+                                            input: '',
+                                            output: ''
+                                        };
+
+                                    completedToolRecords.push({
+                                        toolCallId: String(baseRecord.toolCallId || generateUUID()),
+                                        toolName: toolName || String(baseRecord.toolName || 'tool'),
+                                        input: String(baseRecord.input || '').trim(),
+                                        output
+                                    });
+                                });
+                                return;
+                            }
+
+                            if (phase === 'answer') {
+                                const answer = flattenYourAIScrollContent(safeItem.content);
+                                if (answer) {
+                                    answerSections.push(answer);
+                                }
+                                return;
+                            }
+
+                            const isToolLikePhase = phase.includes('tool') || phase.includes('search') || phase.includes('mcp');
+                            const fallback = flattenYourAIScrollContent(safeItem.content);
+                            if (isToolLikePhase) {
+                                return;
+                            }
+                            if (fallback) {
+                                answerSections.push(fallback);
+                            }
+                        });
+
+                        if (reasoningSections.length > 0) {
+                            parts.push(createReasoningPart(
+                                reasoningSections.join('\n\n'),
+                                formatTimestampForRikka(new Date(reasoningStartMs).toISOString()),
+                                formatTimestampForRikka(new Date(reasoningEndMs).toISOString())
+                            ));
+                        }
+
+                        completedToolRecords.forEach(record => {
+                            appendToolRecordParts(
+                                parts,
+                                record.toolCallId,
+                                record.toolName,
+                                record.input,
+                                record.output,
+                                null,
+                                { includeCallWithoutOutput: false }
+                            );
+                        });
+
+                        const plainContent = flattenYourAIScrollContent(safeMessage.content);
+                        if (answerSections.length > 0) {
+                            parts.push(createTextPart(answerSections.join('\n\n')));
+                        } else if (plainContent) {
+                            parts.push(createTextPart(plainContent));
+                        }
+
+                        return parts.filter(Boolean);
+                    }
+
+                    function buildQwenOfficialMessageContent(message, messageTimestamp) {
+                        const parts = buildQwenOfficialMessageParts(message, messageTimestamp);
+                        return parts.length > 0 ? extractTextFromRikkaParts(parts) : '';
+                    }
+
+                    function normalizeYourAIScrollConversationPayload(payload, fallbackMs) {
+                        if (!payload || typeof payload !== 'object') return null;
+
+                        const rawMessages = Array.isArray(payload.messages)
+                            ? payload.messages
+                            : (Array.isArray(payload.chat?.messages) ? payload.chat.messages : (isQwenOfficialConversationPayload(payload) ? extractQwenOfficialMessages(payload) : []));
+                        if (rawMessages.length === 0) {
+                            return null;
+                        }
+
+                        const url = String(payload.url || payload.originalUrl || payload.original_url || '').trim();
+                        const exporterId = detectImportedExporterId(payload) || (isQwenOfficialConversationPayload(payload) ? 'qwen-official' : '');
+                        const platform = normalizeImportedPlatformName(
+                            payload.platform ||
+                            payload.meta?.platform ||
+                            payload.chat?.platform ||
+                            (isQwenOfficialConversationPayload(payload) ? 'qwen' : '') ||
+                            extractPlatformFromUrl(url) ||
+                            'unknown',
+                            url
+                        );
+                        const baseMs = normalizeTimestampToMs(
+                            payload.timestamp ||
+                            payload.updatedAt ||
+                            payload.updated_at ||
+                            payload.createdAt ||
+                            payload.created_at ||
+                            payload.meta?.timestamp
+                        ) || fallbackMs || Date.now();
+
+                        const messages = rawMessages.map((msg, index) => {
+                            const safeMsg = msg && typeof msg === 'object' ? msg : {};
+                            const role = normalizePastedYourAIScrollRole(
+                                safeMsg.role || safeMsg.author || safeMsg.sender || safeMsg.type
+                            );
+                            const msgFallbackMs = baseMs + (index * 1000);
+                            const normalizedTimestamp = normalizeIsoString(
+                                safeMsg.timestamp || safeMsg.createdAt || safeMsg.created_at || safeMsg.time,
+                                msgFallbackMs
+                            );
+
+                            let structuredParts = null;
+                            if (Array.isArray(safeMsg?.content_list) || safeMsg?.reasoning_content != null) {
+                                const qwenParts = buildQwenOfficialMessageParts(safeMsg, normalizedTimestamp);
+                                if (Array.isArray(qwenParts) && qwenParts.length > 0) {
+                                    structuredParts = qwenParts;
+                                }
+                            }
+
+                            const content = structuredParts
+                                ? extractTextFromRikkaParts(structuredParts)
+                                : extractYourAIScrollMessageContent(safeMsg);
+                            if (!content) return null;
+
+                            return {
+                                role,
+                                content,
+                                timestamp: normalizedTimestamp,
+                                structuredParts
+                            };
+                        }).filter(Boolean);
+
+                        if (messages.length === 0) {
+                            return null;
+                        }
+
+                        const displayPlatformName = platform && platform !== 'unknown' ? getPlatformName(platform) : 'Unknown';
+                        const fallbackTitle = currentLanguage === 'en-US' ? `${displayPlatformName} Conversation` : `${displayPlatformName} 对话`;
+                        const title = String(payload.title || payload.name || fallbackTitle).trim() || fallbackTitle;
+
+                        return {
+                            title,
+                            url,
+                            platform,
+                            exporterId,
+                            timestamp: normalizeIsoString(
+                                payload.timestamp ||
+                                payload.updatedAt ||
+                                payload.updated_at ||
+                                payload.createdAt ||
+                                payload.created_at ||
+                                payload.meta?.timestamp,
+                                baseMs
+                            ),
+                            messages
+                        };
+                    }
+
+                    function extractYourAIScrollMessageContent(safeMsg) {
+                        if (Array.isArray(safeMsg?.content_list) || safeMsg?.reasoning_content != null) {
+                            const qwenContent = buildQwenOfficialMessageContent(safeMsg);
+                            if (qwenContent) return qwenContent;
+                        }
+
+                        const candidates = [];
+                        if (Object.prototype.hasOwnProperty.call(safeMsg, 'content')) candidates.push(safeMsg.content);
+                        if (Object.prototype.hasOwnProperty.call(safeMsg, 'markdown')) candidates.push(safeMsg.markdown);
+                        if (Object.prototype.hasOwnProperty.call(safeMsg, 'text')) candidates.push(safeMsg.text);
+                        if (Object.prototype.hasOwnProperty.call(safeMsg, 'value')) candidates.push(safeMsg.value);
+                        if (Object.prototype.hasOwnProperty.call(safeMsg, 'parts')) candidates.push(safeMsg.parts);
+
+                        for (let i = 0; i < candidates.length; i++) {
+                            const content = flattenYourAIScrollContent(candidates[i]);
+                            if (content) return content;
+                        }
+                        return '';
+                    }
+
+                    function flattenYourAIScrollContent(input) {
+                        if (input == null) return '';
+                        if (typeof input === 'string') return input.trim();
+                        if (typeof input === 'number' || typeof input === 'boolean') return String(input);
+
+                        const pieces = [];
+                        const queue = [input];
+                        const maxNodes = 3000;
+
+                        for (let cursor = 0; cursor < queue.length && cursor < maxNodes; cursor++) {
+                            const current = queue[cursor];
+                            if (current == null) continue;
+
+                            if (typeof current === 'string') {
+                                const normalized = current.trim();
+                                if (normalized) pieces.push(normalized);
+                                continue;
+                            }
+
+                            if (typeof current === 'number' || typeof current === 'boolean') {
+                                pieces.push(String(current));
+                                continue;
+                            }
+
+                            if (Array.isArray(current)) {
+                                for (let i = 0; i < current.length; i++) {
+                                    queue.push(current[i]);
+                                }
+                                continue;
+                            }
+
+                            if (typeof current === 'object') {
+                                if (typeof current.text === 'string' && current.text.trim()) {
+                                    pieces.push(current.text.trim());
+                                    continue;
+                                }
+                                if (typeof current.markdown === 'string' && current.markdown.trim()) {
+                                    pieces.push(current.markdown.trim());
+                                    continue;
+                                }
+                                if (typeof current.content === 'string' && current.content.trim()) {
+                                    pieces.push(current.content.trim());
+                                    continue;
+                                }
+                                if (typeof current.value === 'string' && current.value.trim()) {
+                                    pieces.push(current.value.trim());
+                                    continue;
+                                }
+
+                                if (Array.isArray(current.parts) && current.parts.length > 0) {
+                                    for (let i = 0; i < current.parts.length; i++) {
+                                        queue.push(current.parts[i]);
+                                    }
+                                    continue;
+                                }
+                                if (Array.isArray(current.content) && current.content.length > 0) {
+                                    for (let i = 0; i < current.content.length; i++) {
+                                        queue.push(current.content[i]);
+                                    }
+                                    continue;
+                                }
+
+                                const serialized = safeStringifyYourAIScrollContent(current);
+                                if (serialized) {
+                                    pieces.push(serialized);
+                                }
+                            }
+                        }
+
+                        return pieces.join('\n').trim();
+                    }
+
+                    function safeStringifyYourAIScrollContent(value) {
+                        if (value == null) return '';
+                        try {
+                            const seen = new WeakSet();
+                            const serialized = JSON.stringify(value, (key, nested) => {
+                                if (nested && typeof nested === 'object') {
+                                    if (seen.has(nested)) return '[Circular]';
+                                    seen.add(nested);
+                                }
+                                return nested;
+                            });
+                            if (!serialized) return '';
+                            const maxLength = 12000;
+                            return serialized.length > maxLength
+                                ? `${serialized.slice(0, maxLength)}...`
+                                : serialized;
+                        } catch (error) {
+                            return '[complex content]';
+                        }
+                    }
+
+                    function normalizePastedYourAIScrollRole(role) {
+                        const value = String(role || '').trim().toLowerCase();
+                        if (value === 'assistant' || value === 'ai' || value === 'model' || value === 'bot') return 'assistant';
+                        if (value === 'system') return 'system';
+                        if (value === 'tool') return 'tool';
+                        if (value === 'user' || value === 'human') return 'user';
+                        return 'user';
+                    }
+
+                    function extractInlineMessageTimestamp(content) {
+                        if (typeof content !== 'string') {
+                            return { content: '', timestamp: null };
+                        }
+                        const normalized = content.replace(/\r\n/g, '\n');
+                        const lines = normalized.split('\n');
+                        let firstNonEmpty = -1;
+                        for (let i = 0; i < lines.length; i++) {
+                            if (String(lines[i] || '').trim()) {
+                                firstNonEmpty = i;
+                                break;
+                            }
+                        }
+                        if (firstNonEmpty < 0) {
+                            return { content: '', timestamp: null };
+                        }
+
+                        const firstLine = String(lines[firstNonEmpty] || '').trim();
+                        const tsMatch = firstLine.match(/^(?:timestamp|time|时间|消息时间)\s*[:：]\s*(.+)$/i);
+                        if (!tsMatch) {
+                            return { content: normalized.trim(), timestamp: null };
+                        }
+
+                        const candidate = String(tsMatch[1] || '').trim();
+                        const parsedMs = normalizeTimestampToMs(candidate);
+                        const hasValidTs = Number.isFinite(parsedMs) && parsedMs > 0;
+                        lines.splice(firstNonEmpty, 1);
+                        return {
+                            content: lines.join('\n').trim(),
+                            timestamp: hasValidTs ? new Date(parsedMs).toISOString() : null
+                        };
+                    }
+
                     function parsePastedMarkdown(markdown) {
                         if (typeof markdown !== 'string' || markdown.trim().length === 0) {
                             throw new Error('粘贴内容为空');
@@ -8242,45 +9955,48 @@
                         // 提取 URL
                         const urlMatch = normalizedMarkdown.match(/^\s*Original URL:\s*(https?:\/\/[^\n]+)/im);
                         const url = urlMatch ? urlMatch[1] : '';
-            
-                        // 使用正则表达式匹配行首的消息标记
-                        const messagePattern = /^(?:\*\*)?\[(USER|ASSISTANT|SYSTEM|TOOL)\](?:\*\*)?\s*\n*/gim;
+
+                        // 支持 [USER] / **[USER]** / [USER]: 以及 HUMAN / AI 别名
+                        const messagePattern = /^(?:\*\*)?\[(USER|ASSISTANT|SYSTEM|TOOL|HUMAN|AI)\](?:\*\*)?\s*:?\s*\n*/gim;
                         const messages = [];
                         let lastMatchEnd = 0;
                         let match;
-                        let previousMatchRole = null;
+                        let previousMatchRole = 'user';
+                        const baseMs = Date.now();
                         
                         while ((match = messagePattern.exec(normalizedMarkdown)) !== null) {
                             // 如果这不是第一个匹配，保存前一个消息
                             if (lastMatchEnd > 0) {
                                 const previousContent = normalizedMarkdown.substring(lastMatchEnd, match.index).trim();
-                                const previousRole = previousMatchRole || 'user';
                                 
                                 // 过滤掉只有空白字符的内容
                                 if (previousContent && previousContent.replace(/\s/g, '').length > 0) {
+                                    const parsedInline = extractInlineMessageTimestamp(previousContent);
+                                    const fallbackMs = baseMs + (messages.length * 1000);
                                     messages.push({
-                                        role: previousRole,
-                                        content: previousContent,
-                                        timestamp: new Date().toISOString() // 添加时间戳字段，与 DeepSeek/ChatGPT 格式保持一致
+                                        role: normalizePastedYourAIScrollRole(previousMatchRole),
+                                        content: parsedInline.content,
+                                        timestamp: parsedInline.timestamp || new Date(fallbackMs).toISOString()
                                     });
                                 }
                             }
                             
                             // 记录当前匹配的角色和结束位置
-                            previousMatchRole = match[1].toLowerCase();
+                            previousMatchRole = normalizePastedYourAIScrollRole(match[1]);
                             lastMatchEnd = match.index + match[0].length;
                         }
                         
                         // 保存最后一个消息
                         if (lastMatchEnd > 0) {
                             const lastContent = normalizedMarkdown.substring(lastMatchEnd).trim();
-                            const lastRole = previousMatchRole || 'user';
                             
                             if (lastContent && lastContent.replace(/\s/g, '').length > 0) {
+                                const parsedInline = extractInlineMessageTimestamp(lastContent);
+                                const fallbackMs = baseMs + (messages.length * 1000);
                                 messages.push({
-                                    role: lastRole,
-                                    content: lastContent,
-                                    timestamp: new Date().toISOString() // 添加时间戳字段，与 DeepSeek/ChatGPT 格式保持一致
+                                    role: normalizePastedYourAIScrollRole(previousMatchRole),
+                                    content: parsedInline.content,
+                                    timestamp: parsedInline.timestamp || new Date(fallbackMs).toISOString()
                                 });
                             }
                         }
@@ -8305,7 +10021,7 @@
                             timestamp: new Date().toISOString(),
                             messages: messages
                         };
-                                }
+                    }
                         
                                 // 预览编辑相关变量
                                 let previewEditConversation = null;
@@ -9183,7 +10899,7 @@
                                                 conversation.created_at = createMs;
                                                 conversation.updated_at = updateMs;
                                             }
-                                        } else if (sourceType === 'youraiscroll') {
+                                        } else if (sourceType === 'youraiscroll' || sourceType === 'qwen' || sourceType === 'grok') {
                                             conversation.create_at = Math.floor(createMs / 1000);
                                             conversation.update_at = Math.floor(updateMs / 1000);
                                             conversation.messages = editedMessages.slice();
@@ -10404,7 +12120,9 @@
         function getMergeSourceLabel(sourceType) {
             if (sourceType === 'chatgpt') return 'ChatGPT';
             if (sourceType === 'deepseek') return 'DeepSeek';
-            if (sourceType === 'youraiscroll') return 'YourAIScroll';
+            if (sourceType === 'grok') return 'Grok';
+            if (sourceType === 'youraiscroll') return 'Exported JSON';
+            if (sourceType === 'qwen') return 'Qwen';
             return String(sourceType || 'Unknown');
         }
 
@@ -10617,6 +12335,57 @@
                         normalizeMessageRole(msg.role)
                     );
                 }
+            } else if (sourceType === 'qwen') {
+                const fallbackKey = conv._sourceKey || `${conv.title || ''}|${conv.create_at || ''}|${conv.update_at || ''}`;
+                baseConvId = normalizeConversationId(conv.id, 'qwen', fallbackKey);
+                conflictSalt = 'qwen';
+                title = conv.title || t('fallback.qwenConversationTitle');
+                createTime = (conv.create_at || Date.now() / 1000) * 1000;
+                updateTime = (conv.update_at || conv.create_at || Date.now() / 1000) * 1000;
+
+                const editedMessages = Array.isArray(conv?._editedMessages) ? conv._editedMessages : [];
+                if (editedMessages.length > 0) {
+                    const conversationTimestamp = conv?.original_data?.timestamp || new Date(createTime).toISOString();
+                    messages = editedMessages
+                        .map((msg, index) => convertYourAIScrollMessage(msg, conversationTimestamp, 'qwen', index))
+                        .filter(Boolean);
+                } else {
+                    messages = (conv._rawMessages || []).filter(msg =>
+                        msg &&
+                        Array.isArray(msg.parts) &&
+                        msg.parts.length > 0 &&
+                        normalizeMessageRole(msg.role)
+                    );
+                }
+            } else if (sourceType === 'grok') {
+                const fallbackKey = `${conv.title || ''}|${conv.create_at || ''}|${conv.update_at || ''}|${conv.id || ''}`;
+                baseConvId = normalizeConversationId(conv.id, 'grok', fallbackKey);
+                conflictSalt = 'grok';
+                title = conv.title || '[Grok] Imported Conversation';
+                createTime = (conv.create_at || Date.now() / 1000) * 1000;
+                updateTime = (conv.update_at || conv.create_at || Date.now() / 1000) * 1000;
+
+                const editedMessages = Array.isArray(conv?._editedMessages) ? conv._editedMessages : [];
+                if (editedMessages.length > 0) {
+                    const conversationTimestamp = conv?.original_data?.timestamp || new Date(createTime).toISOString();
+                    messages = editedMessages
+                        .map((msg, index) => convertYourAIScrollMessage(msg, conversationTimestamp, 'grok', index))
+                        .filter(Boolean);
+                } else if (Array.isArray(conv?.original_data?.responses) && conv.original_data.responses.length > 0) {
+                    messages = conv.original_data.responses.map((wrapped, responseIndex) => {
+                        const response = wrapped?.response && typeof wrapped.response === 'object'
+                            ? wrapped.response
+                            : (wrapped && typeof wrapped === 'object' ? wrapped : {});
+                        return convertGrokResponseToRikkaMessage(response, createTime + (responseIndex * 1000));
+                    }).filter(Boolean);
+                } else {
+                    messages = (conv._rawMessages || []).filter(msg =>
+                        msg &&
+                        Array.isArray(msg.parts) &&
+                        msg.parts.length > 0 &&
+                        normalizeMessageRole(msg.role)
+                    );
+                }
             }
 
             messages = normalizeMessagesForOutputFormat(messages, outputPartTypeFormat);
@@ -10634,7 +12403,7 @@
         }
 
         function buildMergeSourceDiffLines(sourceStats) {
-            const order = ['chatgpt', 'deepseek', 'youraiscroll'];
+            const order = ['chatgpt', 'deepseek', 'grok', 'youraiscroll', 'qwen'];
             const lines = [];
             order.forEach(sourceType => {
                 const bucket = ensureMergeSourceStatsBucket(sourceStats, sourceType);
@@ -10800,7 +12569,9 @@
                 const sourceNameMap = {
                     chatgpt: 'ChatGPT',
                     deepseek: 'DeepSeek',
-                    youraiscroll: 'YourAIScroll'
+                    grok: 'Grok',
+                    youraiscroll: 'Exported JSON',
+                    qwen: 'Qwen'
                 };
 
                 if (assistantMergeStrategy === 'single_assistant') {
@@ -10848,8 +12619,12 @@
                             result = createChatGPTAssistant(settings);
                         } else if (sourceType === 'deepseek') {
                             result = createDeepSeekAssistant(settings);
+                        } else if (sourceType === 'grok') {
+                            result = createGrokAssistant(settings);
                         } else if (sourceType === 'youraiscroll') {
                             result = createYourAIScrollAssistant(settings);
+                        } else if (sourceType === 'qwen') {
+                            result = createQwenAssistant(settings);
                         } else {
                             return;
                         }
@@ -10897,7 +12672,9 @@
                 const sourceStats = {
                     chatgpt: createMergeSourceStatsBucket(),
                     deepseek: createMergeSourceStatsBucket(),
-                    youraiscroll: createMergeSourceStatsBucket()
+                    grok: createMergeSourceStatsBucket(),
+                    youraiscroll: createMergeSourceStatsBucket(),
+                    qwen: createMergeSourceStatsBucket()
                 };
                 selectedBindings.forEach(binding => {
                     const sourceType = binding?.item?.dataSource || currentDataSource;
@@ -11224,7 +13001,9 @@
                 const sourceSummary = [];
                 if (sourceStats.chatgpt.added > 0) sourceSummary.push(t('summary.sourceItem', { source: 'ChatGPT', count: sourceStats.chatgpt.added }));
                 if (sourceStats.deepseek.added > 0) sourceSummary.push(t('summary.sourceItem', { source: 'DeepSeek', count: sourceStats.deepseek.added }));
-                if (sourceStats.youraiscroll.added > 0) sourceSummary.push(t('summary.sourceItem', { source: 'YourAIScroll', count: sourceStats.youraiscroll.added }));
+                if (sourceStats.grok.added > 0) sourceSummary.push(t('summary.sourceItem', { source: 'Grok', count: sourceStats.grok.added }));
+                if (sourceStats.youraiscroll.added > 0) sourceSummary.push(t('summary.sourceItem', { source: 'Exported JSON', count: sourceStats.youraiscroll.added }));
+                if (sourceStats.qwen.added > 0) sourceSummary.push(t('summary.sourceItem', { source: 'Qwen', count: sourceStats.qwen.added }));
 
                 let titleHint = t('success.titleHint.default');
                 if (sourceTypeSet.size === 1 && sourceTypeSet.has('chatgpt')) {
@@ -11233,6 +13012,8 @@
                     titleHint = t('success.titleHint.deepseek');
                 } else if (sourceTypeSet.size === 1 && sourceTypeSet.has('youraiscroll')) {
                     titleHint = t('success.titleHint.youraiscroll');
+                } else if (sourceTypeSet.size === 1 && sourceTypeSet.has('qwen')) {
+                    titleHint = t('success.titleHint.qwen');
                 } else if (sourceSummary.length > 0) {
                     titleHint = t('success.titleHint.multi', { summary: sourceSummary.join(currentLanguage === 'en-US' ? ', ' : '，') });
                 }
@@ -11533,7 +13314,9 @@
             const sourceConfigs = {
                 chatgpt: { name: 'ChatGPT Import', emoji: '🤖' },
                 deepseek: { name: 'DeepSeek Import', emoji: '🧠' },
-                youraiscroll: { name: 'YourAIScroll Import', emoji: '📜' },
+                grok: { name: 'Grok Import', emoji: '🛰️' },
+                youraiscroll: { name: 'Exported Chat Import', emoji: '📦' },
+                qwen: { name: 'Qwen Import', emoji: '🟠' },
                 unified: { name: 'Unified Import', emoji: '🧩' }
             };
             const source = sourceConfigs[sourceType] ? sourceType : 'deepseek';
@@ -11614,8 +13397,16 @@
             return ensureImportAssistant(settings, 'deepseek');
         }
 
+        function createGrokAssistant(settings) {
+            return ensureImportAssistant(settings, 'grok');
+        }
+
         function createYourAIScrollAssistant(settings) {
             return ensureImportAssistant(settings, 'youraiscroll');
+        }
+
+        function createQwenAssistant(settings) {
+            return ensureImportAssistant(settings, 'qwen');
         }
 
         function createUnifiedImportAssistant(settings, customName) {
@@ -11626,7 +13417,9 @@
             const map = {
                 chatgpt: 'ChatGPT Import',
                 deepseek: 'DeepSeek Import',
-                youraiscroll: 'YourAIScroll Import',
+                grok: 'Grok Import',
+                youraiscroll: 'Exported Chat Import',
+                qwen: 'Qwen Import',
                 unified: 'Unified Import'
             };
             return map[sourceType] || 'Import Assistant';

@@ -8,5 +8,9 @@
 !index.html
 !appreciation.png
 !wrangler.jsonc
+!chatweave-version.json
+!sync_version.js
 !assets/
 !assets/*.svg
+!edge_exporter_lite/
+!edge_exporter_lite/**

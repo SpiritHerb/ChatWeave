@@ -1,0 +1,92 @@
+{
+  "appName": {
+    "message": "ChatWeave 对话导出助手"
+  },
+  "appDescription": {
+    "message": "将 AI 对话导出为 Markdown、JSON、文本或 HTML，优先使用 API 提取，失败时自动回退页面解析。"
+  },
+  "actionTitle": {
+    "message": "ChatWeave 对话导出助手"
+  },
+  "popupTitle": {
+    "message": "ChatWeave 对话导出助手"
+  },
+  "popupHeading": {
+    "message": "ChatWeave 对话导出助手"
+  },
+  "popupSubtitle": {
+    "message": "多平台导出助手：优先 API 提取，失败自动回退页面解析。"
+  },
+  "formatSheetTitle": {
+    "message": "选择导出格式"
+  },
+  "buttonClose": {
+    "message": "关闭"
+  },
+  "metaDetecting": {
+    "message": "正在检测当前页面..."
+  },
+  "metaPlatformPage": {
+    "message": "平台：$1 | 页面：$2"
+  },
+  "metaNoTab": {
+    "message": "无法访问当前标签页。"
+  },
+  "formatJson": {
+    "message": "JSON"
+  },
+  "formatMarkdown": {
+    "message": "Markdown"
+  },
+  "formatText": {
+    "message": "文本"
+  },
+  "formatHtml": {
+    "message": "HTML"
+  },
+  "buttonCopyMarkdown": {
+    "message": "复制为 Markdown"
+  },
+  "buttonDownload": {
+    "message": "下载"
+  },
+  "platformUnknown": {
+    "message": "未知"
+  },
+  "defaultConversationTitle": {
+    "message": "对话"
+  },
+  "errorNoActiveTab": {
+    "message": "未找到当前活动标签页。"
+  },
+  "errorNoResult": {
+    "message": "页面脚本没有返回结果。"
+  },
+  "errorExtractionFailed": {
+    "message": "提取失败。"
+  },
+  "statusUnsupportedPage": {
+    "message": "当前页面不在支持平台列表，请先打开聊天详情页。"
+  },
+  "statusReady": {
+    "message": "就绪：可复制 Markdown 或下载所选格式。"
+  },
+  "statusInitFailed": {
+    "message": "初始化失败。"
+  },
+  "statusExtracting": {
+    "message": "正在提取对话..."
+  },
+  "statusCopySuccess": {
+    "message": "Markdown 已复制（$1 条消息）。"
+  },
+  "statusCopyFailed": {
+    "message": "复制失败。"
+  },
+  "statusDownloadStarted": {
+    "message": "下载已开始：$1（$2 条消息）。"
+  },
+  "statusDownloadFailed": {
+    "message": "下载失败。"
+  }
+}

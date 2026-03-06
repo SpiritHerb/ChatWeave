@@ -1,0 +1,92 @@
+{
+  "appName": {
+    "message": "ChatWeave Conversation Exporter"
+  },
+  "appDescription": {
+    "message": "Export AI chat conversations as Markdown, JSON, Text, or HTML with API-first extraction."
+  },
+  "actionTitle": {
+    "message": "ChatWeave Conversation Exporter"
+  },
+  "popupTitle": {
+    "message": "ChatWeave Conversation Exporter"
+  },
+  "popupHeading": {
+    "message": "ChatWeave Conversation Exporter"
+  },
+  "popupSubtitle": {
+    "message": "Multi-platform exporter: API-first extraction with DOM fallback."
+  },
+  "formatSheetTitle": {
+    "message": "Choose export format"
+  },
+  "buttonClose": {
+    "message": "Close"
+  },
+  "metaDetecting": {
+    "message": "Detecting current page..."
+  },
+  "metaPlatformPage": {
+    "message": "Platform: $1 | Page: $2"
+  },
+  "metaNoTab": {
+    "message": "Unable to access current tab."
+  },
+  "formatJson": {
+    "message": "JSON"
+  },
+  "formatMarkdown": {
+    "message": "Markdown"
+  },
+  "formatText": {
+    "message": "Text"
+  },
+  "formatHtml": {
+    "message": "HTML"
+  },
+  "buttonCopyMarkdown": {
+    "message": "Copy as Markdown"
+  },
+  "buttonDownload": {
+    "message": "Download"
+  },
+  "platformUnknown": {
+    "message": "Unknown"
+  },
+  "defaultConversationTitle": {
+    "message": "Conversation"
+  },
+  "errorNoActiveTab": {
+    "message": "No active tab found."
+  },
+  "errorNoResult": {
+    "message": "No result returned from page script."
+  },
+  "errorExtractionFailed": {
+    "message": "Extraction failed."
+  },
+  "statusUnsupportedPage": {
+    "message": "This page is not in the supported platform list. Open a chat detail page first."
+  },
+  "statusReady": {
+    "message": "Ready: copy Markdown or download the selected format."
+  },
+  "statusInitFailed": {
+    "message": "Initialization failed."
+  },
+  "statusExtracting": {
+    "message": "Extracting conversation..."
+  },
+  "statusCopySuccess": {
+    "message": "Markdown copied ($1 messages)."
+  },
+  "statusCopyFailed": {
+    "message": "Copy failed."
+  },
+  "statusDownloadStarted": {
+    "message": "Download started: $1 ($2 messages)."
+  },
+  "statusDownloadFailed": {
+    "message": "Download failed."
+  }
+}

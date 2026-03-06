@@ -1,69 +1,77 @@
-<p align="center">
-  <img src="assets/chatweave-header.svg" alt="ChatWeave Header" width="100%" />
-</p>
+﻿# ChatWeave
 
-# ChatWeave · 统一会话工作台
+ChatWeave is a local-first conversation migration toolkit.
 
-本项目是一个 `local-first` 的浏览器工具，用于把多来源聊天记录整理、预检并合并为可导入 RikkaHub 的备份包。  
-ChatWeave is a local-first browser tool for preparing and merging multi-source chat exports into RikkaHub-compatible backup packages.
+It focuses on one thing: import, review, edit, and merge chat history into a RikkaHub-compatible backup package that can continue to be used.
 
-## 在线体验 | Live Demo
+## Components
 
-- 体验地址 / Demo URL: **https://cw.spiritherb.top/**
+- `index.html`: main merge tool and conversation workspace
+- `edge_exporter_lite/`: companion browser exporter extension
+- `sync_version.js`: one-command version sync script
+- `chatweave-version.json`: single version source of truth
 
-## 引言 | Preface
+## What It Supports
 
-> 当对话数据分散在不同平台，迁移的难点不是“导出”，而是“可控地合并并可回滚”。  
-> When conversation data is fragmented across platforms, the hard part is not export, but safe and reversible merge.
+- ChatGPT official export ZIP
+- DeepSeek export ZIP (new and old formats)
+- Grok official export ZIP
+- Exported JSON from YourAIScroll or ChatWeave Exporter
+- Markdown paste flow for single-conversation imports
+- RikkaHub backup merge output
 
-ChatWeave 的目标很直接：把复杂迁移流程拆成可理解、可预检、可回退的步骤，尽量降低数据风险。  
-ChatWeave focuses on a transparent workflow: inspect first, merge carefully, and keep rollback options.
+## Quick Start
 
-- 数据优先：默认本地处理，减少敏感信息暴露。  
-  Data-first: local processing by default.
-- 过程可见：合并前先预检与差异提示。  
-  Observable process: dry-run and diff hints before merge.
-- 回滚友好：鼓励保留原始备份与分步验证。  
-  Rollback-friendly: keep originals and validate incrementally.
+1. Open `index.html` in a modern browser.
+2. Import source data and review conversations in the workspace.
+3. Choose a RikkaHub backup ZIP.
+4. Merge and download the new backup ZIP.
+5. Import the merged backup into RikkaHub.
 
-## 简介 | Overview
+## Versioning
 
-- 纯前端运行，默认不依赖后端服务。  
-  Runs in the browser without requiring a backend by default.
-- 以会话工作台为核心，支持导入、筛选、编辑、合并。  
-  Provides a workspace flow: import, review, edit, and merge.
+ChatWeave main tool and ChatWeave Exporter extension share the same version.
 
-## 主要功能 | Key Features
+Current source of truth:
 
-- 支持多来源导入（ChatGPT / DeepSeek / YourAIScroll）  
-  Multi-source import support (ChatGPT / DeepSeek / YourAIScroll)
-- 合并前预检和差异提示  
-  Pre-merge dry run and diff warnings
-- 冲突处理策略与助手合并策略  
-  Duplicate strategy and assistant merge strategy
-- 输出可导入 RikkaHub 的备份 ZIP  
-  Exports a RikkaHub-importable backup ZIP
+- `chatweave-version.json`
 
-## 快速开始 | Quick Start
+## Release Workflow
 
-1. 使用现代浏览器打开 `index.html`  
-   Open `index.html` in a modern browser.
-2. 导入源数据并选择会话  
-   Import source data and choose conversations.
-3. 按需设置合并策略并执行合并  
-   Configure merge options and run merge.
-4. 下载结果 ZIP 并导入 RikkaHub  
-   Download output ZIP and import into RikkaHub.
+Check current version:
 
-## 隐私说明 | Privacy
+```bash
+node sync_version.js
+```
 
-本仓库仅开源代码，不包含个人聊天导出、数据库、备份 ZIP、日志等敏感内容。  
-This repository contains code only and excludes personal exports, databases, backup ZIPs, and logs.
+Bump to a new version (supports prerelease like `-beta.1`) and sync all targets:
 
-## 赞赏 | Appreciation
+```bash
+node sync_version.js 1.7.2-beta.1
+```
 
-如果这个项目对你有帮助，欢迎支持：
+This script updates:
 
-<p align="center">
-  <img src="appreciation.png" alt="Appreciation QR" width="320" />
-</p>
+- `index.html`
+- `edge_exporter_lite/manifest.json`
+- `edge_exporter_lite/popup.js`
+
+## Extension Packaging
+
+The extension source lives in:
+
+- `edge_exporter_lite/`
+
+The packaged archive is:
+
+- `edge_exporter_lite.zip`
+
+After changing extension files, repackage it before release.
+
+## Privacy
+
+ChatWeave is designed for local processing. Keep your original exports and backup ZIPs until you finish verification.
+
+## Project Link
+
+- GitHub: `https://github.com/SpiritHerb/ChatWeave`

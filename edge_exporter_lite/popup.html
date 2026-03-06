@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="popupTitle">ChatWeave Conversation Exporter</title>
+  <style>
+    :root {
+      --cw-radius-xl: 24px;
+      --cw-radius-lg: 18px;
+      --cw-radius-md: 14px;
+      --cw-border: rgba(157, 217, 255, 0.18);
+      --cw-panel: rgba(17, 31, 49, 0.92);
+      --cw-panel-soft: rgba(24, 41, 63, 0.92);
+    }
+    html {
+      width: 340px;
+      background: #0d1b2d;
+      overflow: hidden;
+    }
+    body {
+      font-family: "Segoe UI", "PingFang SC", sans-serif;
+      margin: 0;
+      padding: 16px;
+      width: 340px;
+      background: linear-gradient(180deg, #10233a 0%, #0c1625 100%);
+      color: #e6f1ff;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    .shell {
+      width: 100%;
+      border-radius: 0;
+      overflow: visible;
+      border: none;
+      background: transparent;
+      box-shadow: none;
+      backdrop-filter: none;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    h1 {
+      font-size: 16px;
+      margin: 0 0 8px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+    p {
+      margin: 0 0 10px;
+      font-size: 12px;
+      color: #b9c8de;
+      line-height: 1.5;
+    }
+    .meta {
+      font-size: 12px;
+      color: #9db2cc;
+      margin: 0 0 12px;
+      line-height: 1.4;
+    }
+    .row {
+      display: flex;
+      gap: 8px;
+      margin: 6px 0;
+      align-items: flex-start;
+    }
+    .format-picker {
+      position: relative;
+      flex: 1 1 auto;
+    }
+    .format-trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #29415a;
+      border-radius: var(--cw-radius-lg);
+      padding: 11px 12px;
+      background: var(--cw-panel-soft);
+      color: #dcecff;
+      font-size: 14px;
+      outline: none;
+      cursor: pointer;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    }
+    .format-trigger-main {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .format-trigger-badge,
+    .format-option-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 34px;
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(157, 217, 255, 0.16);
+      background: rgba(29, 156, 180, 0.12);
+      color: #9dd9ff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      box-sizing: border-box;
+      flex: 0 0 auto;
+    }
+    .format-trigger-text {
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .format-trigger-caret {
+      width: 10px;
+      height: 10px;
+      border-right: 2px solid #9fc5e4;
+      border-bottom: 2px solid #9fc5e4;
+      transform: rotate(45deg) translateY(-1px);
+      flex: 0 0 auto;
+      transition: transform 0.18s ease;
+      margin-right: 2px;
+    }
+    .format-picker.open .format-trigger {
+      border-color: rgba(157, 217, 255, 0.45);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04),
+        0 0 0 3px rgba(29, 156, 180, 0.12);
+    }
+    .format-picker.open .format-trigger-caret {
+      transform: rotate(225deg) translateY(-1px);
+    }
+    .format-menu {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 8px);
+      padding: 6px;
+      border-radius: 16px;
+      border: 1px solid rgba(157, 217, 255, 0.16);
+      background:
+        radial-gradient(circle at top, rgba(72, 169, 255, 0.1), transparent 44%),
+        linear-gradient(180deg, rgba(18, 35, 57, 0.98), rgba(12, 24, 39, 0.98));
+      box-shadow:
+        0 16px 32px rgba(0, 0, 0, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      z-index: 30;
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(-4px) scale(0.98);
+      transform-origin: top center;
+      transition:
+        opacity 0.16s ease,
+        transform 0.18s ease,
+        visibility 0.18s ease;
+    }
+    .format-option {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border: none;
+      background: transparent;
+      color: #dcecff;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.2;
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.16s ease, color 0.16s ease;
+    }
+    .format-option-main {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .format-option-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .format-option-check {
+      width: 16px;
+      text-align: center;
+      color: #8fd2ff;
+      font-size: 13px;
+      opacity: 0;
+      transform: scale(0.85);
+      transition: opacity 0.16s ease, transform 0.16s ease;
+      flex: 0 0 auto;
+    }
+    .format-option:hover,
+    .format-option:focus-visible {
+      background: rgba(157, 217, 255, 0.12);
+      color: #ffffff;
+      outline: none;
+    }
+    .format-option.selected {
+      background: color-mix(in srgb, #1c9cb4 14%, rgba(24, 41, 63, 0.92));
+      color: #9dd9ff;
+      font-weight: 700;
+    }
+    .format-option.selected .format-option-check {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .format-option.selected .format-option-badge {
+      border-color: rgba(157, 217, 255, 0.28);
+      background: rgba(29, 156, 180, 0.18);
+      color: #bce7ff;
+    }
+    .format-value {
+      display: none;
+    }
+    .picker-overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 14px;
+      background: rgba(6, 12, 22, 0.52);
+      backdrop-filter: blur(8px);
+      z-index: 80;
+      box-sizing: border-box;
+    }
+    .picker-overlay.open {
+      display: flex;
+    }
+    .picker-sheet {
+      width: 100%;
+      max-width: 100%;
+      border-radius: 24px 24px 20px 20px;
+      border: 1px solid rgba(157, 217, 255, 0.16);
+      background:
+        radial-gradient(circle at top, rgba(72, 169, 255, 0.12), transparent 40%),
+        linear-gradient(180deg, rgba(18, 35, 57, 0.98), rgba(12, 24, 39, 0.98));
+      box-shadow:
+        0 20px 36px rgba(0, 0, 0, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+      transform: translateY(10px) scale(0.98);
+      opacity: 0;
+      transition: transform 0.18s ease, opacity 0.16s ease;
+    }
+    .picker-overlay.open .picker-sheet {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+    .picker-sheet-handle {
+      width: 42px;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(157, 217, 255, 0.22);
+      margin: 10px auto 0;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+    .picker-sheet-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 16px 10px;
+      border-bottom: 1px solid rgba(157, 217, 255, 0.08);
+    }
+    .picker-sheet-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #dcecff;
+      letter-spacing: 0.01em;
+    }
+    .picker-sheet-close {
+      width: 28px;
+      height: 28px;
+      border: none;
+      border-radius: 999px;
+      background: rgba(157, 217, 255, 0.08);
+      color: #9fc5e4;
+      font-size: 16px;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .picker-sheet-body {
+      padding: 8px;
+      display: grid;
+      gap: 6px;
+    }
+    .picker-sheet .format-option {
+      padding: 12px 12px;
+      border: 1px solid transparent;
+    }
+    .picker-sheet .format-option.selected {
+      border-color: rgba(157, 217, 255, 0.18);
+    }
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: var(--cw-radius-lg);
+      padding: 11px 14px;
+      margin: 6px 0;
+      font-size: 14px;
+      cursor: pointer;
+      color: #04111f;
+      background: #9dd9ff;
+      font-weight: 600;
+      box-shadow:
+        0 10px 24px rgba(80, 170, 232, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    }
+    .btn.secondary {
+      background: #c6e8ff;
+    }
+    .btn-inline {
+      width: auto;
+      min-width: 124px;
+      flex: 0 0 124px;
+      margin: 0;
+    }
+    .btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+    .status {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: var(--cw-radius-md);
+      background: rgba(13, 27, 42, 0.72);
+      border: 1px solid rgba(157, 217, 255, 0.1);
+      font-size: 12px;
+      line-height: 1.5;
+      color: #c6d8ef;
+      min-height: 18px;
+      word-break: break-word;
+    }
+    .error { color: #ffb4b4; }
+    .ok { color: #9de5b0; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <h1 id="popupHeading">ChatWeave Conversation Exporter</h1>
+    <p id="popupSubtitle">Multi-platform exporter: API-first extraction with DOM fallback.</p>
+    <div id="meta" class="meta">Detecting current page...</div>
+
+    <button id="copyMarkdown" class="btn">Copy as Markdown</button>
+    <div class="row">
+      <div id="formatPicker" class="format-picker">
+        <input id="formatSelect" class="format-value" type="hidden" value="json" />
+        <button id="formatTrigger" class="format-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+          <span class="format-trigger-main">
+            <span id="formatSelectedBadge" class="format-trigger-badge">JSON</span>
+            <span id="formatSelectedLabel" class="format-trigger-text">JSON</span>
+          </span>
+          <span class="format-trigger-caret" aria-hidden="true"></span>
+        </button>
+        <div id="formatMenu" class="format-menu" role="listbox" aria-hidden="true">
+          <button id="formatJsonOption" class="format-option selected" type="button" role="option" data-format-value="json" aria-selected="true">
+            <span class="format-option-main">
+              <span class="format-option-badge">JSON</span>
+              <span id="formatJsonOptionText" class="format-option-text">JSON</span>
+            </span>
+            <span class="format-option-check" aria-hidden="true">&#10003;</span>
+          </button>
+          <button id="formatMarkdownOption" class="format-option" type="button" role="option" data-format-value="md" aria-selected="false">
+            <span class="format-option-main">
+              <span class="format-option-badge">MD</span>
+              <span id="formatMarkdownOptionText" class="format-option-text">Markdown</span>
+            </span>
+            <span class="format-option-check" aria-hidden="true">&#10003;</span>
+          </button>
+          <button id="formatTextOption" class="format-option" type="button" role="option" data-format-value="txt" aria-selected="false">
+            <span class="format-option-main">
+              <span class="format-option-badge">TXT</span>
+              <span id="formatTextOptionText" class="format-option-text">Text</span>
+            </span>
+            <span class="format-option-check" aria-hidden="true">&#10003;</span>
+          </button>
+          <button id="formatHtmlOption" class="format-option" type="button" role="option" data-format-value="html" aria-selected="false">
+            <span class="format-option-main">
+              <span class="format-option-badge">HTML</span>
+              <span id="formatHtmlOptionText" class="format-option-text">HTML</span>
+            </span>
+            <span class="format-option-check" aria-hidden="true">&#10003;</span>
+          </button>
+        </div>
+      </div>
+      <button id="downloadBtn" class="btn secondary btn-inline">Download</button>
+    </div>
+    <div id="status" class="status"></div>
+  </div>
+  <div id="formatOverlay" class="picker-overlay" aria-hidden="true">
+    <div class="picker-sheet" role="dialog" aria-modal="true" aria-labelledby="formatSheetTitle">
+      <div class="picker-sheet-handle" aria-hidden="true"></div>
+      <div class="picker-sheet-head">
+        <div id="formatSheetTitle" class="picker-sheet-title">Choose export format</div>
+        <button id="formatOverlayClose" class="picker-sheet-close" type="button" aria-label="Close">&times;</button>
+      </div>
+      <div id="formatOverlayBody" class="picker-sheet-body"></div>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
