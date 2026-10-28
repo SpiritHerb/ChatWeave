@@ -1,9 +1,10 @@
-> **⚠️ 本仓库已归档，不再更新。**
+> **⚠️ This repository is archived and no longer maintained.**
 >
-> ChatWeave 已经重写成新项目 **笈箱 Oibako**：https://github.com/spiritherb02/Oibako
+> ChatWeave has been rewritten as a new project, **Oibako (笈箱)**: https://github.com/spiritherb02/Oibako
 >
-> 新版重做了转换结构和写库逻辑，支持 DeepSeek 新旧版 + ChatGPT 官方导出合并进 RikkaHub 备份，并提供一个单文件网页版直接在浏览器里跑。
-> 这个仓库只作为历史留存，问题和 PR 都不再处理。
+> The rewrite redoes the conversion and database-writing layer. It merges DeepSeek (current and legacy exports) and ChatGPT official exports into a RikkaHub backup, and ships a single-file web app that runs entirely in the browser.
+>
+> This repo is kept for historical reference only. Issues and pull requests are closed.
 
 ---
 
